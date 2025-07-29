@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background: #fefefe;
+            font-family: 'Poppins', sans-serif;
+            color: #1a1a1a;
+            padding: 20px;
+            overflow: hidden;
+            padding-top: 40px;
+        }
+
+        #game-container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        header {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #1a1a1a, #666);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .help-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #666;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-btn:hover {
+            border-color: #4ade80;
+            color: #4ade80;
+            transform: scale(1.1);
+        }
+
+        #subtitle {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        #mode-toggle {
+            display: inline-flex;
+            background: #f0f0f0;
+            border-radius: 25px;
+            padding: 3px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            padding: 6px 14px;
+            border: none;
+            background: transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: #666;
+            position: relative;
+        }
+
+        .mode-btn.completed::after {
+            content: '✓';
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 18px;
+            height: 18px;
+            background: #4ade80;
+            color: #000;
+            border-radius: 50%;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .mode-btn.active {
+            background: #4ade80;
+            color: #000;
+            box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3);
+            font-weight: 600;
+        }
+
+        #stats {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            color: #666;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 18px;
+        }
+
+        #game-area {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .grid {
+            display: inline-grid;
+            gap: 4px;
+            background: #f0f0f0;
+            padding: 4px;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        #player-grid.grid-4,
+        #target-grid.grid-4 {
+            display: inline-grid;
+            grid-template-columns: repeat(4, 58px);
+            grid-template-rows: repeat(4, 58px);
+            gap: 4px;
+        }
+
+        #player-grid.grid-5,
+        #target-grid.grid-5 {
+            display: inline-grid;
+            grid-template-columns: repeat(5, 46px);
+            grid-template-rows: repeat(5, 46px);
+            gap: 3px;
+        }
+
+        .cell {
+            background: #4ade80;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            display: block;
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        button.cell {
+            font-family: 'Poppins', sans-serif;
+            font-size: inherit;
+            line-height: 1;
+        }
+
+        .grid-5 .cell {
+            border-radius: 6px;
+        }
+
+        .cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 50%);
+            opacity: 1;
+            transition: opacity 0.2s;
+        }
+
+        .cell.dark {
+            background: #2d2d2d;
+            transform: scale(0.95);
+        }
+
+        .cell.dark::before {
+            opacity: 0;
+        }
+
+        .cell:hover:not(.animating) {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+        }
+
+        .cell.preview-light {
+            background: #86efac !important;
+        }
+
+        .cell.preview-dark {
+            background: #525252 !important;
+        }
+
+        .cell.animating {
+            animation: flip 0.4s ease-in-out;
+        }
+
+        @keyframes flip {
+            0% { transform: scale(1) rotateY(0); }
+            50% { transform: scale(1.2) rotateY(90deg); }
+            100% { transform: scale(1) rotateY(180deg); }
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(74, 222, 128, 0.3);
+            transform: scale(0);
+            animation: ripple-effect 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-effect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Overlay Styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 480px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 32px;
+            color: #666;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .modal h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #1a1a1a;
+        }
+
+        .modal .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin: 0 0 24px 0;
+        }
+
+        .tutorial-section {
+            margin: 24px 0;
+        }
+
+        .tutorial-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 16px 0;
+            color: #1a1a1a;
+        }
+
+        .example-grid {
+            margin: 24px 0;
+        }
+
+        .mini-grid {
+            display: inline-grid;
+            grid-template-columns: repeat(3, 40px);
+            grid-template-rows: repeat(3, 40px);
+            gap: 3px;
+            background: #f0f0f0;
+            padding: 3px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .mini-grid.target {
+            transform: scale(0.8);
+            opacity: 0.8;
+        }
+
+        .mini-cell {
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .mini-cell.light {
+            background: #4ade80;
+        }
+
+        .mini-cell.dark {
+            background: #2d2d2d;
+        }
+
+        .mini-cell.highlight {
+            box-shadow: 0 0 0 2px #fbbf24;
+        }
+
+        .mini-cell.center-highlight {
+            box-shadow: 0 0 0 3px #ef4444;
+            transform: scale(1.1);
+        }
+
+        .example-text {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .example-text strong {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .tutorial-footer {
+            margin-top: 32px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 24px;
+        }
+
+        .tutorial-footer p {
+            color: #666;
+            font-size: 14px;
+            margin: 0 0 16px 0;
+        }
+
+        .play-btn {
+            background: #4ade80;
+            color: #000;
+            padding: 12px 48px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .play-btn:hover {
+            background: #22c55e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+        }
+
+        /* Win Modal Styles */
+        .win-modal {
+            text-align: center;
+            padding: 40px;
+            max-width: 420px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .win-modal::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(74, 222, 128, 0.02) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .modal-header {
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .win-modal h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+            letter-spacing: -0.02em;
+        }
+
+        .win-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .win-stats {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin: 0 auto 36px;
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 24px 0;
+            max-width: 280px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .win-stat {
+            flex: 1;
+            text-align: center;
+        }
+
+        .win-stat-divider {
+            width: 1px;
+            height: 40px;
+            background: #e0e0e0;
+            margin: 0 24px;
+        }
+
+        .win-stat-label {
+            display: block;
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .win-stat-value {
+            display: block;
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1;
+        }
+
+        .win-grid-preview {
+            margin: 0 auto 36px;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+        }
+
+        .modal-grid {
+            display: inline-grid;
+            background: #f0f0f0;
+            padding: 4px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .modal-grid-4 {
+            grid-template-columns: repeat(4, 48px);
+            grid-template-rows: repeat(4, 48px);
+            gap: 4px;
+        }
+
+        .modal-grid-5 {
+            grid-template-columns: repeat(5, 38px);
+            grid-template-rows: repeat(5, 38px);
+            gap: 3px;
+        }
+
+        .modal-cell {
+            background: #4ade80;
+            border-radius: 8px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .modal-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 50%);
+            opacity: 1;
+            transition: opacity 0.2s;
+            border-radius: 8px;
+        }
+
+        .modal-cell.dark {
+            background: #2d2d2d;
+            transform: scale(0.95);
+        }
+
+        .modal-cell.dark::before {
+            opacity: 0;
+        }
+
+        .modal-grid-5 .modal-cell {
+            border-radius: 6px;
+        }
+
+        .modal-grid-5 .modal-cell::before {
+            border-radius: 6px;
+        }
+
+        .win-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .share-modal-btn {
+            background: #1a1a1a;
+            color: white;
+            padding: 14px 36px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            flex: 1;
+            max-width: 180px;
+        }
+
+        .share-modal-btn:hover {
+            background: #000;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .close-modal-btn {
+            background: transparent;
+            color: #666;
+            padding: 14px 36px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            flex: 1;
+            max-width: 180px;
+        }
+
+        .close-modal-btn:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+            color: #333;
+        }
+
+        #target-display {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        #target-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        #target-grid {
+            transform: scale(0.6);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        #target-grid.grid-5 {
+            transform: scale(0.65);
+        }
+
+        #actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        #reset-btn {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        #reset-btn:hover {
+            background: #d0d0d0;
+            color: #333;
+        }
+
+        #reset-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #reset-btn.disabled:hover {
+            background: #e0e0e0;
+            color: #666;
+            transform: none;
+        }
+
+        .completed-indicator {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 4px 12px;
+            background: #4ade80;
+            color: #000;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .completed-indicator.failed {
+            background: #fbbf24;
+        }
+
+        #share-btn {
+            background: #1a1a1a;
+            color: #fff;
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        #share-btn.active {
+            opacity: 1;
+            cursor: pointer;
+            background: #000;
+        }
+
+        #share-btn.active:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            color: #4ade80;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        #message.show {
+            opacity: 1;
+        }
+
+        #streak-display {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        #streak-display.show {
+            opacity: 1;
+            animation: bounce 0.5s ease-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .particles {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: particle-float 1s ease-out forwards;
+        }
+
+        @keyframes particle-float {
+            to {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 500px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            #player-grid.grid-4,
+            #target-grid.grid-4 {
+                grid-template-columns: repeat(4, 52px);
+                grid-template-rows: repeat(4, 52px);
+            }
+
+            #player-grid.grid-5,
+            #target-grid.grid-5 {
+                grid-template-columns: repeat(5, 42px);
+                grid-template-rows: repeat(5, 42px);
+                gap: 2px;
+            }
+
+            .modal {
+                padding: 24px;
+                max-width: 95%;
+            }
+
+            .win-modal {
+                padding: 32px 24px;
+            }
+
+            .modal h2 {
+                font-size: 24px;
+            }
+
+            .win-stat-value {
+                font-size: 28px;
+            }
+
+            .win-stats {
+                padding: 20px 0;
+            }
+
+            .win-actions {
+                flex-direction: column;
+            }
+
+            .share-modal-btn,
+            .close-modal-btn {
+                max-width: 100%;
+            }
+
+            .win-grid-preview {
+                transform: scale(0.85);
+            }
+
+            .help-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+
+            #stats {
+                gap: 20px;
+            }
+
+            .completed-indicator {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1>BLACKOUT</h1>
+            <div id="subtitle">Daily Puzzle #<span id="puzzle-number"></span></div>
+            <button class="help-btn" onclick="showTutorial()" title="How to play">?</button>
+            <div id="mode-toggle">
+                <button class="mode-btn active" onclick="setMode(4)">4×4 Classic</button>
+                <button class="mode-btn" onclick="setMode(5)">5×5 Hard</button>
+            </div>
+        </header>
+
+        <div id="stats">
+            <div class="stat">Moves: <span class="stat-value" id="moves">0</span></div>
+            <div class="stat">Best: <span class="stat-value" id="best">-</span></div>
+        </div>
+
+        <div id="game-area">
+            <div id="player-grid" class="grid grid-4"></div>
+        </div>
+
+        <div id="target-display">
+            <div id="target-label">Target Pattern</div>
+            <div id="target-grid" class="grid grid-4"></div>
+        </div>
+
+        <div id="actions">
+            <button id="reset-btn" onclick="resetPuzzle()">Reset</button>
+            <button id="share-btn" onclick="shareResults()">Share</button>
+        </div>
+    </div>
+
+    <!-- Tutorial Overlay -->
+    <div id="tutorial-overlay" class="overlay">
+        <div class="modal">
+            <button class="close-btn" onclick="closeTutorial()">&times;</button>
+            <h2>How To Play</h2>
+            <p class="subtitle">Match the target pattern in 10 moves or less.</p>
+            
+            <div class="tutorial-section">
+                <h3>Examples</h3>
+                <div class="example-grid">
+                    <div class="mini-grid">
+                        <div class="mini-cell light"></div>
+                        <div class="mini-cell dark highlight"></div>
+                        <div class="mini-cell light"></div>
+                        <div class="mini-cell dark"></div>
+                        <div class="mini-cell dark center-highlight"></div>
+                        <div class="mini-cell dark"></div>
+                        <div class="mini-cell light"></div>
+                        <div class="mini-cell dark"></div>
+                        <div class="mini-cell light"></div>
+                    </div>
+                    <p class="example-text">Click a tile to flip it <strong>and its neighbors</strong> in a plus pattern.</p>
+                </div>
+                
+                <div class="example-grid">
+                    <div class="mini-grid target">
+                        <div class="mini-cell dark"></div>
+                        <div class="mini-cell dark"></div>
+                        <div class="mini-cell light"></div>
+                        <div class="mini-cell light"></div>
+                        <div class="mini-cell dark"></div>
+                        <div class="mini-cell light"></div>
+                        <div class="mini-cell dark"></div>
+                        <div class="mini-cell light"></div>
+                        <div class="mini-cell dark"></div>
+                    </div>
+                    <p class="example-text">Match the <strong>target pattern</strong> shown below the game board.</p>
+                </div>
+            </div>
+            
+            <div class="tutorial-footer">
+                <p>A new puzzle is released daily at midnight.</p>
+                <button class="play-btn" onclick="closeTutorial()">Play</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Win Overlay -->
+    <div id="win-overlay" class="overlay">
+        <div class="modal win-modal">
+            <div class="modal-header">
+                <h2>Congratulations</h2>
+                <p class="win-subtitle">You solved today's puzzle</p>
+            </div>
+            
+            <div class="win-stats">
+                <div class="win-stat">
+                    <span class="win-stat-label">Moves</span>
+                    <span class="win-stat-value" id="win-moves">0</span>
+                </div>
+                <div class="win-stat-divider"></div>
+                <div class="win-stat">
+                    <span class="win-stat-label">Best</span>
+                    <span class="win-stat-value" id="win-best">-</span>
+                </div>
+            </div>
+            
+            <div class="win-grid-preview" id="win-grid-preview"></div>
+            
+            <div class="win-actions">
+                <button class="share-modal-btn" onclick="shareFromModal()">Share</button>
+                <button class="close-modal-btn" onclick="closeWinModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="message"></div>
+    <div id="streak-display">🔥 <span id="streak-count">3</span> Day Streak!</div>
+    <div class="particles" id="particles"></div>
+
+    <script>
+        let gridSize = 4;
+        let moves = 0;
+        let playerGrid = [];
+        let targetGrid = [];
+        let gameWon = false;
+        let gameOver = false;
+        let bestScores = {};
+        let isAnimating = false;
+
+        const playerGridEl = document.getElementById('player-grid');
+        const targetGridEl = document.getElementById('target-grid');
+        const movesEl = document.getElementById('moves');
+        const bestEl = document.getElementById('best');
+        const shareBtn = document.getElementById('share-btn');
+        const messageEl = document.getElementById('message');
+        const tutorialOverlay = document.getElementById('tutorial-overlay');
+        const winOverlay = document.getElementById('win-overlay');
+
+        // Load best scores
+        const saved = localStorage.getItem('blackout-best-moves');
+        if (saved) bestScores = JSON.parse(saved);
+
+        // Check if first time player (for tutorial)
+        const hasPlayed = localStorage.getItem('blackout-has-played');
+        if (!hasPlayed) {
+            setTimeout(() => {
+                tutorialOverlay.classList.add('show');
+            }, 500);
+        }
+
+        // Set puzzle number
+        const today = new Date();
+        const startDate = new Date('2025-07-29'); // Today's date for puzzle #001
+        const dayNumber = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+        document.getElementById('puzzle-number').textContent = dayNumber.toString().padStart(3, '0');
+
+        // Check if today's puzzle has been completed
+        function getTodaysSaveKey() {
+            return `blackout-puzzle-${dayNumber}-${gridSize}`;
+        }
+
+        function saveGameState() {
+            const saveData = {
+                playerGrid: playerGrid,
+                moves: moves,
+                completed: gameWon || gameOver,
+                won: gameWon,
+                date: today.toISOString()
+            };
+            localStorage.setItem(getTodaysSaveKey(), JSON.stringify(saveData));
+        }
+
+        function loadGameState() {
+            const saved = localStorage.getItem(getTodaysSaveKey());
+            if (saved) {
+                const data = JSON.parse(saved);
+                return data;
+            }
+            return null;
+        }
+
+        // Tutorial and modal functions (global for onclick)
+        window.closeTutorial = function() {
+            tutorialOverlay.classList.remove('show');
+            localStorage.setItem('blackout-has-played', 'true');
+        }
+
+        window.showTutorial = function() {
+            tutorialOverlay.classList.add('show');
+        }
+
+        window.closeWinModal = function() {
+            winOverlay.classList.remove('show');
+        }
+
+        window.shareFromModal = function() {
+            shareResults();
+        }
+
+        // Check streak
+        function checkStreak() {
+            const lastPlayed = localStorage.getItem('blackout-last-played');
+            const streak = parseInt(localStorage.getItem('blackout-streak') || '0');
+            
+            if (lastPlayed) {
+                const lastDate = new Date(lastPlayed);
+                const daysSince = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+                
+                if (daysSince === 1) {
+                    // Consecutive day
+                    const newStreak = streak + 1;
+                    localStorage.setItem('blackout-streak', newStreak);
+                    
+                    if (newStreak >= 3) {
+                        showStreak(newStreak);
+                    }
+                } else if (daysSince > 1) {
+                    // Streak broken
+                    localStorage.setItem('blackout-streak', '1');
+                }
+            } else {
+                localStorage.setItem('blackout-streak', '1');
+            }
+            
+            localStorage.setItem('blackout-last-played', today.toISOString());
+        }
+
+        // Show streak notification
+        function showStreak(days) {
+            document.getElementById('streak-count').textContent = days;
+            document.getElementById('streak-display').classList.add('show');
+            setTimeout(() => {
+                document.getElementById('streak-display').classList.remove('show');
+            }, 3000);
+        }
+
+        // Set game mode
+        function setMode(size) {
+            // Check if current mode was already completed
+            const currentSaved = loadGameState();
+            if (currentSaved && currentSaved.completed) {
+                // Allow switching modes
+            }
+            
+            gridSize = size;
+            document.querySelectorAll('.mode-btn').forEach((btn, index) => {
+                btn.classList.toggle('active', (size === 4 && index === 0) || (size === 5 && index === 1));
+            });
+            
+            // Remove all grid classes first
+            playerGridEl.className = 'grid';
+            targetGridEl.className = 'grid';
+            
+            // Force reflow
+            void playerGridEl.offsetHeight;
+            
+            // Add new grid class
+            playerGridEl.classList.add(`grid-${size}`);
+            targetGridEl.classList.add(`grid-${size}`);
+            
+            // Clear any existing completed indicator
+            const indicator = document.querySelector('.completed-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+            
+            initGame();
+            updateModeButtons();
+        }
+
+        // Generate puzzle
+        function generatePuzzle(size) {
+            const seed = (dayNumber - 1) * 100 + size; // Subtract 1 since dayNumber now starts at 1
+            let rng = seed;
+            
+            const grid = Array(size * size).fill(true);
+            
+            // Apply fewer moves for 4x4 to make it easier
+            const targetMoves = size === 4 ? 3 + (seed % 2) : 4 + (seed % 3); // 3-4 moves for 4x4, 4-6 for 5x5
+            const movesToMake = [];
+            
+            // Ensure we get exactly the target number of moves
+            while (movesToMake.length < targetMoves) {
+                rng = (rng * 1103515245 + 12345) & 0x7fffffff;
+                const pos = rng % (size * size);
+                if (!movesToMake.includes(pos)) {
+                    movesToMake.push(pos);
+                }
+            }
+            
+            movesToMake.forEach(index => {
+                toggleCellPattern(grid, index, size);
+            });
+            
+            return grid;
+        }
+
+        // Toggle cell and neighbors
+        function toggleCellPattern(grid, index, size) {
+            grid[index] = !grid[index];
+            
+            const row = Math.floor(index / size);
+            const col = index % size;
+            
+            if (row > 0) grid[index - size] = !grid[index - size];
+            if (row < size - 1) grid[index + size] = !grid[index + size];
+            if (col > 0) grid[index - 1] = !grid[index - 1];
+            if (col < size - 1) grid[index + 1] = !grid[index + 1];
+        }
+
+        // Initialize game
+        function initGame() {
+            // Check if this puzzle was already played today
+            const savedState = loadGameState();
+            
+            if (savedState && savedState.completed) {
+                // Load the completed state
+                playerGrid = savedState.playerGrid;
+                moves = savedState.moves;
+                gameWon = savedState.won;
+                gameOver = !savedState.won;
+                movesEl.textContent = moves;
+                shareBtn.classList.add('active');
+                
+                // Generate the same target pattern
+                targetGrid = generatePuzzle(gridSize);
+                
+                updateBestDisplay();
+                renderGrids();
+                
+                // Disable all interactions
+                disableGameplay();
+                
+                // Show completion message
+                setTimeout(() => {
+                    if (gameWon) {
+                        showMessage('You completed today\'s puzzle in ' + moves + ' moves!');
+                    } else {
+                        showMessage('You attempted today\'s puzzle - try again tomorrow!');
+                    }
+                }, 500);
+                
+                return;
+            }
+            
+            // Normal initialization for new game
+            moves = 0;
+            gameWon = false;
+            gameOver = false;
+            isAnimating = false;
+            movesEl.textContent = '0';
+            shareBtn.classList.remove('active');
+            
+            playerGrid = Array(gridSize * gridSize).fill(true);
+            targetGrid = generatePuzzle(gridSize);
+            
+            updateBestDisplay();
+            renderGrids();
+            
+            // Check if already won on load (in case of refresh)
+            if (checkWin()) {
+                handleWin();
+            }
+            
+            // Check streak only on first load of the day
+            if (!localStorage.getItem(`blackout-played-${dayNumber.toString().padStart(3, '0')}`)) {
+                checkStreak();
+                localStorage.setItem(`blackout-played-${dayNumber.toString().padStart(3, '0')}`, 'true');
+            }
+        }
+
+        // Disable gameplay for completed puzzles
+        function disableGameplay() {
+            const cells = playerGridEl.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                cell.style.cursor = 'default';
+                cell.onclick = null;
+                cell.onmouseenter = null;
+                cell.onmouseleave = null;
+            });
+            
+            // Disable reset button
+            const resetBtn = document.getElementById('reset-btn');
+            resetBtn.classList.add('disabled');
+            resetBtn.onclick = () => {
+                showMessage('You can only play once per day!');
+            };
+            
+            // Add completed indicator
+            const statsDiv = document.getElementById('stats');
+            if (!document.querySelector('.completed-indicator')) {
+                const indicator = document.createElement('span');
+                indicator.className = 'completed-indicator' + (gameWon ? '' : ' failed');
+                indicator.textContent = gameWon ? 'Completed' : 'Attempted';
+                statsDiv.appendChild(indicator);
+            }
+        }
+
+        // Render grids
+        function renderGrids() {
+            playerGridEl.innerHTML = '';
+            targetGridEl.innerHTML = '';
+            
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                // Player grid
+                const playerCell = document.createElement('button');
+                playerCell.className = 'cell' + (playerGrid[i] ? '' : ' dark');
+                playerCell.onclick = () => clickCell(i);
+                playerCell.onmouseenter = () => showPreview(i);
+                playerCell.onmouseleave = () => hidePreview();
+                playerGridEl.appendChild(playerCell);
+                
+                // Target grid
+                const targetCell = document.createElement('div');
+                targetCell.className = 'cell' + (targetGrid[i] ? '' : ' dark');
+                targetGridEl.appendChild(targetCell);
+            }
+        }
+
+        // Show preview on hover
+        function showPreview(index) {
+            if (gameWon || gameOver || isAnimating) return;
+            
+            const cellsToFlip = [index];
+            const row = Math.floor(index / gridSize);
+            const col = index % gridSize;
+            
+            if (row > 0) cellsToFlip.push(index - gridSize);
+            if (row < gridSize - 1) cellsToFlip.push(index + gridSize);
+            if (col > 0) cellsToFlip.push(index - 1);
+            if (col < gridSize - 1) cellsToFlip.push(index + 1);
+            
+            cellsToFlip.forEach(i => {
+                const cell = playerGridEl.children[i];
+                if (playerGrid[i]) {
+                    cell.classList.add('preview-dark');
+                } else {
+                    cell.classList.add('preview-light');
+                }
+            });
+        }
+
+        // Hide preview
+        function hidePreview() {
+            const cells = playerGridEl.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                cell.classList.remove('preview-dark', 'preview-light');
+            });
+        }
+
+        // Handle cell click
+        function clickCell(index) {
+            if (gameWon || gameOver || isAnimating) return;
+            
+            // Check if game was already completed (extra safety check)
+            const savedState = loadGameState();
+            if (savedState && savedState.completed) return;
+            
+            isAnimating = true;
+            moves++;
+            movesEl.textContent = moves;
+            
+            // Hide preview
+            hidePreview();
+            
+            // Create ripple effect
+            const cell = playerGridEl.children[index];
+            const rect = cell.getBoundingClientRect();
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.width = '20px';
+            ripple.style.height = '20px';
+            ripple.style.left = rect.left + rect.width / 2 - 10 + 'px';
+            ripple.style.top = rect.top + rect.height / 2 - 10 + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+            
+            // Animate cells
+            const cellsToFlip = [index];
+            const row = Math.floor(index / gridSize);
+            const col = index % gridSize;
+            
+            if (row > 0) cellsToFlip.push(index - gridSize);
+            if (row < gridSize - 1) cellsToFlip.push(index + gridSize);
+            if (col > 0) cellsToFlip.push(index - 1);
+            if (col < gridSize - 1) cellsToFlip.push(index + 1);
+            
+            // Apply flips with animation
+            cellsToFlip.forEach((i, delay) => {
+                setTimeout(() => {
+                    const cell = playerGridEl.children[i];
+                    cell.classList.add('animating');
+                    
+                    setTimeout(() => {
+                        playerGrid[i] = !playerGrid[i];
+                        cell.classList.toggle('dark');
+                        cell.classList.remove('animating');
+                        
+                        // Check win after each cell flip completes
+                        if (delay === cellsToFlip.length - 1) {
+                            setTimeout(() => {
+                                isAnimating = false;
+                                
+                                if (checkWin()) {
+                                    handleWin();
+                                } else if (moves >= 10) {
+                                    handleGameOver();
+                                }
+                            }, 100);
+                        }
+                    }, 200);
+                }, delay * 50);
+            });
+        }
+
+        // Create particle effects
+        function createParticles(x, y, count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = x + (Math.random() - 0.5) * 40 + 'px';
+                    particle.style.top = y + (Math.random() - 0.5) * 40 + 'px';
+                    document.getElementById('particles').appendChild(particle);
+                    setTimeout(() => particle.remove(), 1000);
+                }, i * 50);
+            }
+        }
+
+        // Check win
+        function checkWin() {
+            return playerGrid.every((cell, i) => cell === targetGrid[i]);
+        }
+
+        // Handle win
+        function handleWin() {
+            gameWon = true;
+            shareBtn.classList.add('active');
+            
+            // Save game state
+            saveGameState();
+            
+            // Update best score (based on fewest moves)
+            if (!bestScores[gridSize] || moves < bestScores[gridSize]) {
+                bestScores[gridSize] = moves;
+                localStorage.setItem('blackout-best-moves', JSON.stringify(bestScores));
+                updateBestDisplay();
+            }
+            
+            // Update mode buttons to show completion
+            updateModeButtons();
+            
+            // Show win modal
+            setTimeout(() => {
+                showWinModal();
+            }, 500);
+            
+            // Celebration particles
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = window.innerHeight / 2;
+                    createParticles(x, y, 10);
+                }, i * 200);
+            }
+            
+            // Disable further gameplay
+            disableGameplay();
+        }
+
+        // Show win modal
+        function showWinModal() {
+            // Reset modal content for win
+            document.querySelector('.win-modal h2').textContent = 'Congratulations';
+            document.querySelector('.win-subtitle').textContent = 'You solved today\'s puzzle';
+            
+            // Update win stats
+            document.getElementById('win-moves').textContent = moves;
+            document.getElementById('win-best').textContent = bestScores[gridSize] || moves;
+            
+            // Create grid preview
+            const preview = document.getElementById('win-grid-preview');
+            preview.innerHTML = '';
+            
+            const modalGrid = document.createElement('div');
+            modalGrid.className = `modal-grid modal-grid-${gridSize}`;
+            
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'modal-cell' + (playerGrid[i] ? '' : ' dark');
+                modalGrid.appendChild(cell);
+            }
+            
+            preview.appendChild(modalGrid);
+            
+            // Show modal
+            winOverlay.classList.add('show');
+        }
+
+        // Close win modal
+        function closeWinModal() {
+            winOverlay.classList.remove('show');
+        }
+
+        // Share from modal
+        function shareFromModal() {
+            shareResults();
+            closeWinModal();
+        }
+
+        // Handle game over (10 moves reached)
+        function handleGameOver() {
+            gameOver = true;
+            shareBtn.classList.add('active');
+            
+            // Save game state
+            saveGameState();
+            
+            // Count correct dark tiles
+            const correctTiles = playerGrid.filter((cell, i) => cell === targetGrid[i]).length;
+            
+            // Show game over modal (reuse win modal with different content)
+            document.querySelector('.win-modal h2').textContent = 'Nice Try';
+            document.querySelector('.win-subtitle').textContent = `You got ${correctTiles} of ${gridSize * gridSize} tiles correct`;
+            document.getElementById('win-moves').textContent = moves;
+            document.getElementById('win-best').textContent = bestScores[gridSize] || '-';
+            
+            // Create grid preview
+            const preview = document.getElementById('win-grid-preview');
+            preview.innerHTML = '';
+            
+            const modalGrid = document.createElement('div');
+            modalGrid.className = `modal-grid modal-grid-${gridSize}`;
+            
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'modal-cell' + (playerGrid[i] ? '' : ' dark');
+                modalGrid.appendChild(cell);
+            }
+            
+            preview.appendChild(modalGrid);
+            
+            // Show modal
+            setTimeout(() => {
+                winOverlay.classList.add('show');
+            }, 500);
+            
+            // Disable further gameplay
+            disableGameplay();
+        }
+
+        // Update best score display
+        function updateBestDisplay() {
+            bestEl.textContent = bestScores[gridSize] || '-';
+        }
+
+        // Reset puzzle
+        function resetPuzzle() {
+            // Check if already completed
+            const savedState = loadGameState();
+            if (savedState && savedState.completed) {
+                showMessage('You can only play once per day!');
+                return;
+            }
+            
+            // Reset game state AND moves counter for a fresh start
+            moves = 0;
+            movesEl.textContent = '0';
+            gameWon = false;
+            gameOver = false;
+            isAnimating = false;
+            shareBtn.classList.remove('active');
+            
+            playerGrid = Array(gridSize * gridSize).fill(true);
+            
+            renderGrids();
+        }
+
+        // Share results
+        function shareResults() {
+            if (!gameWon && !gameOver) return;
+            
+            const emoji = playerGrid.map(lit => lit ? '🟩' : '⬛');
+            const rows = [];
+            for (let i = 0; i < gridSize; i++) {
+                rows.push(emoji.slice(i * gridSize, (i + 1) * gridSize).join(''));
+            }
+            
+            let resultText;
+            const modeText = gridSize === 5 ? ' (Hard)' : '';
+            if (gameWon) {
+                resultText = `BLACKOUT ${dayNumber.toString().padStart(3, '0')}${modeText}\n` +
+                            `${moves}/10\n\n`;
+            } else {
+                resultText = `BLACKOUT ${dayNumber.toString().padStart(3, '0')}${modeText}\n` +
+                            `X/10\n\n`;
+            }
+            
+            const text = resultText + rows.join('\n') + '\n\nPlay BLACKOUT at: blackout.game';
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showMessage('Copied to clipboard!');
+            });
+        }
+
+        // Show message
+        function showMessage(text) {
+            messageEl.textContent = text;
+            messageEl.classList.add('show');
+            setTimeout(() => messageEl.classList.remove('show'), 2000);
+        }
+
+        // Force check win state (for debugging)
+        function forceCheckWin() {
+            // Don't check if already completed today
+            const savedState = loadGameState();
+            if (savedState && savedState.completed) {
+                return;
+            }
+            
+            if (checkWin() && !gameWon) {
+                handleWin();
+            }
+        }
+
+        // Expose functions for onclick handlers
+        window.setMode = setMode;
+        window.resetPuzzle = resetPuzzle;
+        window.shareResults = shareResults;
+        window.updateModeButtons = updateModeButtons;
+        
+        // Check completion status for both modes
+        function updateModeButtons() {
+            const modeBtns = document.querySelectorAll('.mode-btn');
+            let completedCount = 0;
+            
+            // Check 4x4 completion
+            const saved4x4 = localStorage.getItem(`blackout-puzzle-${dayNumber}-4`);
+            if (saved4x4) {
+                const data = JSON.parse(saved4x4);
+                if (data.completed && data.won) {
+                    modeBtns[0].classList.add('completed');
+                    completedCount++;
+                }
+            }
+            
+            // Check 5x5 completion
+            const saved5x5 = localStorage.getItem(`blackout-puzzle-${dayNumber}-5`);
+            if (saved5x5) {
+                const data = JSON.parse(saved5x5);
+                if (data.completed && data.won) {
+                    modeBtns[1].classList.add('completed');
+                    completedCount++;
+                }
+            }
+            
+            // Check if both modes completed
+            if (completedCount === 2 && !sessionStorage.getItem(`blackout-both-completed-${dayNumber}`)) {
+                sessionStorage.setItem(`blackout-both-completed-${dayNumber}`, 'true');
+                setTimeout(() => {
+                    showMessage('Perfect Day! Both puzzles completed!');
+                }, 1000);
+            }
+        }
+
+        // Initialize
+        initGame();
+        updateModeButtons();
+        
+        // Add debug check on load
+        setTimeout(forceCheckWin, 500);
+    </script>
+</body>
+</html>
