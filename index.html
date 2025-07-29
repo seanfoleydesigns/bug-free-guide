@@ -1626,10 +1626,15 @@
             if (isMobile) {
                 const clickedCell = playerGridEl.children[index];
                 clickedCell.classList.add('tap-feedback');
-                // Remove tap feedback after 300ms
+                // Remove tap feedback immediately after animation starts
                 setTimeout(() => {
                     clickedCell.classList.remove('tap-feedback');
-                }, 300);
+                    clickedCell.blur();
+                    // Force remove any hover states by triggering reflow
+                    clickedCell.style.transform = 'none';
+                    void clickedCell.offsetHeight; // Force reflow
+                    clickedCell.style.transform = '';
+                }, 50);
             }
             
             // Create ripple effect
