@@ -244,6 +244,14 @@
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
         }
+        
+        /* Disable hover on touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            .cell:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
 
         .cell.preview-light {
             background: #86efac !important;
@@ -1249,12 +1257,6 @@
 
         // Set game mode
         function setMode(size) {
-            // Check if current mode was already completed
-            const currentSaved = loadGameState();
-            if (currentSaved && currentSaved.completed) {
-                // Allow switching modes
-            }
-            
             gridSize = size;
             practiceMode = false;
             move10Grid = null;
@@ -1335,40 +1337,65 @@
             // Check if this puzzle was already played today
             const savedState = loadGameState();
             
-            if (savedState && savedState.completed) {
-                // Load the completed state
-                playerGrid = savedState.playerGrid;
-                moves = savedState.moves;
-                gameWon = savedState.won;
-                gameOver = !savedState.won;
-                movesEl.textContent = moves;
-                shareBtn.classList.add('active');
-                
-                // If it was a failed attempt, set move10Grid for sharing
-                if (!savedState.won) {
-                    move10Grid = [...savedState.playerGrid];
-                }
-                
-                // Generate the same target pattern
-                targetGrid = generatePuzzle(gridSize);
-                
-                updateBestDisplay();
-                renderGrids();
-                updateResetButton();
-                
-                // Disable all interactions
-                disableGameplay();
-                
-                // Show completion message
-                setTimeout(() => {
-                    if (gameWon) {
-                        showMessage('You completed today\'s puzzle in ' + moves + ' moves!');
-                    } else {
-                        showMessage('You attempted today\'s puzzle - try again tomorrow!');
+            if (savedState) {
+                if (savedState.completed) {
+                    // Load the completed state
+                    playerGrid = savedState.playerGrid;
+                    moves = savedState.moves;
+                    gameWon = savedState.won;
+                    gameOver = !savedState.won;
+                    movesEl.textContent = moves;
+                    shareBtn.classList.add('active');
+                    
+                    // If it was a failed attempt, set move10Grid for sharing
+                    if (!savedState.won) {
+                        move10Grid = [...savedState.playerGrid];
                     }
-                }, 500);
-                
-                return;
+                    
+                    // Generate the same target pattern
+                    targetGrid = generatePuzzle(gridSize);
+                    
+                    updateBestDisplay();
+                    renderGrids();
+                    updateResetButton();
+                    
+                    // Disable all interactions
+                    disableGameplay();
+                    
+                    // Show completion message
+                    setTimeout(() => {
+                        if (gameWon) {
+                            showMessage('You completed today\'s puzzle in ' + moves + ' moves!');
+                        } else {
+                            showMessage('You attempted today\'s puzzle - try again tomorrow!');
+                        }
+                    }, 500);
+                    
+                    return;
+                } else {
+                    // Load in-progress game
+                    playerGrid = savedState.playerGrid;
+                    moves = savedState.moves;
+                    gameWon = false;
+                    gameOver = false;
+                    isAnimating = false;
+                    movesEl.textContent = moves;
+                    shareBtn.classList.remove('active');
+                    
+                    // Generate the same target pattern
+                    targetGrid = generatePuzzle(gridSize);
+                    
+                    updateBestDisplay();
+                    renderGrids();
+                    updateResetButton();
+                    
+                    // Check if already won on load (in case of refresh)
+                    if (checkWin()) {
+                        handleWin();
+                    }
+                    
+                    return;
+                }
             }
             
             // Normal initialization for new game
@@ -1408,6 +1435,7 @@
                 cell.onclick = null;
                 cell.onmouseenter = null;
                 cell.onmouseleave = null;
+                cell.blur(); // Remove focus on mobile
             });
             
             // Disable reset button
@@ -1437,8 +1465,13 @@
                 const playerCell = document.createElement('button');
                 playerCell.className = 'cell' + (playerGrid[i] ? '' : ' dark');
                 playerCell.onclick = () => clickCell(i);
-                playerCell.onmouseenter = () => showPreview(i);
-                playerCell.onmouseleave = () => hidePreview();
+                
+                // Only add hover events on non-touch devices
+                if (window.matchMedia('(hover: hover)').matches) {
+                    playerCell.onmouseenter = () => showPreview(i);
+                    playerCell.onmouseleave = () => hidePreview();
+                }
+                
                 playerGridEl.appendChild(playerCell);
                 
                 // Target grid
@@ -1495,6 +1528,12 @@
             // Hide preview
             hidePreview();
             
+            // Remove any lingering hover states on mobile
+            const allCells = playerGridEl.querySelectorAll('.cell');
+            allCells.forEach(cell => {
+                cell.blur();
+            });
+            
             // Create ripple effect
             const cell = playerGridEl.children[index];
             const rect = cell.getBoundingClientRect();
@@ -1532,6 +1571,11 @@
                         if (delay === cellsToFlip.length - 1) {
                             setTimeout(() => {
                                 isAnimating = false;
+                                
+                                // Save game state after every move
+                                if (!practiceMode) {
+                                    saveGameState();
+                                }
                                 
                                 if (checkWin()) {
                                     handleWin();
@@ -1708,7 +1752,9 @@
                 return;
             }
             
-            // Reset grid state but keep moves counter
+            // Reset grid state and moves counter
+            moves = 0;
+            movesEl.textContent = '0';
             gameWon = false;
             gameOver = false;
             isAnimating = false;
@@ -1724,6 +1770,11 @@
             
             renderGrids();
             updateResetButton();
+            
+            // Save the reset state
+            if (!practiceMode) {
+                saveGameState();
+            }
         }
 
         // Update reset button state
