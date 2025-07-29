@@ -19,10 +19,12 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            min-height: 100dvh; /* Dynamic viewport height for mobile */
             background: #fefefe;
             font-family: 'Poppins', sans-serif;
             color: #1a1a1a;
             padding: 20px;
+            padding-bottom: env(safe-area-inset-bottom, 20px); /* Account for iOS safe area */
             overflow: auto;
         }
 
@@ -31,9 +33,11 @@
             max-width: 500px;
             width: 100%;
             max-height: calc(100vh - 40px);
+            max-height: calc(100dvh - 40px); /* Dynamic viewport height */
             overflow-y: auto;
             background: rgba(255, 255, 255, 0.95);
             padding: 25px 20px;
+            padding-bottom: 30px; /* Extra padding for mobile */
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
             backdrop-filter: blur(10px);
@@ -833,6 +837,17 @@
         }
 
         @media (max-width: 500px) {
+            body {
+                padding: 10px;
+                padding-bottom: env(safe-area-inset-bottom, 10px);
+            }
+            
+            #game-container {
+                padding: 20px 15px 25px;
+                max-height: none; /* Allow natural scrolling on mobile */
+                height: auto;
+            }
+            
             h1 {
                 font-size: 32px;
             }
@@ -853,6 +868,63 @@
             .modal {
                 padding: 20px;
                 max-width: 95%;
+                max-height: 85vh; /* Reduced height for mobile */
+            }
+            
+            /* Compact tutorial modal for mobile */
+            #tutorial-overlay .modal {
+                padding: 20px 16px;
+            }
+            
+            #tutorial-overlay .modal h2 {
+                font-size: 22px;
+                margin-bottom: 6px;
+            }
+            
+            #tutorial-overlay .modal .subtitle {
+                font-size: 14px;
+                margin-bottom: 16px;
+            }
+            
+            .tutorial-section {
+                margin: 16px 0;
+            }
+            
+            .tutorial-section h3 {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            
+            .example-grid {
+                margin: 16px 0;
+            }
+            
+            .mini-grid {
+                grid-template-columns: repeat(3, 32px);
+                grid-template-rows: repeat(3, 32px);
+                gap: 2px;
+                padding: 2px;
+                margin-bottom: 8px;
+            }
+            
+            .example-text {
+                font-size: 13px;
+                margin-bottom: 0;
+            }
+            
+            .tutorial-footer {
+                margin-top: 20px;
+                padding-top: 16px;
+            }
+            
+            .tutorial-footer p {
+                font-size: 12px;
+                margin-bottom: 12px;
+            }
+            
+            .play-btn {
+                padding: 10px 36px;
+                font-size: 14px;
             }
 
             .win-modal {
@@ -897,6 +969,18 @@
             .completed-indicator {
                 font-size: 10px;
                 padding: 3px 8px;
+            }
+            
+            /* Fix target grid spacing on mobile */
+            #target-display {
+                margin-top: 16px;
+                padding-top: 16px;
+            }
+            
+            /* Ensure buttons are always visible */
+            #actions {
+                margin-top: 12px;
+                padding-bottom: 10px;
             }
         }
     </style>
