@@ -1127,12 +1127,43 @@
         const tutorialOverlay = document.getElementById('tutorial-overlay');
         const winOverlay = document.getElementById('win-overlay');
 
+        // Test localStorage availability
+        function isLocalStorageAvailable() {
+            try {
+                const test = '__flux_test__';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+        
+        // Memory fallback for when localStorage is not available
+        const memoryStorage = {};
+        
+        function safeSetItem(key, value) {
+            if (isLocalStorageAvailable()) {
+                localStorage.setItem(key, value);
+            } else {
+                memoryStorage[key] = value;
+            }
+        }
+        
+        function safeGetItem(key) {
+            if (isLocalStorageAvailable()) {
+                return localStorage.getItem(key);
+            } else {
+                return memoryStorage[key] || null;
+            }
+        }
+
         // Load best scores
-        const saved = localStorage.getItem('flux-best-moves');
+        const saved = safeGetItem('flux-best-moves');
         if (saved) bestScores = JSON.parse(saved);
 
         // Check if first time player (for tutorial)
-        const hasPlayed = localStorage.getItem('flux-has-played');
+        const hasPlayed = safeGetItem('flux-has-played');
         if (!hasPlayed) {
             setTimeout(() => {
                 tutorialOverlay.classList.add('show');
@@ -1155,20 +1186,38 @@
             if (practiceMode) return;
             
             const saveData = {
-                playerGrid: playerGrid,
+                playerGrid: [...playerGrid], // Create a copy of the array
                 moves: moves,
                 completed: gameWon || gameOver,
                 won: gameWon,
-                date: today.toISOString()
+                date: today.toISOString(),
+                gridSize: gridSize // Save the grid size too
             };
-            localStorage.setItem(getTodaysSaveKey(), JSON.stringify(saveData));
+            
+            try {
+                safeSetItem(getTodaysSaveKey(), JSON.stringify(saveData));
+            } catch (e) {
+                console.error('Failed to save game state:', e);
+            }
         }
 
         function loadGameState() {
-            const saved = localStorage.getItem(getTodaysSaveKey());
-            if (saved) {
-                const data = JSON.parse(saved);
-                return data;
+            try {
+                const saved = safeGetItem(getTodaysSaveKey());
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    // Verify this is today's puzzle and the correct grid size
+                    if (data.date && data.gridSize === gridSize) {
+                        const savedDate = new Date(data.date);
+                        const todayDate = new Date(today);
+                        // Check if it's the same day
+                        if (savedDate.toDateString() === todayDate.toDateString()) {
+                            return data;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('Failed to load game state:', e);
             }
             return null;
         }
@@ -1176,7 +1225,7 @@
         // Tutorial and modal functions (global for onclick)
         window.closeTutorial = function() {
             tutorialOverlay.classList.remove('show');
-            localStorage.setItem('flux-has-played', 'true');
+            safeSetItem('flux-has-played', 'true');
         }
 
         window.showTutorial = function() {
@@ -1192,9 +1241,10 @@
                     moves: 10,
                     completed: true,
                     won: false,
-                    date: today.toISOString()
+                    date: today.toISOString(),
+                    gridSize: gridSize
                 };
-                localStorage.setItem(getTodaysSaveKey(), JSON.stringify(saveData));
+                safeSetItem(getTodaysSaveKey(), JSON.stringify(saveData));
                 
                 // Disable gameplay
                 disableGameplay();
@@ -1220,8 +1270,8 @@
 
         // Check streak
         function checkStreak() {
-            const lastPlayed = localStorage.getItem('flux-last-played');
-            const streak = parseInt(localStorage.getItem('flux-streak') || '0');
+            const lastPlayed = safeGetItem('flux-last-played');
+            const streak = parseInt(safeGetItem('flux-streak') || '0');
             
             if (lastPlayed) {
                 const lastDate = new Date(lastPlayed);
@@ -1230,20 +1280,20 @@
                 if (daysSince === 1) {
                     // Consecutive day
                     const newStreak = streak + 1;
-                    localStorage.setItem('flux-streak', newStreak);
+                    safeSetItem('flux-streak', newStreak.toString());
                     
                     if (newStreak >= 3) {
                         showStreak(newStreak);
                     }
                 } else if (daysSince > 1) {
                     // Streak broken
-                    localStorage.setItem('flux-streak', '1');
+                    safeSetItem('flux-streak', '1');
                 }
             } else {
-                localStorage.setItem('flux-streak', '1');
+                safeSetItem('flux-streak', '1');
             }
             
-            localStorage.setItem('flux-last-played', today.toISOString());
+            safeSetItem('flux-last-played', today.toISOString());
         }
 
         // Show streak notification
@@ -1340,7 +1390,7 @@
             if (savedState) {
                 if (savedState.completed) {
                     // Load the completed state
-                    playerGrid = savedState.playerGrid;
+                    playerGrid = [...savedState.playerGrid]; // Create a copy
                     moves = savedState.moves;
                     gameWon = savedState.won;
                     gameOver = !savedState.won;
@@ -1374,7 +1424,7 @@
                     return;
                 } else {
                     // Load in-progress game
-                    playerGrid = savedState.playerGrid;
+                    playerGrid = [...savedState.playerGrid]; // Create a copy
                     moves = savedState.moves;
                     gameWon = false;
                     gameOver = false;
@@ -1421,9 +1471,9 @@
             }
             
             // Check streak only on first load of the day
-            if (!localStorage.getItem(`flux-played-${dayNumber.toString().padStart(3, '0')}`)) {
+            if (!safeGetItem(`flux-played-${dayNumber.toString().padStart(3, '0')}`)) {
                 checkStreak();
-                localStorage.setItem(`flux-played-${dayNumber.toString().padStart(3, '0')}`, 'true');
+                safeSetItem(`flux-played-${dayNumber.toString().padStart(3, '0')}`, 'true');
             }
         }
 
@@ -1572,15 +1622,15 @@
                             setTimeout(() => {
                                 isAnimating = false;
                                 
-                                // Save game state after every move
-                                if (!practiceMode) {
-                                    saveGameState();
-                                }
-                                
                                 if (checkWin()) {
                                     handleWin();
                                 } else if (moves >= 10 && !practiceMode) {
                                     handleGameOver();
+                                } else {
+                                    // Save game state after move completes (only if game is still in progress)
+                                    if (!practiceMode && !gameWon && !gameOver) {
+                                        saveGameState();
+                                    }
                                 }
                             }, 100);
                         }
@@ -1621,7 +1671,7 @@
                 // Update best score (based on fewest moves)
                 if (!bestScores[gridSize] || moves < bestScores[gridSize]) {
                     bestScores[gridSize] = moves;
-                    localStorage.setItem('flux-best-moves', JSON.stringify(bestScores));
+                    safeSetItem('flux-best-moves', JSON.stringify(bestScores));
                     updateBestDisplay();
                 }
                 
@@ -1752,9 +1802,7 @@
                 return;
             }
             
-            // Reset grid state and moves counter
-            moves = 0;
-            movesEl.textContent = '0';
+            // Reset grid state but keep moves counter
             gameWon = false;
             gameOver = false;
             isAnimating = false;
@@ -1892,7 +1940,7 @@
             let completedCount = 0;
             
             // Check 4x4 completion
-            const saved4x4 = localStorage.getItem(`flux-puzzle-${dayNumber}-4`);
+            const saved4x4 = safeGetItem(`flux-puzzle-${dayNumber}-4`);
             if (saved4x4) {
                 const data = JSON.parse(saved4x4);
                 if (data.completed) {
@@ -1905,7 +1953,7 @@
             }
             
             // Check 5x5 completion
-            const saved5x5 = localStorage.getItem(`flux-puzzle-${dayNumber}-5`);
+            const saved5x5 = safeGetItem(`flux-puzzle-${dayNumber}-5`);
             if (saved5x5) {
                 const data = JSON.parse(saved5x5);
                 if (data.completed) {
