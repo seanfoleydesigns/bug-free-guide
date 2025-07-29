@@ -207,12 +207,20 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
         }
 
         button.cell {
             font-family: 'Poppins', sans-serif;
             font-size: inherit;
             line-height: 1;
+            outline: none;
+        }
+        
+        button.cell:focus {
+            outline: none;
         }
 
         .grid-5 .cell {
@@ -251,6 +259,21 @@
                 transform: none;
                 box-shadow: none;
             }
+            
+            /* Remove focus and active states on mobile */
+            .cell:focus,
+            .cell:active {
+                outline: none;
+                transform: none;
+                box-shadow: none;
+            }
+            
+            /* Only show tap feedback when explicitly added */
+            .cell.tap-feedback {
+                transform: scale(1.05);
+                box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+                transition: all 0.2s;
+            }
         }
 
         .cell.preview-light {
@@ -259,6 +282,12 @@
 
         .cell.preview-dark {
             background: #525252 !important;
+        }
+        
+        /* Mobile tap feedback */
+        .cell.tap-feedback {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
         }
 
         .cell.animating {
@@ -706,6 +735,13 @@
             transition: all 0.2s;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+        
+        button:focus {
+            outline: none;
         }
 
         #reset-btn {
@@ -1578,11 +1614,23 @@
             // Hide preview
             hidePreview();
             
-            // Remove any lingering hover states on mobile
+            // Remove any lingering hover states and focus on mobile
             const allCells = playerGridEl.querySelectorAll('.cell');
             allCells.forEach(cell => {
                 cell.blur();
+                cell.classList.remove('tap-feedback');
             });
+            
+            // Add temporary tap feedback on mobile
+            const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+            if (isMobile) {
+                const clickedCell = playerGridEl.children[index];
+                clickedCell.classList.add('tap-feedback');
+                // Remove tap feedback after 300ms
+                setTimeout(() => {
+                    clickedCell.classList.remove('tap-feedback');
+                }, 300);
+            }
             
             // Create ripple effect
             const cell = playerGridEl.children[index];
@@ -1802,6 +1850,13 @@
                 return;
             }
             
+            // Remove any lingering tap feedback
+            const allCells = playerGridEl.querySelectorAll('.cell');
+            allCells.forEach(cell => {
+                cell.classList.remove('tap-feedback');
+                cell.blur();
+            });
+            
             // Reset grid state but keep moves counter
             gameWon = false;
             gameOver = false;
@@ -1977,6 +2032,17 @@
         // Initialize
         initGame();
         updateModeButtons();
+        
+        // Add global click listener to remove tap feedback
+        document.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('cell')) {
+                const allCells = playerGridEl.querySelectorAll('.cell');
+                allCells.forEach(cell => {
+                    cell.classList.remove('tap-feedback');
+                    cell.blur();
+                });
+            }
+        });
         
         // Add debug check on load
         setTimeout(forceCheckWin, 500);
