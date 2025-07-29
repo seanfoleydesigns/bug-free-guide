@@ -1569,11 +1569,6 @@
             gameWon = true;
             shareBtn.classList.add('active');
             
-        // Handle win
-        function handleWin() {
-            gameWon = true;
-            shareBtn.classList.add('active');
-            
             // Save game state only if not in practice mode
             if (!practiceMode) {
                 // Normal win within 10 moves
@@ -1590,22 +1585,6 @@
                 updateModeButtons();
             }
             // If in practice mode, don't save or update anything
-            
-            // Show win modal
-            showWinModal();
-            
-            // Celebration particles
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const x = Math.random() * window.innerWidth;
-                    const y = window.innerHeight / 2;
-                    createParticles(x, y, 10);
-                }, i * 200);
-            }
-            
-            // Disable further gameplay
-            disableGameplay();
-        }
             
             // Show win modal
             setTimeout(() => {
@@ -1785,7 +1764,7 @@
             // Re-enable reset button for practice mode
             const resetBtn = document.getElementById('reset-btn');
             resetBtn.classList.remove('disabled');
-            resetBtn.onclick = () => resetPuzzle();
+            resetBtn.onclick = resetPuzzle;
             updateResetButton();
             
             // Keep share button active
