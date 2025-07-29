@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blackout</title>
+    <title>Flux</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -17,34 +17,35 @@
         body {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             min-height: 100vh;
             background: #fefefe;
             font-family: 'Poppins', sans-serif;
             color: #1a1a1a;
             padding: 20px;
-            overflow: hidden;
-            padding-top: 40px;
+            overflow: auto;
         }
 
         #game-container {
             text-align: center;
             max-width: 500px;
             width: 100%;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
             background: rgba(255, 255, 255, 0.95);
-            padding: 30px 20px;
+            padding: 25px 20px;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
             backdrop-filter: blur(10px);
         }
 
         header {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             position: relative;
         }
 
         h1 {
-            font-size: 42px;
+            font-size: 38px;
             font-weight: 900;
             letter-spacing: 0.1em;
             margin-bottom: 5px;
@@ -81,8 +82,8 @@
 
         #subtitle {
             color: #666;
-            font-size: 13px;
-            margin-bottom: 15px;
+            font-size: 12px;
+            margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
@@ -92,7 +93,7 @@
             background: #f0f0f0;
             border-radius: 25px;
             padding: 3px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .mode-btn {
@@ -139,8 +140,8 @@
             justify-content: center;
             align-items: center;
             gap: 40px;
-            margin-bottom: 20px;
-            font-size: 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
             flex-wrap: wrap;
         }
 
@@ -151,12 +152,12 @@
         .stat-value {
             font-weight: 600;
             color: #1a1a1a;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         #game-area {
             position: relative;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .grid {
@@ -172,16 +173,16 @@
         #player-grid.grid-4,
         #target-grid.grid-4 {
             display: inline-grid;
-            grid-template-columns: repeat(4, 58px);
-            grid-template-rows: repeat(4, 58px);
+            grid-template-columns: repeat(4, 54px);
+            grid-template-rows: repeat(4, 54px);
             gap: 4px;
         }
 
         #player-grid.grid-5,
         #target-grid.grid-5 {
             display: inline-grid;
-            grid-template-columns: repeat(5, 46px);
-            grid-template-rows: repeat(5, 46px);
+            grid-template-columns: repeat(5, 43px);
+            grid-template-rows: repeat(5, 43px);
             gap: 3px;
         }
 
@@ -299,7 +300,7 @@
         .modal {
             background: white;
             border-radius: 16px;
-            padding: 32px;
+            padding: 28px;
             max-width: 480px;
             width: 90%;
             max-height: 90vh;
@@ -343,7 +344,7 @@
         }
 
         .modal h2 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
             margin: 0 0 8px 0;
             color: #1a1a1a;
@@ -351,34 +352,34 @@
 
         .modal .subtitle {
             color: #666;
-            font-size: 16px;
-            margin: 0 0 24px 0;
+            font-size: 15px;
+            margin: 0 0 20px 0;
         }
 
         .tutorial-section {
-            margin: 24px 0;
+            margin: 20px 0;
         }
 
         .tutorial-section h3 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
-            margin: 0 0 16px 0;
+            margin: 0 0 14px 0;
             color: #1a1a1a;
         }
 
         .example-grid {
-            margin: 24px 0;
+            margin: 20px 0;
         }
 
         .mini-grid {
             display: inline-grid;
-            grid-template-columns: repeat(3, 40px);
-            grid-template-rows: repeat(3, 40px);
+            grid-template-columns: repeat(3, 36px);
+            grid-template-rows: repeat(3, 36px);
             gap: 3px;
             background: #f0f0f0;
             padding: 3px;
             border-radius: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .mini-grid.target {
@@ -409,7 +410,7 @@
         }
 
         .example-text {
-            font-size: 15px;
+            font-size: 14px;
             color: #333;
             line-height: 1.5;
             margin: 0;
@@ -421,25 +422,25 @@
         }
 
         .tutorial-footer {
-            margin-top: 32px;
+            margin-top: 28px;
             text-align: center;
             border-top: 1px solid #e0e0e0;
-            padding-top: 24px;
+            padding-top: 20px;
         }
 
         .tutorial-footer p {
             color: #666;
-            font-size: 14px;
-            margin: 0 0 16px 0;
+            font-size: 13px;
+            margin: 0 0 14px 0;
         }
 
         .play-btn {
             background: #4ade80;
             color: #000;
-            padding: 12px 48px;
+            padding: 11px 42px;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -454,7 +455,7 @@
         /* Win Modal Styles */
         .win-modal {
             text-align: center;
-            padding: 40px;
+            padding: 36px;
             max-width: 420px;
             position: relative;
             overflow: hidden;
@@ -472,13 +473,13 @@
         }
 
         .modal-header {
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             position: relative;
             z-index: 1;
         }
 
         .win-modal h2 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
             margin-bottom: 8px;
             color: #1a1a1a;
@@ -486,7 +487,7 @@
         }
 
         .win-subtitle {
-            font-size: 16px;
+            font-size: 15px;
             color: #666;
             margin: 0;
             font-weight: 400;
@@ -497,10 +498,10 @@
             justify-content: center;
             align-items: center;
             gap: 0;
-            margin: 0 auto 36px;
+            margin: 0 auto 30px;
             background: #f8f8f8;
             border-radius: 12px;
-            padding: 24px 0;
+            padding: 20px 0;
             max-width: 280px;
             position: relative;
             z-index: 1;
@@ -530,14 +531,14 @@
 
         .win-stat-value {
             display: block;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
             color: #1a1a1a;
             line-height: 1;
         }
 
         .win-grid-preview {
-            margin: 0 auto 36px;
+            margin: 0 auto 30px;
             position: relative;
             z-index: 1;
             display: inline-block;
@@ -552,14 +553,14 @@
         }
 
         .modal-grid-4 {
-            grid-template-columns: repeat(4, 48px);
-            grid-template-rows: repeat(4, 48px);
+            grid-template-columns: repeat(4, 44px);
+            grid-template-rows: repeat(4, 44px);
             gap: 4px;
         }
 
         .modal-grid-5 {
-            grid-template-columns: repeat(5, 38px);
-            grid-template-rows: repeat(5, 38px);
+            grid-template-columns: repeat(5, 35px);
+            grid-template-rows: repeat(5, 35px);
             gap: 3px;
         }
 
@@ -611,10 +612,10 @@
         .share-modal-btn {
             background: #1a1a1a;
             color: white;
-            padding: 14px 36px;
+            padding: 13px 32px;
             border: none;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -633,10 +634,10 @@
         .close-modal-btn {
             background: transparent;
             color: #666;
-            padding: 14px 36px;
+            padding: 13px 32px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -653,17 +654,17 @@
         }
 
         #target-display {
-            margin-top: 30px;
-            padding-top: 30px;
+            margin-top: 20px;
+            padding-top: 20px;
             border-top: 1px solid #e0e0e0;
         }
 
         #target-label {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: #666;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         #target-grid {
@@ -680,14 +681,14 @@
             display: flex;
             gap: 10px;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         button {
-            padding: 14px 28px;
+            padding: 12px 24px;
             border: none;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -710,7 +711,12 @@
             cursor: not-allowed;
         }
 
-        #reset-btn.disabled:hover {
+        #reset-btn.inactive {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #reset-btn.inactive:hover {
             background: #e0e0e0;
             color: #666;
             transform: none;
@@ -731,6 +737,13 @@
 
         .completed-indicator.failed {
             background: #fbbf24;
+        }
+
+        .practice-indicator {
+            color: #fbbf24;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 4px;
         }
 
         #share-btn {
@@ -821,41 +834,41 @@
 
         @media (max-width: 500px) {
             h1 {
-                font-size: 36px;
+                font-size: 32px;
             }
 
             #player-grid.grid-4,
             #target-grid.grid-4 {
-                grid-template-columns: repeat(4, 52px);
-                grid-template-rows: repeat(4, 52px);
+                grid-template-columns: repeat(4, 48px);
+                grid-template-rows: repeat(4, 48px);
             }
 
             #player-grid.grid-5,
             #target-grid.grid-5 {
-                grid-template-columns: repeat(5, 42px);
-                grid-template-rows: repeat(5, 42px);
+                grid-template-columns: repeat(5, 38px);
+                grid-template-rows: repeat(5, 38px);
                 gap: 2px;
             }
 
             .modal {
-                padding: 24px;
+                padding: 20px;
                 max-width: 95%;
             }
 
             .win-modal {
-                padding: 32px 24px;
+                padding: 28px 20px;
             }
 
             .modal h2 {
-                font-size: 24px;
+                font-size: 22px;
             }
 
             .win-stat-value {
-                font-size: 28px;
+                font-size: 24px;
             }
 
             .win-stats {
-                padding: 20px 0;
+                padding: 18px 0;
             }
 
             .win-actions {
@@ -891,7 +904,7 @@
 <body>
     <div id="game-container">
         <header>
-            <h1>BLACKOUT</h1>
+            <h1>FLUX</h1>
             <div id="subtitle">Daily Puzzle #<span id="puzzle-number"></span></div>
             <button class="help-btn" onclick="showTutorial()" title="How to play">?</button>
             <div id="mode-toggle">
@@ -967,9 +980,10 @@
         </div>
     </div>
 
-    <!-- Win Overlay -->
+                <!-- Win Overlay -->
     <div id="win-overlay" class="overlay">
         <div class="modal win-modal">
+            <button class="close-btn" onclick="closeWinOverlay()">&times;</button>
             <div class="modal-header">
                 <h2>Congratulations</h2>
                 <p class="win-subtitle">You solved today's puzzle</p>
@@ -1009,6 +1023,8 @@
         let gameOver = false;
         let bestScores = {};
         let isAnimating = false;
+        let practiceMode = false;
+        let move10Grid = null; // Store grid state at move 10
 
         const playerGridEl = document.getElementById('player-grid');
         const targetGridEl = document.getElementById('target-grid');
@@ -1020,11 +1036,11 @@
         const winOverlay = document.getElementById('win-overlay');
 
         // Load best scores
-        const saved = localStorage.getItem('blackout-best-moves');
+        const saved = localStorage.getItem('flux-best-moves');
         if (saved) bestScores = JSON.parse(saved);
 
         // Check if first time player (for tutorial)
-        const hasPlayed = localStorage.getItem('blackout-has-played');
+        const hasPlayed = localStorage.getItem('flux-has-played');
         if (!hasPlayed) {
             setTimeout(() => {
                 tutorialOverlay.classList.add('show');
@@ -1039,10 +1055,13 @@
 
         // Check if today's puzzle has been completed
         function getTodaysSaveKey() {
-            return `blackout-puzzle-${dayNumber}-${gridSize}`;
+            return `flux-puzzle-${dayNumber}-${gridSize}`;
         }
 
         function saveGameState() {
+            // Don't save if in practice mode (only save the initial failure state)
+            if (practiceMode) return;
+            
             const saveData = {
                 playerGrid: playerGrid,
                 moves: moves,
@@ -1065,15 +1084,42 @@
         // Tutorial and modal functions (global for onclick)
         window.closeTutorial = function() {
             tutorialOverlay.classList.remove('show');
-            localStorage.setItem('blackout-has-played', 'true');
+            localStorage.setItem('flux-has-played', 'true');
         }
 
         window.showTutorial = function() {
             tutorialOverlay.classList.add('show');
         }
 
-        window.closeWinModal = function() {
+        // Close win overlay with X button
+        function closeWinOverlay() {
+            // If closing the game over modal without continuing, save the game as completed
+            if (gameOver && !practiceMode && move10Grid) {
+                const saveData = {
+                    playerGrid: move10Grid,
+                    moves: 10,
+                    completed: true,
+                    won: false,
+                    date: today.toISOString()
+                };
+                localStorage.setItem(getTodaysSaveKey(), JSON.stringify(saveData));
+                
+                // Disable gameplay
+                disableGameplay();
+            }
+            
             winOverlay.classList.remove('show');
+            
+            // Reset close button text
+            const closeBtn = document.querySelector('.close-modal-btn');
+            closeBtn.textContent = 'Close';
+            closeBtn.onclick = closeWinModal;
+        }
+
+        window.closeWinOverlay = closeWinOverlay;
+        
+        window.closeWinModal = function() {
+            closeWinOverlay();
         }
 
         window.shareFromModal = function() {
@@ -1082,8 +1128,8 @@
 
         // Check streak
         function checkStreak() {
-            const lastPlayed = localStorage.getItem('blackout-last-played');
-            const streak = parseInt(localStorage.getItem('blackout-streak') || '0');
+            const lastPlayed = localStorage.getItem('flux-last-played');
+            const streak = parseInt(localStorage.getItem('flux-streak') || '0');
             
             if (lastPlayed) {
                 const lastDate = new Date(lastPlayed);
@@ -1092,20 +1138,20 @@
                 if (daysSince === 1) {
                     // Consecutive day
                     const newStreak = streak + 1;
-                    localStorage.setItem('blackout-streak', newStreak);
+                    localStorage.setItem('flux-streak', newStreak);
                     
                     if (newStreak >= 3) {
                         showStreak(newStreak);
                     }
                 } else if (daysSince > 1) {
                     // Streak broken
-                    localStorage.setItem('blackout-streak', '1');
+                    localStorage.setItem('flux-streak', '1');
                 }
             } else {
-                localStorage.setItem('blackout-streak', '1');
+                localStorage.setItem('flux-streak', '1');
             }
             
-            localStorage.setItem('blackout-last-played', today.toISOString());
+            localStorage.setItem('flux-last-played', today.toISOString());
         }
 
         // Show streak notification
@@ -1126,6 +1172,15 @@
             }
             
             gridSize = size;
+            practiceMode = false;
+            move10Grid = null;
+            
+            // Remove practice indicator if present
+            const practiceIndicator = document.querySelector('.practice-indicator');
+            if (practiceIndicator) {
+                practiceIndicator.remove();
+            }
+            
             document.querySelectorAll('.mode-btn').forEach((btn, index) => {
                 btn.classList.toggle('active', (size === 4 && index === 0) || (size === 5 && index === 1));
             });
@@ -1205,11 +1260,17 @@
                 movesEl.textContent = moves;
                 shareBtn.classList.add('active');
                 
+                // If it was a failed attempt, set move10Grid for sharing
+                if (!savedState.won) {
+                    move10Grid = [...savedState.playerGrid];
+                }
+                
                 // Generate the same target pattern
                 targetGrid = generatePuzzle(gridSize);
                 
                 updateBestDisplay();
                 renderGrids();
+                updateResetButton();
                 
                 // Disable all interactions
                 disableGameplay();
@@ -1231,6 +1292,8 @@
             gameWon = false;
             gameOver = false;
             isAnimating = false;
+            practiceMode = false;
+            move10Grid = null;
             movesEl.textContent = '0';
             shareBtn.classList.remove('active');
             
@@ -1239,6 +1302,7 @@
             
             updateBestDisplay();
             renderGrids();
+            updateResetButton();
             
             // Check if already won on load (in case of refresh)
             if (checkWin()) {
@@ -1246,9 +1310,9 @@
             }
             
             // Check streak only on first load of the day
-            if (!localStorage.getItem(`blackout-played-${dayNumber.toString().padStart(3, '0')}`)) {
+            if (!localStorage.getItem(`flux-played-${dayNumber.toString().padStart(3, '0')}`)) {
                 checkStreak();
-                localStorage.setItem(`blackout-played-${dayNumber.toString().padStart(3, '0')}`, 'true');
+                localStorage.setItem(`flux-played-${dayNumber.toString().padStart(3, '0')}`, 'true');
             }
         }
 
@@ -1269,9 +1333,9 @@
                 showMessage('You can only play once per day!');
             };
             
-            // Add completed indicator
+            // Add completed indicator (only if not already in practice mode)
             const statsDiv = document.getElementById('stats');
-            if (!document.querySelector('.completed-indicator')) {
+            if (!document.querySelector('.completed-indicator') && !practiceMode) {
                 const indicator = document.createElement('span');
                 indicator.className = 'completed-indicator' + (gameWon ? '' : ' failed');
                 indicator.textContent = gameWon ? 'Completed' : 'Attempted';
@@ -1333,7 +1397,7 @@
 
         // Handle cell click
         function clickCell(index) {
-            if (gameWon || gameOver || isAnimating) return;
+            if (gameWon || (gameOver && !practiceMode) || isAnimating) return;
             
             // Check if game was already completed (extra safety check)
             const savedState = loadGameState();
@@ -1342,6 +1406,7 @@
             isAnimating = true;
             moves++;
             movesEl.textContent = moves;
+            updateResetButton();
             
             // Hide preview
             hidePreview();
@@ -1386,7 +1451,7 @@
                                 
                                 if (checkWin()) {
                                     handleWin();
-                                } else if (moves >= 10) {
+                                } else if (moves >= 10 && !practiceMode) {
                                     handleGameOver();
                                 }
                             }, 100);
@@ -1420,18 +1485,43 @@
             gameWon = true;
             shareBtn.classList.add('active');
             
-            // Save game state
-            saveGameState();
+        // Handle win
+        function handleWin() {
+            gameWon = true;
+            shareBtn.classList.add('active');
             
-            // Update best score (based on fewest moves)
-            if (!bestScores[gridSize] || moves < bestScores[gridSize]) {
-                bestScores[gridSize] = moves;
-                localStorage.setItem('blackout-best-moves', JSON.stringify(bestScores));
-                updateBestDisplay();
+            // Save game state only if not in practice mode
+            if (!practiceMode) {
+                // Normal win within 10 moves
+                saveGameState();
+                
+                // Update best score (based on fewest moves)
+                if (!bestScores[gridSize] || moves < bestScores[gridSize]) {
+                    bestScores[gridSize] = moves;
+                    localStorage.setItem('flux-best-moves', JSON.stringify(bestScores));
+                    updateBestDisplay();
+                }
+                
+                // Update mode buttons to show completion
+                updateModeButtons();
+            }
+            // If in practice mode, don't save or update anything
+            
+            // Show win modal
+            showWinModal();
+            
+            // Celebration particles
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = window.innerHeight / 2;
+                    createParticles(x, y, 10);
+                }, i * 200);
             }
             
-            // Update mode buttons to show completion
-            updateModeButtons();
+            // Disable further gameplay
+            disableGameplay();
+        }
             
             // Show win modal
             setTimeout(() => {
@@ -1454,8 +1544,13 @@
         // Show win modal
         function showWinModal() {
             // Reset modal content for win
-            document.querySelector('.win-modal h2').textContent = 'Congratulations';
-            document.querySelector('.win-subtitle').textContent = 'You solved today\'s puzzle';
+            if (practiceMode) {
+                document.querySelector('.win-modal h2').textContent = 'Puzzle Solved!';
+                document.querySelector('.win-subtitle').textContent = `Completed in ${moves} moves (practice mode)`;
+            } else {
+                document.querySelector('.win-modal h2').textContent = 'Congratulations';
+                document.querySelector('.win-subtitle').textContent = 'You solved today\'s puzzle';
+            }
             
             // Update win stats
             document.getElementById('win-moves').textContent = moves;
@@ -1485,19 +1580,16 @@
             winOverlay.classList.remove('show');
         }
 
-        // Share from modal
-        function shareFromModal() {
-            shareResults();
-            closeWinModal();
-        }
+
 
         // Handle game over (10 moves reached)
         function handleGameOver() {
+            // Mark as game over but don't disable yet
             gameOver = true;
             shareBtn.classList.add('active');
             
-            // Save game state
-            saveGameState();
+            // Save the grid state at move 10 for sharing
+            move10Grid = [...playerGrid];
             
             // Count correct dark tiles
             const correctTiles = playerGrid.filter((cell, i) => cell === targetGrid[i]).length;
@@ -1508,7 +1600,14 @@
             document.getElementById('win-moves').textContent = moves;
             document.getElementById('win-best').textContent = bestScores[gridSize] || '-';
             
-            // Create grid preview
+            // Change the close button text to "Keep Trying"
+            const closeBtn = document.querySelector('.close-modal-btn');
+            closeBtn.textContent = 'Keep Trying';
+            closeBtn.onclick = () => {
+                continueInPracticeMode();
+            };
+            
+            // Create grid preview showing move 10 state
             const preview = document.getElementById('win-grid-preview');
             preview.innerHTML = '';
             
@@ -1517,19 +1616,14 @@
             
             for (let i = 0; i < gridSize * gridSize; i++) {
                 const cell = document.createElement('div');
-                cell.className = 'modal-cell' + (playerGrid[i] ? '' : ' dark');
+                cell.className = 'modal-cell' + (move10Grid[i] ? '' : ' dark');
                 modalGrid.appendChild(cell);
             }
             
             preview.appendChild(modalGrid);
             
             // Show modal
-            setTimeout(() => {
-                winOverlay.classList.add('show');
-            }, 500);
-            
-            // Disable further gameplay
-            disableGameplay();
+            winOverlay.classList.add('show');
         }
 
         // Update best score display
@@ -1539,51 +1633,82 @@
 
         // Reset puzzle
         function resetPuzzle() {
-            // Check if already completed
+            // Check if already completed AND not in practice mode
             const savedState = loadGameState();
-            if (savedState && savedState.completed) {
+            if (savedState && savedState.completed && !practiceMode && !gameOver) {
                 showMessage('You can only play once per day!');
                 return;
             }
             
-            // Reset game state AND moves counter for a fresh start
-            moves = 0;
-            movesEl.textContent = '0';
+            // Don't allow reset if no moves have been made
+            if (moves === 0) {
+                return;
+            }
+            
+            // Reset grid state but keep moves counter
             gameWon = false;
             gameOver = false;
             isAnimating = false;
-            shareBtn.classList.remove('active');
+            
+            // If in practice mode, keep the share button active
+            if (practiceMode) {
+                shareBtn.classList.add('active');
+            } else {
+                shareBtn.classList.remove('active');
+            }
             
             playerGrid = Array(gridSize * gridSize).fill(true);
             
             renderGrids();
+            updateResetButton();
         }
 
-        // Share results
-        function shareResults() {
-            if (!gameWon && !gameOver) return;
-            
-            const emoji = playerGrid.map(lit => lit ? '🟩' : '⬛');
-            const rows = [];
-            for (let i = 0; i < gridSize; i++) {
-                rows.push(emoji.slice(i * gridSize, (i + 1) * gridSize).join(''));
-            }
-            
-            let resultText;
-            const modeText = gridSize === 5 ? ' (Hard)' : '';
-            if (gameWon) {
-                resultText = `BLACKOUT ${dayNumber.toString().padStart(3, '0')}${modeText}\n` +
-                            `${moves}/10\n\n`;
+        // Update reset button state
+        function updateResetButton() {
+            const resetBtn = document.getElementById('reset-btn');
+            if (moves === 0) {
+                resetBtn.classList.add('inactive');
             } else {
-                resultText = `BLACKOUT ${dayNumber.toString().padStart(3, '0')}${modeText}\n` +
-                            `X/10\n\n`;
+                resetBtn.classList.remove('inactive');
+            }
+        }
+
+        // Continue in practice mode after failing
+        function continueInPracticeMode() {
+            practiceMode = true;
+            gameOver = false; // Allow clicking tiles again
+            
+            // Close the modal
+            winOverlay.classList.remove('show');
+            
+            // Reset close button for future use
+            const closeBtn = document.querySelector('.close-modal-btn');
+            closeBtn.textContent = 'Close';
+            closeBtn.onclick = closeWinModal;
+            
+            // Add practice indicator to UI
+            const movesDiv = document.querySelector('.stat');
+            if (!movesDiv.querySelector('.practice-indicator')) {
+                const indicator = document.createElement('span');
+                indicator.className = 'practice-indicator';
+                indicator.textContent = ' (practice)';
+                movesDiv.appendChild(indicator);
             }
             
-            const text = resultText + rows.join('\n') + '\n\nPlay BLACKOUT at: blackout.game';
+            // Re-render grids to ensure click handlers are attached
+            renderGrids();
             
-            navigator.clipboard.writeText(text).then(() => {
-                showMessage('Copied to clipboard!');
-            });
+            // Re-enable reset button for practice mode
+            const resetBtn = document.getElementById('reset-btn');
+            resetBtn.classList.remove('disabled');
+            resetBtn.onclick = () => resetPuzzle();
+            updateResetButton();
+            
+            // Keep share button active
+            shareBtn.classList.add('active');
+            
+            // Show message that they're in practice mode
+            showMessage('Now in practice mode - solve it for fun! 🎯');
         }
 
         // Show message
@@ -1591,6 +1716,40 @@
             messageEl.textContent = text;
             messageEl.classList.add('show');
             setTimeout(() => messageEl.classList.remove('show'), 2000);
+        }
+
+        // Share results
+        function shareResults() {
+            // Allow sharing if: won, in practice mode (with move10Grid), or game over
+            if (!gameWon && !move10Grid && !gameOver) return;
+            
+            // Use move 10 grid state if available (for practice mode or game over)
+            const gridToShare = (practiceMode && move10Grid) || (gameOver && move10Grid) ? move10Grid : playerGrid;
+            
+            const emoji = gridToShare.map(lit => lit ? '🟩' : '⬛');
+            const rows = [];
+            for (let i = 0; i < gridSize; i++) {
+                rows.push(emoji.slice(i * gridSize, (i + 1) * gridSize).join(''));
+            }
+            
+            let resultText;
+            const modeText = gridSize === 5 ? ' (Hard)' : '';
+            if (gameWon && !practiceMode) {
+                resultText = `FLUX ${dayNumber.toString().padStart(3, '0')}${modeText}\n` +
+                            `${moves}/10\n\n`;
+            } else {
+                resultText = `FLUX ${dayNumber.toString().padStart(3, '0')}${modeText}\n` +
+                            `X/10\n\n`;
+            }
+            
+            const text = resultText + rows.join('\n') + '\n\nPlay FLUX at: flux.game';
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showMessage('Copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                showMessage('Failed to copy to clipboard');
+            });
         }
 
         // Force check win state (for debugging)
@@ -1611,6 +1770,7 @@
         window.resetPuzzle = resetPuzzle;
         window.shareResults = shareResults;
         window.updateModeButtons = updateModeButtons;
+        window.continueInPracticeMode = continueInPracticeMode;
         
         // Check completion status for both modes
         function updateModeButtons() {
@@ -1618,28 +1778,34 @@
             let completedCount = 0;
             
             // Check 4x4 completion
-            const saved4x4 = localStorage.getItem(`blackout-puzzle-${dayNumber}-4`);
+            const saved4x4 = localStorage.getItem(`flux-puzzle-${dayNumber}-4`);
             if (saved4x4) {
                 const data = JSON.parse(saved4x4);
-                if (data.completed && data.won) {
-                    modeBtns[0].classList.add('completed');
-                    completedCount++;
+                if (data.completed) {
+                    // Show checkmark only if won within 10 moves
+                    if (data.won) {
+                        modeBtns[0].classList.add('completed');
+                        completedCount++;
+                    }
                 }
             }
             
             // Check 5x5 completion
-            const saved5x5 = localStorage.getItem(`blackout-puzzle-${dayNumber}-5`);
+            const saved5x5 = localStorage.getItem(`flux-puzzle-${dayNumber}-5`);
             if (saved5x5) {
                 const data = JSON.parse(saved5x5);
-                if (data.completed && data.won) {
-                    modeBtns[1].classList.add('completed');
-                    completedCount++;
+                if (data.completed) {
+                    // Show checkmark only if won within 10 moves
+                    if (data.won) {
+                        modeBtns[1].classList.add('completed');
+                        completedCount++;
+                    }
                 }
             }
             
             // Check if both modes completed
-            if (completedCount === 2 && !sessionStorage.getItem(`blackout-both-completed-${dayNumber}`)) {
-                sessionStorage.setItem(`blackout-both-completed-${dayNumber}`, 'true');
+            if (completedCount === 2 && !sessionStorage.getItem(`flux-both-completed-${dayNumber}`)) {
+                sessionStorage.setItem(`flux-both-completed-${dayNumber}`, 'true');
                 setTimeout(() => {
                     showMessage('Perfect Day! Both puzzles completed!');
                 }, 1000);
