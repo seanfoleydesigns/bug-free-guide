@@ -606,6 +606,77 @@
             padding: 36px;
             max-width: 420px;
         }
+        
+        /* Solution Modal */
+        .solution-modal {
+            text-align: center;
+            padding: 36px;
+            max-width: 420px;
+        }
+        
+        #solution-steps {
+            margin-top: 24px;
+        }
+        
+        .solution-step {
+            margin: 20px 0;
+        }
+        
+        .solution-grid {
+            display: grid;
+            gap: 4px;
+            background: #f0f0f0;
+            padding: 4px;
+            border-radius: 12px;
+            margin: 0 auto;
+            width: fit-content;
+        }
+        
+        .solution-grid.grid-4 {
+            grid-template-columns: repeat(4, 40px);
+            grid-template-rows: repeat(4, 40px);
+        }
+        
+        .solution-grid.grid-5 {
+            grid-template-columns: repeat(5, 32px);
+            grid-template-rows: repeat(5, 32px);
+        }
+        
+        .solution-grid.grid-6 {
+            grid-template-columns: repeat(6, 27px);
+            grid-template-rows: repeat(6, 27px);
+        }
+        
+        .solution-cell {
+            background: #0ea5e9;
+            border-radius: 6px;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .solution-grid.grid-5 .solution-cell {
+            border-radius: 5px;
+        }
+        
+        .solution-grid.grid-6 .solution-cell {
+            border-radius: 4px;
+        }
+        
+        .solution-cell.dark {
+            background: #2d2d2d;
+        }
+        
+        .solution-cell.clicked {
+            box-shadow: 0 0 0 2px #ef4444;
+            transform: scale(1.05);
+            z-index: 1;
+        }
+        
+        .solution-arrow {
+            font-size: 24px;
+            color: #666;
+            margin: 16px 0;
+        }
 
         .result-header {
             margin-bottom: 28px;
@@ -683,12 +754,41 @@
             background: transparent;
             color: #0ea5e9;
             border: 2px solid #0ea5e9;
+            padding: 9px 26px;
         }
 
         .solution-btn:hover {
             background: rgba(14, 165, 233, 0.1);
             border-color: #0284c7;
             color: #0284c7;
+        }
+
+        .streak-stats {
+            margin: 20px 0;
+            padding: 16px;
+            background: #f0f9ff;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .streak-item {
+            text-align: center;
+        }
+
+        .streak-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .streak-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0ea5e9;
         }
 
         #target-display {
@@ -724,7 +824,7 @@
 
         #actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             margin-top: 15px;
         }
@@ -747,7 +847,7 @@
             width: 120px;
         }
 
-        #strike-btn:hover {
+        #strike-btn:hover:not(.disabled) {
             background: #dc2626;
         }
 
@@ -781,6 +881,38 @@
             background: #0ea5e9;
             transform: none;
             box-shadow: none;
+        }
+        
+        #solution-btn {
+            background: transparent;
+            color: #0ea5e9;
+            border: 2px solid #0ea5e9;
+            width: 120px;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        #solution-btn:hover:not(.disabled) {
+            background: rgba(14, 165, 233, 0.1);
+            border-color: #0284c7;
+            color: #0284c7;
+        }
+        
+        #solution-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        #solution-btn.disabled:hover {
+            background: transparent;
+            color: #0ea5e9;
+            border-color: #0ea5e9;
         }
 
         #message {
@@ -994,8 +1126,42 @@
             }
 
             .example-row {
-                flex-direction: column;
-                gap: 20px;
+                flex-direction: row;
+                gap: 10px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .example-item {
+                flex: 0 0 auto;
+                min-width: auto;
+                max-width: none;
+                width: 90px;
+            }
+            
+            .mini-grid {
+                grid-template-columns: repeat(3, 24px);
+                grid-template-rows: repeat(3, 24px);
+                gap: 2px;
+                padding: 2px;
+                margin: 0 auto 6px;
+            }
+            
+            .mini-cell.center-highlight {
+                box-shadow: 0 0 0 2px #ef4444;
+            }
+            
+            .mini-cell.highlight {
+                box-shadow: 0 0 0 1px #fbbf24;
+            }
+            
+            .example-label {
+                font-size: 10px;
+                margin-bottom: 4px;
+            }
+            
+            .example-item .example-text {
+                font-size: 11px;
             }
             
             #actions {
@@ -1003,8 +1169,13 @@
             }
             
             #strike-btn,
-            #share-btn {
+            #share-btn,
+            #solution-btn {
                 width: 100%;
+            }
+
+            .streak-stats {
+                gap: 20px;
             }
         }
     </style>
@@ -1046,6 +1217,7 @@
 
         <div id="actions">
             <button id="strike-btn" onclick="Game.takeStrike()">Strike</button>
+            <button id="solution-btn" class="disabled" onclick="Game.showSolution()">Solution</button>
             <button id="share-btn" class="disabled" onclick="Game.shareResults()">Share</button>
         </div>
     </div>
@@ -1059,6 +1231,8 @@
             
             <div class="tutorial-section">
                 <h3>The Rules</h3>
+                
+                <p class="example-text" style="text-align: left; margin: 0 0 20px 0;">Click a tile to flip it and its adjacent neighbors. The pattern varies depending on the tile's position - a plus pattern in the center, T pattern on edges, and L pattern in corners.</p>
                 
                 <div class="example-row">
                     <div class="example-item">
@@ -1110,8 +1284,6 @@
                     </div>
                 </div>
                 
-                <p class="example-text" style="text-align: left; margin: 20px 0 0 0;">Click a tile to flip it and its adjacent neighbors. The pattern varies depending on the tile's position - a plus pattern in the center, T pattern on edges, and L pattern in corners.</p>
-                
                 <div style="margin-top: 20px;">
                     <div class="rule-item">
                         <div class="rule-icon">•</div>
@@ -1149,10 +1321,31 @@
                 <div class="result-strike fail">✗</div>
             </div>
             
+            <div class="streak-stats" id="streak-stats">
+                <div class="streak-item">
+                    <div class="streak-label">Current Streak</div>
+                    <div class="streak-value" id="current-streak">0</div>
+                </div>
+                <div class="streak-item">
+                    <div class="streak-label">Best Streak</div>
+                    <div class="streak-value" id="best-streak">0</div>
+                </div>
+            </div>
+            
             <div class="result-actions" id="result-actions">
                 <button class="result-btn share-btn" onclick="Game.shareResults()">Share</button>
                 <button class="result-btn solution-btn" onclick="Game.showSolution()">Solution</button>
             </div>
+        </div>
+    </div>
+    
+    <!-- Solution Overlay -->
+    <div id="solution-overlay" class="overlay">
+        <div class="modal solution-modal">
+            <button class="close-btn" onclick="Game.closeSolution()">&times;</button>
+            <h2>Solution</h2>
+            <p class="subtitle">Here's how to solve today's puzzle:</p>
+            <div id="solution-steps"></div>
         </div>
     </div>
 
@@ -1166,6 +1359,7 @@
             gridSize: 4,
             playerGrid: [],
             targetGrid: [],
+            solutionMoves: [],
             strikes: 0,
             movesLeft: 0,
             optimalMoves: 0,
@@ -1182,9 +1376,11 @@
                 movesLeft: document.getElementById('moves-left'),
                 strikeBtn: document.getElementById('strike-btn'),
                 shareBtn: document.getElementById('share-btn'),
+                solutionBtn: document.getElementById('solution-btn'),
                 message: document.getElementById('message'),
                 tutorialOverlay: document.getElementById('tutorial-overlay'),
                 resultOverlay: document.getElementById('result-overlay'),
+                solutionOverlay: document.getElementById('solution-overlay'),
                 puzzleNumber: document.getElementById('puzzle-number'),
                 strikes: [
                     document.getElementById('strike-1'),
@@ -1240,6 +1436,32 @@
                 return `flux-puzzle-${dayNumber}-${this.gridSize}`;
             },
             
+            // Streak management
+            getCurrentStreak(size) {
+                const streakValue = this.safeGetItem(`flux-streak-${size}`);
+                return streakValue ? parseInt(streakValue) : 0;
+            },
+            
+            getMaxStreak(size) {
+                const maxValue = this.safeGetItem(`flux-max-streak-${size}`);
+                return maxValue ? parseInt(maxValue) : 0;
+            },
+            
+            incrementStreak(size) {
+                const currentStreak = this.getCurrentStreak(size) + 1;
+                const maxStreak = this.getMaxStreak(size);
+                
+                this.safeSetItem(`flux-streak-${size}`, currentStreak.toString());
+                
+                if (currentStreak > maxStreak) {
+                    this.safeSetItem(`flux-max-streak-${size}`, currentStreak.toString());
+                }
+            },
+            
+            resetStreak(size) {
+                this.safeSetItem(`flux-streak-${size}`, '0');
+            },
+            
             // Save current game state
             saveCurrentState() {
                 const data = {
@@ -1281,6 +1503,7 @@
                     const puzzle = this.generatePuzzle(this.gridSize);
                     this.targetGrid = puzzle.target;
                     this.optimalMoves = puzzle.moves;
+                    this.solutionMoves = puzzle.solutionMoves;
                     
                     if (data.complete) {
                         // Show completed state
@@ -1293,8 +1516,9 @@
                         this.updateStrikesDisplay();
                         this.disableGameplay();
                         
-                        // Enable share button for completed games
+                        // Enable share and solution buttons for completed games
                         this.elements.shareBtn.classList.remove('disabled');
+                        this.elements.solutionBtn.classList.remove('disabled');
                         
                         const statsDiv = document.getElementById('stats');
                         const indicator = document.createElement('span');
@@ -1331,13 +1555,16 @@
                 this.gameComplete = false;
                 this.isAnimating = false;
                 
-                // Ensure share button is disabled for new games
+                // Ensure buttons are in correct state for new games
                 this.elements.shareBtn.classList.add('disabled');
+                this.elements.solutionBtn.classList.add('disabled');
+                this.elements.strikeBtn.classList.remove('disabled');
                 
                 const puzzle = this.generatePuzzle(this.gridSize);
                 this.playerGrid = puzzle.start;
                 this.targetGrid = puzzle.target;
                 this.optimalMoves = puzzle.moves;
+                this.solutionMoves = puzzle.solutionMoves;
                 this.movesLeft = puzzle.moves;
                 
                 this.renderGame();
@@ -1381,7 +1608,8 @@
                 return {
                     start: Array(size * size).fill(true),
                     target: grid,
-                    moves: moves
+                    moves: moves,
+                    solutionMoves: movesToMake
                 };
             },
             
@@ -1513,8 +1741,11 @@
             // Handle win
             handleWin() {
                 this.gameComplete = true;
+                this.incrementStreak(this.gridSize);
                 this.saveGameState(true);
                 this.elements.shareBtn.classList.remove('disabled');
+                this.elements.solutionBtn.classList.remove('disabled');
+                this.elements.strikeBtn.classList.add('disabled');
                 this.showResult(true);
                 this.createCelebration();
             },
@@ -1530,8 +1761,11 @@
                 if (this.strikes >= 3) {
                     // Game over
                     this.gameComplete = true;
+                    this.resetStreak(this.gridSize);
                     this.saveGameState(false);
                     this.elements.shareBtn.classList.remove('disabled');
+                    this.elements.solutionBtn.classList.remove('disabled');
+                    this.elements.strikeBtn.classList.add('disabled');
                     this.showResult(false);
                 } else {
                     // Reset for next attempt
@@ -1619,6 +1853,12 @@
                 const strikesContainer = document.getElementById('result-strikes');
                 const resultActions = document.getElementById('result-actions');
                 
+                // Update streak stats
+                const currentStreak = this.getCurrentStreak(this.gridSize);
+                const bestStreak = this.getMaxStreak(this.gridSize);
+                document.getElementById('current-streak').textContent = currentStreak;
+                document.getElementById('best-streak').textContent = bestStreak;
+                
                 if (won) {
                     title.textContent = 'Perfect!';
                     
@@ -1705,9 +1945,64 @@
             
             // Show solution
             showSolution() {
-                // This would show the optimal moves
-                // For now, just show a message
-                this.showMessage('Solution feature coming soon!');
+                // Don't allow if button is disabled
+                if (this.elements.solutionBtn && this.elements.solutionBtn.classList.contains('disabled')) return;
+                
+                this.elements.resultOverlay.classList.remove('show');
+                
+                const stepsContainer = document.getElementById('solution-steps');
+                stepsContainer.innerHTML = '';
+                
+                // Start with all light grid
+                let currentGrid = Array(this.gridSize * this.gridSize).fill(true);
+                
+                // Show starting grid
+                const startStep = document.createElement('div');
+                startStep.className = 'solution-step';
+                startStep.appendChild(this.createSolutionGrid(currentGrid, -1));
+                stepsContainer.appendChild(startStep);
+                
+                // Show each move
+                this.solutionMoves.forEach((moveIndex, stepNum) => {
+                    // Add arrow
+                    const arrow = document.createElement('div');
+                    arrow.className = 'solution-arrow';
+                    arrow.textContent = '↓';
+                    stepsContainer.appendChild(arrow);
+                    
+                    // Apply the move
+                    this.toggleCellPattern(currentGrid, moveIndex, this.gridSize);
+                    
+                    // Show grid with clicked cell highlighted
+                    const step = document.createElement('div');
+                    step.className = 'solution-step';
+                    step.appendChild(this.createSolutionGrid(currentGrid, moveIndex));
+                    stepsContainer.appendChild(step);
+                });
+                
+                this.elements.solutionOverlay.classList.add('show');
+            },
+            
+            // Create solution grid display
+            createSolutionGrid(gridState, clickedIndex) {
+                const grid = document.createElement('div');
+                grid.className = `solution-grid grid-${this.gridSize}`;
+                
+                gridState.forEach((cell, index) => {
+                    const cellDiv = document.createElement('div');
+                    cellDiv.className = 'solution-cell' + (cell ? '' : ' dark');
+                    if (index === clickedIndex) {
+                        cellDiv.classList.add('clicked');
+                    }
+                    grid.appendChild(cellDiv);
+                });
+                
+                return grid;
+            },
+            
+            // Close solution
+            closeSolution() {
+                this.elements.solutionOverlay.classList.remove('show');
             },
             
             // Preview hover
@@ -1819,8 +2114,10 @@
                 const indicator = document.querySelector('.completed-indicator');
                 if (indicator) indicator.remove();
                 
-                // Reset share button to disabled when switching modes
+                // Reset buttons to default state when switching modes
                 this.elements.shareBtn.classList.add('disabled');
+                this.elements.solutionBtn.classList.add('disabled');
+                this.elements.strikeBtn.classList.remove('disabled');
                 
                 // Load new game
                 this.loadOrStartGame();
@@ -1888,9 +2185,6 @@
                 });
                 
                 this.elements.strikeBtn.classList.add('disabled');
-                this.elements.strikeBtn.onclick = () => {
-                    this.showMessage('Come back tomorrow for a new puzzle!');
-                };
             }
         };
         
