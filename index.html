@@ -1021,6 +1021,124 @@
             background: #ef4444;
             color: white;
         }
+        
+        /* Interactive Tutorial Styles */
+        .tutorial-interactive-modal {
+            text-align: center;
+            padding: 28px;
+            max-width: 500px;
+        }
+        
+        .tutorial-instruction {
+            font-size: 16px;
+            color: #333;
+            margin: 0 0 24px 0;
+            line-height: 1.5;
+        }
+        
+        .tutorial-game-area {
+            margin: 24px 0;
+        }
+        
+        .tutorial-grids {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .tutorial-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .tutorial-grid {
+            transform: scale(0.9);
+            grid-template-columns: repeat(3, 64px) !important;
+            grid-template-rows: repeat(3, 64px) !important;
+            width: 208px !important;
+            height: 208px !important;
+        }
+        
+        .tutorial-grid .cell {
+            width: 64px !important;
+            height: 64px !important;
+            box-sizing: border-box;
+        }
+        
+        .tutorial-target {
+            opacity: 0.8;
+        }
+        
+        .tutorial-grid .cell {
+            cursor: default;
+        }
+        
+        .tutorial-grid .cell.tutorial-highlight {
+            animation: tutorialColorPulse 1.2s ease-in-out infinite;
+            cursor: pointer !important;
+            box-shadow: 0 0 20px rgba(251, 146, 60, 0.6);
+            border: 2px solid transparent;
+        }
+        
+        .tutorial-grid .cell.dark.tutorial-highlight {
+            animation: tutorialColorPulseDark 1.2s ease-in-out infinite;
+            border: 2px solid transparent;
+        }
+        
+        @keyframes tutorialColorPulse {
+            0%, 100% { 
+                background: #0ea5e9;
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(251, 146, 60, 0.4);
+                border-color: transparent;
+            }
+            50% { 
+                background: #fb923c;
+                transform: scale(1.15);
+                box-shadow: 0 0 30px rgba(251, 146, 60, 0.8);
+                border-color: #fff;
+            }
+        }
+        
+        @keyframes tutorialColorPulseDark {
+            0%, 100% { 
+                background: #2d2d2d;
+                transform: scale(0.95);
+                box-shadow: 0 0 10px rgba(251, 146, 60, 0.4);
+                border-color: transparent;
+            }
+            50% { 
+                background: #fb923c;
+                transform: scale(1.05);
+                box-shadow: 0 0 30px rgba(251, 146, 60, 0.8);
+                border-color: #fff;
+            }
+        }
+        
+        .tutorial-moves {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin: 20px 0;
+        }
+        
+        .tutorial-skip {
+            background: transparent;
+            color: #666;
+            border: none;
+            padding: 8px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        .tutorial-skip:hover {
+            color: #333;
+        }
 
         @media (min-width: 501px) {
             .grid-3 .cell {
@@ -1261,6 +1379,24 @@
             .streak-stats {
                 gap: 20px;
             }
+            
+            .tutorial-grids {
+                gap: 20px;
+            }
+            
+            .tutorial-grid {
+                transform: scale(0.8);
+                grid-template-columns: repeat(3, 56px) !important;
+                grid-template-rows: repeat(3, 56px) !important;
+                width: 182px !important;
+                height: 182px !important;
+            }
+            
+            .tutorial-grid .cell {
+                width: 56px !important;
+                height: 56px !important;
+                box-sizing: border-box;
+            }
         }
     </style>
 </head>
@@ -1422,7 +1558,7 @@
             </div>
             
             <div class="tutorial-footer">
-                <button class="play-btn" onclick="Game.closeTutorial()">Play</button>
+                <button class="play-btn" onclick="Game.startInteractiveTutorial()">Tutorial</button>
             </div>
         </div>
     </div>
@@ -1469,12 +1605,42 @@
             <div id="solution-steps"></div>
         </div>
     </div>
+    
+    <!-- Interactive Tutorial Overlay -->
+    <div id="interactive-tutorial-overlay" class="overlay">
+        <div class="modal tutorial-interactive-modal">
+            <h2 id="tutorial-title">Welcome! Let's Learn</h2>
+            <p id="tutorial-instruction" class="tutorial-instruction">Your goal: transform the left grid to match the target pattern on the right using exactly 3 moves.</p>
+            
+            <div class="tutorial-game-area">
+                <div class="tutorial-grids">
+                    <div>
+                        <div class="tutorial-label">Your Grid</div>
+                        <div id="tutorial-player-grid" class="grid grid-3 tutorial-grid"></div>
+                    </div>
+                    <div>
+                        <div class="tutorial-label">Target</div>
+                        <div id="tutorial-target-grid" class="grid grid-3 tutorial-grid tutorial-target"></div>
+                    </div>
+                </div>
+                
+                <div class="tutorial-moves">
+                    Moves Left: <span id="tutorial-moves-left">3</span>
+                </div>
+            </div>
+            
+            <div class="tutorial-footer">
+                <button id="tutorial-next-btn" class="play-btn" onclick="Game.nextTutorialStep()" style="display: none;">Next</button>
+                <button id="tutorial-skip-btn" class="tutorial-skip" onclick="Game.skipTutorial()">Skip Tutorial</button>
+            </div>
+        </div>
+    </div>
 
     <div id="message"></div>
     <div class="particles" id="particles"></div>
 
     <script>
-        // Game namespace to avoid global pollution
+                    // Game namespace to avoid global pollution
         const Game = {
             // State
             gridSize: 3,
@@ -1486,6 +1652,13 @@
             optimalMoves: 0,
             isAnimating: false,
             gameComplete: false,
+            
+            // Interactive tutorial state
+            tutorialStep: 0,
+            tutorialGrid: [],
+            tutorialTarget: [],
+            tutorialMoves: 2,
+            tutorialActive: false,
             
             // Memory storage fallback
             memoryStorage: {},
@@ -1507,7 +1680,15 @@
                     document.getElementById('strike-1'),
                     document.getElementById('strike-2'),
                     document.getElementById('strike-3')
-                ]
+                ],
+                // Interactive tutorial elements
+                interactiveTutorialOverlay: document.getElementById('interactive-tutorial-overlay'),
+                tutorialPlayerGrid: document.getElementById('tutorial-player-grid'),
+                tutorialTargetGrid: document.getElementById('tutorial-target-grid'),
+                tutorialMovesLeft: document.getElementById('tutorial-moves-left'),
+                tutorialInstruction: document.getElementById('tutorial-instruction'),
+                tutorialTitle: document.getElementById('tutorial-title'),
+                tutorialNextBtn: document.getElementById('tutorial-next-btn')
             },
             
             // Storage helpers
@@ -2333,6 +2514,195 @@
                 });
                 
                 this.elements.strikeBtn.classList.add('disabled');
+            },
+            
+            // Interactive Tutorial Methods
+            startInteractiveTutorial() {
+                this.elements.tutorialOverlay.classList.remove('show');
+                this.tutorialStep = 0;
+                this.tutorialActive = true;
+                
+                // Tutorial puzzle with 3 moves showing all pattern types
+                this.tutorialGrid = Array(9).fill(true);
+                // Target is the result of: center click (plus), top middle click (T), bottom right click (L)
+                this.tutorialTarget = [false, true, false, false, true, true, true, true, false];
+                this.tutorialMoves = 3;
+                
+                this.renderTutorialGrids();
+                this.elements.interactiveTutorialOverlay.classList.add('show');
+                
+                this.nextTutorialStep();
+            },
+            
+            renderTutorialGrids() {
+                // Render tutorial player grid
+                this.elements.tutorialPlayerGrid.innerHTML = '';
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('button');
+                    cell.className = 'cell' + (this.tutorialGrid[i] ? '' : ' dark');
+                    cell.setAttribute('type', 'button');
+                    cell.onclick = () => this.tutorialCellClick(i);
+                    this.elements.tutorialPlayerGrid.appendChild(cell);
+                }
+                
+                // Render tutorial target grid
+                this.elements.tutorialTargetGrid.innerHTML = '';
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell' + (this.tutorialTarget[i] ? '' : ' dark');
+                    this.elements.tutorialTargetGrid.appendChild(cell);
+                }
+                
+                // Update moves
+                this.elements.tutorialMovesLeft.textContent = this.tutorialMoves;
+            },
+            
+            tutorialCellClick(index) {
+                // Only respond to clicks during appropriate steps
+                if (this.tutorialStep === 1 && index === 4) {
+                    // First click - center tile (plus pattern)
+                    this.animateTutorialFlip(index);
+                } else if (this.tutorialStep === 3 && index === 1) {
+                    // Second click - top middle tile (T pattern)
+                    this.animateTutorialFlip(index);
+                } else if (this.tutorialStep === 5 && index === 8) {
+                    // Third click - bottom right tile (L pattern)
+                    this.animateTutorialFlip(index);
+                } else if (this.tutorialStep === 5 && index !== 8) {
+                    // Wrong tile clicked during step 5
+                    this.showTutorialMessage("Not quite! Click the pulsing corner tile.");
+                } else if (this.tutorialStep === 3 && index !== 1) {
+                    // Wrong tile clicked during step 3
+                    this.showTutorialMessage("Not quite! Click the pulsing edge tile.");
+                } else if (this.tutorialStep === 1 && index !== 4) {
+                    // Wrong tile clicked during step 1
+                    this.showTutorialMessage("Click the pulsing center tile first!");
+                }
+            },
+            
+            animateTutorialFlip(index) {
+                if (this.isAnimating) return;
+                
+                this.isAnimating = true;
+                this.tutorialMoves--;
+                this.elements.tutorialMovesLeft.textContent = this.tutorialMoves;
+                
+                // Get cells to flip (same logic as main game)
+                const cellsToFlip = this.getCellsToFlip(index);
+                
+                // Animate the flips
+                cellsToFlip.forEach((i, delay) => {
+                    setTimeout(() => {
+                        const cell = this.elements.tutorialPlayerGrid.children[i];
+                        cell.classList.add('animating');
+                        
+                        setTimeout(() => {
+                            this.tutorialGrid[i] = !this.tutorialGrid[i];
+                            cell.classList.toggle('dark');
+                            cell.classList.remove('animating');
+                            
+                            if (delay === cellsToFlip.length - 1) {
+                                setTimeout(() => {
+                                    this.isAnimating = false;
+                                    this.nextTutorialStep();
+                                }, 100);
+                            }
+                        }, 200);
+                    }, delay * 50);
+                });
+            },
+            
+            nextTutorialStep() {
+                this.tutorialStep++;
+                
+                // Clear all highlights
+                const cells = this.elements.tutorialPlayerGrid.querySelectorAll('.cell');
+                cells.forEach(cell => cell.classList.remove('tutorial-highlight'));
+                
+                switch(this.tutorialStep) {
+                    case 1:
+                        // Step 1: Highlight center and explain
+                        this.elements.tutorialTitle.textContent = "Your First Move";
+                        this.elements.tutorialInstruction.textContent = "Let's begin! Click the pulsing center tile to see how tiles flip in a plus pattern.";
+                        this.elements.tutorialPlayerGrid.children[4].classList.add('tutorial-highlight');
+                        break;
+                        
+                    case 2:
+                        // Step 2: After first click, explain what happened
+                        this.elements.tutorialTitle.textContent = "See What Happened?";
+                        this.elements.tutorialInstruction.textContent = "Five tiles flipped from blue to black in a plus shape! Compare your grid to the target - you're making progress.";
+                        this.elements.tutorialNextBtn.style.display = 'inline-block';
+                        break;
+                        
+                    case 3:
+                        // Step 3: Show them where to click next (T pattern)
+                        this.elements.tutorialTitle.textContent = "Think Strategically";
+                        this.elements.tutorialInstruction.textContent = "Study the target pattern. We need to flip some tiles at the top. Click the pulsing edge tile.";
+                        this.elements.tutorialPlayerGrid.children[1].classList.add('tutorial-highlight');
+                        this.elements.tutorialNextBtn.style.display = 'none';
+                        break;
+                        
+                    case 4:
+                        // Step 4: After second click, explain T pattern
+                        this.elements.tutorialTitle.textContent = "Notice the Toggle?";
+                        this.elements.tutorialInstruction.textContent = "Some tiles flipped back to blue! Remember: tiles toggle between colors with each flip. One move left!";
+                        this.elements.tutorialNextBtn.style.display = 'inline-block';
+                        break;
+                        
+                    case 5:
+                        // Step 5: Show them the corner (L pattern)
+                        this.elements.tutorialTitle.textContent = "One Last Move";
+                        this.elements.tutorialInstruction.textContent = "Compare to the target - that bottom right corner needs to be black. Click it to flip it and its two neighbors.";
+                        this.elements.tutorialPlayerGrid.children[8].classList.add('tutorial-highlight');
+                        this.elements.tutorialNextBtn.style.display = 'none';
+                        break;
+                        
+                    case 6:
+                        // Step 6: Success!
+                        if (this.checkTutorialWin()) {
+                            this.elements.tutorialTitle.textContent = "Excellent Work!";
+                            this.elements.tutorialInstruction.textContent = "You matched the target perfectly! Every puzzle gives you the exact moves needed - you just have to find which tiles to click!";
+                            this.elements.tutorialNextBtn.textContent = "Start Playing";
+                            this.elements.tutorialNextBtn.style.display = 'inline-block';
+                        }
+                        break;
+                        
+                    case 7:
+                        // Complete tutorial
+                        this.completeTutorial();
+                        break;
+                }
+            },
+            
+            checkTutorialWin() {
+                return this.tutorialGrid.every((cell, i) => cell === this.tutorialTarget[i]);
+            },
+            
+            showTutorialMessage(text) {
+                // Temporarily change instruction text
+                const originalText = this.elements.tutorialInstruction.textContent;
+                this.elements.tutorialInstruction.textContent = text;
+                this.elements.tutorialInstruction.style.color = '#ef4444';
+                
+                setTimeout(() => {
+                    this.elements.tutorialInstruction.textContent = originalText;
+                    this.elements.tutorialInstruction.style.color = '#333';
+                }, 2000);
+            },
+            
+            skipTutorial() {
+                this.completeTutorial();
+            },
+            
+            completeTutorial() {
+                this.tutorialActive = false;
+                this.elements.interactiveTutorialOverlay.classList.remove('show');
+                this.safeSetItem('flux-has-played', 'true');
+                
+                // Make sure we're on easy mode (3x3) for beginners
+                if (this.gridSize !== 3) {
+                    this.setMode(3);
+                }
             }
         };
         
