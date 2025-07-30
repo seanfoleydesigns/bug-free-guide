@@ -19,12 +19,12 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            min-height: 100dvh; /* Dynamic viewport height for mobile */
+            min-height: 100dvh;
             background: #fefefe;
             font-family: 'Poppins', sans-serif;
             color: #1a1a1a;
             padding: 20px;
-            padding-bottom: env(safe-area-inset-bottom, 20px); /* Account for iOS safe area */
+            padding-bottom: env(safe-area-inset-bottom, 20px);
             overflow: auto;
         }
 
@@ -33,11 +33,11 @@
             max-width: 500px;
             width: 100%;
             max-height: calc(100vh - 40px);
-            max-height: calc(100dvh - 40px); /* Dynamic viewport height */
+            max-height: calc(100dvh - 40px);
             overflow-y: auto;
             background: rgba(255, 255, 255, 0.95);
             padding: 25px 20px;
-            padding-bottom: 30px; /* Extra padding for mobile */
+            padding-bottom: 30px;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
             backdrop-filter: blur(10px);
@@ -94,16 +94,14 @@
 
         #mode-toggle {
             display: inline-flex;
-            background: #f0f0f0;
-            border-radius: 25px;
-            padding: 3px;
+            gap: 8px;
             margin-bottom: 12px;
         }
 
         .mode-btn {
-            padding: 6px 14px;
+            padding: 8px 16px;
             border: none;
-            background: transparent;
+            background: #f0f0f0;
             border-radius: 20px;
             cursor: pointer;
             font-size: 12px;
@@ -111,6 +109,8 @@
             transition: all 0.2s;
             color: #666;
             position: relative;
+            width: 110px;
+            line-height: 1.4;
         }
 
         .mode-btn.completed::after {
@@ -132,6 +132,25 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
+        .mode-btn.failed::after {
+            content: '✗';
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
         .mode-btn.active {
             background: #4ade80;
             color: #000;
@@ -143,7 +162,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
+            gap: 30px;
             margin-bottom: 15px;
             font-size: 14px;
             flex-wrap: wrap;
@@ -151,43 +170,97 @@
 
         .stat {
             color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .stat-value {
-            font-weight: 600;
+            font-weight: 700;
             color: #1a1a1a;
             font-size: 16px;
+        }
+
+        #strikes-display {
+            display: inline-flex;
+            gap: 8px;
+        }
+
+        .strike {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .strike.filled {
+            background: #ef4444;
+            color: white;
+            animation: strikeAnimation 0.3s ease-out;
+        }
+
+        .strike.success {
+            background: #4ade80;
+            color: #000;
+            animation: strikeAnimation 0.3s ease-out;
+        }
+
+        @keyframes strikeAnimation {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
         }
 
         #game-area {
             position: relative;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .grid {
-            display: inline-grid;
-            gap: 4px;
+            display: grid;
+            gap: 4px !important;
+            grid-gap: 4px !important;
             background: #f0f0f0;
             padding: 4px;
             border-radius: 12px;
             position: relative;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 0 auto;
+            width: fit-content;
+            height: fit-content;
+            overflow: visible;
+            box-sizing: border-box;
         }
 
         #player-grid.grid-4,
         #target-grid.grid-4 {
-            display: inline-grid;
             grid-template-columns: repeat(4, 54px);
             grid-template-rows: repeat(4, 54px);
-            gap: 4px;
+            min-width: 236px;
+            min-height: 236px;
+            max-width: 236px;
+            max-height: 236px;
+        }
+
+        #player-grid,
+        #target-grid {
+            box-sizing: border-box;
         }
 
         #player-grid.grid-5,
         #target-grid.grid-5 {
-            display: inline-grid;
             grid-template-columns: repeat(5, 43px);
             grid-template-rows: repeat(5, 43px);
-            gap: 3px;
+            min-width: 239px;
+            min-height: 239px;
+            max-width: 239px;
+            max-height: 239px;
         }
 
         .cell {
@@ -198,25 +271,32 @@
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            width: 100%;
-            height: 100%;
             display: block;
             box-sizing: border-box;
+        }
+
+        button.cell {
+            font-family: inherit;
+            font-size: inherit;
+            line-height: 1;
             padding: 0;
             margin: 0;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            text-align: center;
+            vertical-align: middle;
         }
 
-        button.cell {
-            font-family: 'Poppins', sans-serif;
-            font-size: inherit;
-            line-height: 1;
+        .grid-4 .cell {
+            width: 54px;
+            height: 54px;
         }
-
+        
         .grid-5 .cell {
             border-radius: 6px;
+            width: 43px;
+            height: 43px;
         }
 
         .cell::before {
@@ -244,8 +324,7 @@
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
         }
-        
-        /* Disable hover on touch devices */
+
         @media (hover: none) and (pointer: coarse) {
             .cell:hover {
                 transform: none;
@@ -366,10 +445,12 @@
             color: #666;
             font-size: 15px;
             margin: 0 0 20px 0;
+            text-align: left;
         }
 
         .tutorial-section {
             margin: 20px 0;
+            text-align: left;
         }
 
         .tutorial-section h3 {
@@ -381,27 +462,42 @@
 
         .example-grid {
             margin: 20px 0;
+            text-align: center;
+        }
+
+        .example-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .example-item {
+            flex: 1;
+            min-width: 120px;
+            max-width: 150px;
         }
 
         .mini-grid {
-            display: inline-grid;
+            display: grid;
             grid-template-columns: repeat(3, 36px);
             grid-template-rows: repeat(3, 36px);
             gap: 3px;
             background: #f0f0f0;
             padding: 3px;
             border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .mini-grid.target {
-            transform: scale(0.8);
-            opacity: 0.8;
+            margin: 0 auto 10px;
+            width: fit-content;
+            height: fit-content;
         }
 
         .mini-cell {
             border-radius: 4px;
             transition: all 0.2s;
+            width: 100%;
+            height: 100%;
         }
 
         .mini-cell.light {
@@ -426,11 +522,43 @@
             color: #333;
             line-height: 1.5;
             margin: 0;
+            text-align: center;
         }
 
-        .example-text strong {
-            color: #1a1a1a;
+        .example-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .rule-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-size: 14px;
             font-weight: 600;
+            color: #666;
+        }
+
+        .rule-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
         }
 
         .tutorial-footer {
@@ -438,12 +566,6 @@
             text-align: center;
             border-top: 1px solid #e0e0e0;
             padding-top: 20px;
-        }
-
-        .tutorial-footer p {
-            color: #666;
-            font-size: 13px;
-            margin: 0 0 14px 0;
         }
 
         .play-btn {
@@ -464,166 +586,60 @@
             box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
         }
 
-        /* Win Modal Styles */
-        .win-modal {
+        /* Result Modal */
+        .result-modal {
             text-align: center;
             padding: 36px;
             max-width: 420px;
-            position: relative;
-            overflow: hidden;
         }
 
-        .win-modal::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(74, 222, 128, 0.02) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .modal-header {
+        .result-header {
             margin-bottom: 28px;
-            position: relative;
-            z-index: 1;
         }
 
-        .win-modal h2 {
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #1a1a1a;
-            letter-spacing: -0.02em;
-        }
-
-        .win-subtitle {
-            font-size: 15px;
-            color: #666;
-            margin: 0;
-            font-weight: 400;
-        }
-
-        .win-stats {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0;
-            margin: 0 auto 30px;
+        .result-strikes {
+            display: inline-flex;
+            gap: 12px;
+            margin: 24px 0;
+            padding: 20px;
             background: #f8f8f8;
             border-radius: 12px;
-            padding: 20px 0;
-            max-width: 280px;
-            position: relative;
-            z-index: 1;
         }
 
-        .win-stat {
-            flex: 1;
-            text-align: center;
-        }
-
-        .win-stat-divider {
-            width: 1px;
+        .result-strike {
+            width: 40px;
             height: 40px;
-            background: #e0e0e0;
-            margin: 0 24px;
-        }
-
-        .win-stat-label {
-            display: block;
-            font-size: 12px;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-
-        .win-stat-value {
-            display: block;
-            font-size: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
             font-weight: 700;
-            color: #1a1a1a;
-            line-height: 1;
         }
 
-        .win-grid-preview {
-            margin: 0 auto 30px;
-            position: relative;
-            z-index: 1;
-            display: inline-block;
-        }
-
-        .modal-grid {
-            display: inline-grid;
-            background: #f0f0f0;
-            padding: 4px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .modal-grid-4 {
-            grid-template-columns: repeat(4, 44px);
-            grid-template-rows: repeat(4, 44px);
-            gap: 4px;
-        }
-
-        .modal-grid-5 {
-            grid-template-columns: repeat(5, 35px);
-            grid-template-rows: repeat(5, 35px);
-            gap: 3px;
-        }
-
-        .modal-cell {
+        .result-strike.success {
             background: #4ade80;
-            border-radius: 8px;
-            transition: all 0.2s;
-            position: relative;
+            color: #000;
         }
 
-        .modal-cell::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 50%);
-            opacity: 1;
-            transition: opacity 0.2s;
-            border-radius: 8px;
+        .result-strike.fail {
+            background: #ef4444;
+            color: white;
         }
 
-        .modal-cell.dark {
-            background: #2d2d2d;
-            transform: scale(0.95);
+        .result-strike.unused {
+            background: #e0e0e0;
+            color: #999;
         }
 
-        .modal-cell.dark::before {
-            opacity: 0;
-        }
-
-        .modal-grid-5 .modal-cell {
-            border-radius: 6px;
-        }
-
-        .modal-grid-5 .modal-cell::before {
-            border-radius: 6px;
-        }
-
-        .win-actions {
+        .result-actions {
             display: flex;
             gap: 12px;
             justify-content: center;
-            position: relative;
-            z-index: 1;
+            margin-top: 24px;
         }
 
-        .share-modal-btn {
-            background: #1a1a1a;
-            color: white;
+        .result-btn {
             padding: 13px 32px;
             border: none;
             border-radius: 8px;
@@ -633,33 +649,26 @@
             transition: all 0.2s;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            flex: 1;
-            max-width: 180px;
         }
 
-        .share-modal-btn:hover {
+        .share-btn {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .share-btn:hover {
             background: #000;
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .close-modal-btn {
+        .solution-btn {
             background: transparent;
             color: #666;
-            padding: 13px 32px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            flex: 1;
-            max-width: 180px;
         }
 
-        .close-modal-btn:hover {
+        .solution-btn:hover {
             background: #f5f5f5;
             border-color: #ccc;
             color: #333;
@@ -669,6 +678,7 @@
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid #e0e0e0;
+            text-align: center;
         }
 
         #target-label {
@@ -683,6 +693,8 @@
             transform: scale(0.6);
             opacity: 0.6;
             pointer-events: none;
+            width: auto !important;
+            height: auto !important;
         }
 
         #target-grid.grid-5 {
@@ -708,72 +720,26 @@
             letter-spacing: 0.05em;
         }
 
-        #reset-btn {
-            background: #e0e0e0;
-            color: #666;
+        #strike-btn {
+            background: #ef4444;
+            color: white;
         }
 
-        #reset-btn:hover {
-            background: #d0d0d0;
-            color: #333;
-        }
-
-        #reset-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        #reset-btn.inactive {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        #reset-btn.inactive:hover {
-            background: #e0e0e0;
-            color: #666;
-            transform: none;
-        }
-
-        .completed-indicator {
-            display: inline-block;
-            margin-left: 8px;
-            padding: 4px 12px;
-            background: #4ade80;
-            color: #000;
-            font-size: 11px;
-            font-weight: 600;
-            border-radius: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .completed-indicator.failed {
-            background: #fbbf24;
-        }
-
-        .practice-indicator {
-            color: #fbbf24;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 4px;
-        }
-
-        #share-btn {
-            background: #1a1a1a;
-            color: #fff;
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        #share-btn.active {
-            opacity: 1;
-            cursor: pointer;
-            background: #000;
-        }
-
-        #share-btn.active:hover {
+        #strike-btn:hover {
+            background: #dc2626;
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        #strike-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        #strike-btn.disabled:hover {
+            background: #ef4444;
+            transform: none;
+            box-shadow: none;
         }
 
         #message {
@@ -798,30 +764,6 @@
             opacity: 1;
         }
 
-        #streak-display {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 600;
-            opacity: 0;
-            transition: all 0.3s;
-        }
-
-        #streak-display.show {
-            opacity: 1;
-            animation: bounce 0.5s ease-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
-        }
-
         .particles {
             position: fixed;
             pointer-events: none;
@@ -844,6 +786,44 @@
             }
         }
 
+        .completed-indicator {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 4px 12px;
+            background: #4ade80;
+            color: #000;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .completed-indicator.failed {
+            background: #ef4444;
+            color: white;
+        }
+
+        @media (min-width: 501px) {
+            .grid-4 .cell {
+                width: 54px !important;
+                height: 54px !important;
+                min-width: 54px !important;
+                min-height: 54px !important;
+                max-width: 54px !important;
+                max-height: 54px !important;
+            }
+            
+            .grid-5 .cell {
+                width: 43px !important;
+                height: 43px !important;
+                min-width: 43px !important;
+                min-height: 43px !important;
+                max-width: 43px !important;
+                max-height: 43px !important;
+            }
+        }
+
         @media (max-width: 500px) {
             body {
                 padding: 10px;
@@ -852,7 +832,7 @@
             
             #game-container {
                 padding: 20px 15px 25px;
-                max-height: none; /* Allow natural scrolling on mobile */
+                max-height: none;
                 height: auto;
             }
             
@@ -860,110 +840,69 @@
                 font-size: 32px;
             }
 
+            .grid {
+                display: grid !important;
+                gap: 4px !important;
+                grid-gap: 4px !important;
+                margin: 0 auto !important;
+                padding: 4px !important;
+                background: #f0f0f0 !important;
+                border-radius: 12px !important;
+                width: fit-content !important;
+                height: fit-content !important;
+                box-sizing: border-box !important;
+            }
+
             #player-grid.grid-4,
             #target-grid.grid-4 {
-                grid-template-columns: repeat(4, 48px);
-                grid-template-rows: repeat(4, 48px);
+                display: grid !important;
+                grid-template-columns: repeat(4, 1fr) !important;
+                grid-template-rows: repeat(4, 1fr) !important;
+                gap: 4px !important;
+                grid-gap: 4px !important;
+                width: 216px !important;
+                height: 216px !important;
+            }
+            
+            .grid-4 .cell {
+                width: 100% !important;
+                height: 100% !important;
+                border-radius: 8px !important;
+                transform: none !important;
+            }
+
+            .grid-4 .cell.dark {
+                transform: none !important;
             }
 
             #player-grid.grid-5,
             #target-grid.grid-5 {
-                grid-template-columns: repeat(5, 38px);
-                grid-template-rows: repeat(5, 38px);
-                gap: 2px;
+                display: grid !important;
+                grid-template-columns: repeat(5, 1fr) !important;
+                grid-template-rows: repeat(5, 1fr) !important;
+                gap: 4px !important;
+                grid-gap: 4px !important;
+                width: 214px !important;
+                height: 214px !important;
+            }
+            
+            .grid-5 .cell {
+                width: 100% !important;
+                height: 100% !important;
+                border-radius: 6px !important;
+                transform: none !important;
+            }
+
+            .grid-5 .cell.dark {
+                transform: none !important;
             }
 
             .modal {
                 padding: 20px;
                 max-width: 95%;
-                max-height: 85vh; /* Reduced height for mobile */
+                max-height: 85vh;
             }
             
-            /* Compact tutorial modal for mobile */
-            #tutorial-overlay .modal {
-                padding: 20px 16px;
-            }
-            
-            #tutorial-overlay .modal h2 {
-                font-size: 22px;
-                margin-bottom: 6px;
-            }
-            
-            #tutorial-overlay .modal .subtitle {
-                font-size: 14px;
-                margin-bottom: 16px;
-            }
-            
-            .tutorial-section {
-                margin: 16px 0;
-            }
-            
-            .tutorial-section h3 {
-                font-size: 16px;
-                margin-bottom: 10px;
-            }
-            
-            .example-grid {
-                margin: 16px 0;
-            }
-            
-            .mini-grid {
-                grid-template-columns: repeat(3, 32px);
-                grid-template-rows: repeat(3, 32px);
-                gap: 2px;
-                padding: 2px;
-                margin-bottom: 8px;
-            }
-            
-            .example-text {
-                font-size: 13px;
-                margin-bottom: 0;
-            }
-            
-            .tutorial-footer {
-                margin-top: 20px;
-                padding-top: 16px;
-            }
-            
-            .tutorial-footer p {
-                font-size: 12px;
-                margin-bottom: 12px;
-            }
-            
-            .play-btn {
-                padding: 10px 36px;
-                font-size: 14px;
-            }
-
-            .win-modal {
-                padding: 28px 20px;
-            }
-
-            .modal h2 {
-                font-size: 22px;
-            }
-
-            .win-stat-value {
-                font-size: 24px;
-            }
-
-            .win-stats {
-                padding: 18px 0;
-            }
-
-            .win-actions {
-                flex-direction: column;
-            }
-
-            .share-modal-btn,
-            .close-modal-btn {
-                max-width: 100%;
-            }
-
-            .win-grid-preview {
-                transform: scale(0.85);
-            }
-
             .help-btn {
                 width: 32px;
                 height: 32px;
@@ -974,21 +913,17 @@
                 gap: 20px;
             }
 
-            .completed-indicator {
-                font-size: 10px;
-                padding: 3px 8px;
+            .result-actions {
+                flex-direction: column;
             }
-            
-            /* Fix target grid spacing on mobile */
-            #target-display {
-                margin-top: 16px;
-                padding-top: 16px;
+
+            .result-btn {
+                width: 100%;
             }
-            
-            /* Ensure buttons are always visible */
-            #actions {
-                margin-top: 12px;
-                padding-bottom: 10px;
+
+            .example-row {
+                flex-direction: column;
+                gap: 20px;
             }
         }
     </style>
@@ -998,16 +933,24 @@
         <header>
             <h1>FLUX</h1>
             <div id="subtitle">Daily Puzzle #<span id="puzzle-number"></span></div>
-            <button class="help-btn" onclick="showTutorial()" title="How to play">?</button>
+            <button class="help-btn" onclick="Game.showTutorial()" title="How to play">?</button>
             <div id="mode-toggle">
-                <button class="mode-btn active" onclick="setMode(4)">4×4 Classic</button>
-                <button class="mode-btn" onclick="setMode(5)">5×5 Hard</button>
+                <button class="mode-btn active" onclick="Game.setMode(4)">4×4<br>CLASSIC</button>
+                <button class="mode-btn" onclick="Game.setMode(5)">5×5<br>HARD</button>
             </div>
         </header>
 
         <div id="stats">
-            <div class="stat">Moves: <span class="stat-value" id="moves">0</span></div>
-            <div class="stat">Best: <span class="stat-value" id="best">-</span></div>
+            <div class="stat">
+                Moves Left: <span class="stat-value" id="moves-left">0</span>
+            </div>
+            <div class="stat">
+                Strikes: <div id="strikes-display">
+                    <div class="strike" id="strike-1">✗</div>
+                    <div class="strike" id="strike-2">✗</div>
+                    <div class="strike" id="strike-3">✗</div>
+                </div>
+            </div>
         </div>
 
         <div id="game-area">
@@ -1020,964 +963,798 @@
         </div>
 
         <div id="actions">
-            <button id="reset-btn" onclick="resetPuzzle()">Reset</button>
-            <button id="share-btn" onclick="shareResults()">Share</button>
+            <button id="strike-btn" onclick="Game.takeStrike()">Take Strike</button>
         </div>
     </div>
 
     <!-- Tutorial Overlay -->
     <div id="tutorial-overlay" class="overlay">
         <div class="modal">
-            <button class="close-btn" onclick="closeTutorial()">&times;</button>
+            <button class="close-btn" onclick="Game.closeTutorial()">&times;</button>
             <h2>How To Play</h2>
-            <p class="subtitle">Match the target pattern in 10 moves or less.</p>
+            <p class="subtitle">Solve the puzzle in the exact number of moves.</p>
             
             <div class="tutorial-section">
-                <h3>Examples</h3>
-                <div class="example-grid">
-                    <div class="mini-grid">
-                        <div class="mini-cell light"></div>
-                        <div class="mini-cell dark highlight"></div>
-                        <div class="mini-cell light"></div>
-                        <div class="mini-cell dark"></div>
-                        <div class="mini-cell dark center-highlight"></div>
-                        <div class="mini-cell dark"></div>
-                        <div class="mini-cell light"></div>
-                        <div class="mini-cell dark"></div>
-                        <div class="mini-cell light"></div>
+                <h3>The Rules</h3>
+                
+                <div class="example-row">
+                    <div class="example-item">
+                        <div class="example-label">Center</div>
+                        <div class="mini-grid">
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell dark highlight"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell dark highlight"></div>
+                            <div class="mini-cell dark center-highlight"></div>
+                            <div class="mini-cell dark highlight"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell dark highlight"></div>
+                            <div class="mini-cell light"></div>
+                        </div>
+                        <p class="example-text">Plus pattern</p>
                     </div>
-                    <p class="example-text">Click a tile to flip it <strong>and its neighbors</strong> in a plus pattern.</p>
+                    
+                    <div class="example-item">
+                        <div class="example-label">Edge</div>
+                        <div class="mini-grid">
+                            <div class="mini-cell dark highlight"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell dark center-highlight"></div>
+                            <div class="mini-cell dark highlight"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell dark highlight"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell light"></div>
+                        </div>
+                        <p class="example-text">T pattern</p>
+                    </div>
+                    
+                    <div class="example-item">
+                        <div class="example-label">Corner</div>
+                        <div class="mini-grid">
+                            <div class="mini-cell dark center-highlight"></div>
+                            <div class="mini-cell dark highlight"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell dark highlight"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell light"></div>
+                            <div class="mini-cell light"></div>
+                        </div>
+                        <p class="example-text">L pattern</p>
+                    </div>
                 </div>
                 
-                <div class="example-grid">
-                    <div class="mini-grid target">
-                        <div class="mini-cell dark"></div>
-                        <div class="mini-cell dark"></div>
-                        <div class="mini-cell light"></div>
-                        <div class="mini-cell light"></div>
-                        <div class="mini-cell dark"></div>
-                        <div class="mini-cell light"></div>
-                        <div class="mini-cell dark"></div>
-                        <div class="mini-cell light"></div>
-                        <div class="mini-cell dark"></div>
+                <p class="example-text" style="text-align: left; margin: 20px 0 0 0;">Click a tile to flip it and its adjacent neighbors. The pattern varies depending on the tile's position - a plus pattern in the center, T pattern on edges, and L pattern in corners.</p>
+                
+                <div style="margin-top: 20px;">
+                    <div class="rule-item">
+                        <div class="rule-icon">•</div>
+                        <div class="rule-text">You get the <strong>exact number of moves</strong> needed to solve</div>
                     </div>
-                    <p class="example-text">Match the <strong>target pattern</strong> shown below the game board.</p>
+                    <div class="rule-item">
+                        <div class="rule-icon">×</div>
+                        <div class="rule-text">Fail = Strike (3 strikes = game over)</div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-icon">↻</div>
+                        <div class="rule-text">Each strike resets the board</div>
+                    </div>
                 </div>
             </div>
             
             <div class="tutorial-footer">
-                <p>A new puzzle is released daily at midnight.</p>
-                <button class="play-btn" onclick="closeTutorial()">Play</button>
+                <button class="play-btn" onclick="Game.closeTutorial()">Play</button>
             </div>
         </div>
     </div>
 
-                <!-- Win Overlay -->
-    <div id="win-overlay" class="overlay">
-        <div class="modal win-modal">
-            <button class="close-btn" onclick="closeWinOverlay()">&times;</button>
-            <div class="modal-header">
-                <h2>Congratulations</h2>
-                <p class="win-subtitle">You solved today's puzzle</p>
+    <!-- Result Overlay -->
+    <div id="result-overlay" class="overlay">
+        <div class="modal result-modal">
+            <button class="close-btn" onclick="Game.closeResult()">&times;</button>
+            <div class="result-header">
+                <h2 id="result-title">Nice Try!</h2>
+                <p class="subtitle" id="result-subtitle">You'll get it tomorrow!</p>
             </div>
             
-            <div class="win-stats">
-                <div class="win-stat">
-                    <span class="win-stat-label">Moves</span>
-                    <span class="win-stat-value" id="win-moves">0</span>
-                </div>
-                <div class="win-stat-divider"></div>
-                <div class="win-stat">
-                    <span class="win-stat-label">Best</span>
-                    <span class="win-stat-value" id="win-best">-</span>
-                </div>
+            <div class="result-strikes" id="result-strikes">
+                <div class="result-strike fail">✗</div>
+                <div class="result-strike fail">✗</div>
+                <div class="result-strike fail">✗</div>
             </div>
             
-            <div class="win-grid-preview" id="win-grid-preview"></div>
-            
-            <div class="win-actions">
-                <button class="share-modal-btn" onclick="shareFromModal()">Share</button>
-                <button class="close-modal-btn" onclick="closeWinModal()">Close</button>
+            <div class="result-actions">
+                <button class="result-btn share-btn" onclick="Game.shareResults()">Share</button>
+                <button class="result-btn solution-btn" onclick="Game.showSolution()">View Solution</button>
             </div>
         </div>
     </div>
 
     <div id="message"></div>
-    <div id="streak-display">🔥 <span id="streak-count">3</span> Day Streak!</div>
     <div class="particles" id="particles"></div>
 
     <script>
-        let gridSize = 4;
-        let moves = 0;
-        let playerGrid = [];
-        let targetGrid = [];
-        let gameWon = false;
-        let gameOver = false;
-        let bestScores = {};
-        let isAnimating = false;
-        let practiceMode = false;
-        let move10Grid = null; // Store grid state at move 10
-
-        const playerGridEl = document.getElementById('player-grid');
-        const targetGridEl = document.getElementById('target-grid');
-        const movesEl = document.getElementById('moves');
-        const bestEl = document.getElementById('best');
-        const shareBtn = document.getElementById('share-btn');
-        const messageEl = document.getElementById('message');
-        const tutorialOverlay = document.getElementById('tutorial-overlay');
-        const winOverlay = document.getElementById('win-overlay');
-
-        // Test localStorage availability
-        function isLocalStorageAvailable() {
-            try {
-                const test = '__flux_test__';
-                localStorage.setItem(test, test);
-                localStorage.removeItem(test);
-                return true;
-            } catch (e) {
-                return false;
-            }
-        }
-        
-        // Memory fallback for when localStorage is not available
-        const memoryStorage = {};
-        
-        function safeSetItem(key, value) {
-            if (isLocalStorageAvailable()) {
-                localStorage.setItem(key, value);
-            } else {
-                memoryStorage[key] = value;
-            }
-        }
-        
-        function safeGetItem(key) {
-            if (isLocalStorageAvailable()) {
-                return localStorage.getItem(key);
-            } else {
-                return memoryStorage[key] || null;
-            }
-        }
-
-        // Load best scores
-        const saved = safeGetItem('flux-best-moves');
-        if (saved) bestScores = JSON.parse(saved);
-
-        // Check if first time player (for tutorial)
-        const hasPlayed = safeGetItem('flux-has-played');
-        if (!hasPlayed) {
-            setTimeout(() => {
-                tutorialOverlay.classList.add('show');
-            }, 500);
-        }
-
-        // Set puzzle number
-        const today = new Date();
-        const startDate = new Date('2025-07-29'); // Today's date for puzzle #001
-        const dayNumber = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
-        document.getElementById('puzzle-number').textContent = dayNumber.toString().padStart(3, '0');
-
-        // Check if today's puzzle has been completed
-        function getTodaysSaveKey() {
-            return `flux-puzzle-${dayNumber}-${gridSize}`;
-        }
-
-        function saveGameState() {
-            // Don't save if in practice mode (only save the initial failure state)
-            if (practiceMode) return;
+        // Game namespace to avoid global pollution
+        const Game = {
+            // State
+            gridSize: 4,
+            playerGrid: [],
+            targetGrid: [],
+            strikes: 0,
+            movesLeft: 0,
+            optimalMoves: 0,
+            isAnimating: false,
+            gameComplete: false,
             
-            const saveData = {
-                playerGrid: [...playerGrid], // Create a copy of the array
-                moves: moves,
-                completed: gameWon || gameOver,
-                won: gameWon,
-                date: today.toISOString(),
-                gridSize: gridSize // Save the grid size too
-            };
+            // Memory storage fallback
+            memoryStorage: {},
             
-            try {
-                safeSetItem(getTodaysSaveKey(), JSON.stringify(saveData));
-            } catch (e) {
-                console.error('Failed to save game state:', e);
-            }
-        }
-
-        function loadGameState() {
-            try {
-                const saved = safeGetItem(getTodaysSaveKey());
+            // Elements
+            elements: {
+                playerGrid: document.getElementById('player-grid'),
+                targetGrid: document.getElementById('target-grid'),
+                movesLeft: document.getElementById('moves-left'),
+                strikeBtn: document.getElementById('strike-btn'),
+                message: document.getElementById('message'),
+                tutorialOverlay: document.getElementById('tutorial-overlay'),
+                resultOverlay: document.getElementById('result-overlay'),
+                puzzleNumber: document.getElementById('puzzle-number'),
+                strikes: [
+                    document.getElementById('strike-1'),
+                    document.getElementById('strike-2'),
+                    document.getElementById('strike-3')
+                ]
+            },
+            
+            // Storage helpers
+            isLocalStorageAvailable() {
+                try {
+                    const test = '__flux_test__';
+                    localStorage.setItem(test, test);
+                    localStorage.removeItem(test);
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            },
+            
+            safeSetItem(key, value) {
+                if (this.isLocalStorageAvailable()) {
+                    localStorage.setItem(key, value);
+                } else {
+                    this.memoryStorage[key] = value;
+                }
+            },
+            
+            safeGetItem(key) {
+                if (this.isLocalStorageAvailable()) {
+                    return localStorage.getItem(key);
+                } else {
+                    return this.memoryStorage[key] || null;
+                }
+            },
+            
+            // Get today's date info
+            getDateInfo() {
+                const today = new Date();
+                const startDate = new Date('2025-07-29');
+                const dayNumber = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                return { today, dayNumber };
+            },
+            
+            // Get save key for today's puzzle
+            getTodaysSaveKey() {
+                const { dayNumber } = this.getDateInfo();
+                return `flux-puzzle-${dayNumber}-${this.gridSize}`;
+            },
+            
+            // Save current game state
+            saveCurrentState() {
+                const data = {
+                    complete: this.gameComplete,
+                    won: this.checkWin(),
+                    strikes: this.strikes,
+                    movesLeft: this.movesLeft,
+                    playerGrid: [...this.playerGrid],
+                    optimalMoves: this.optimalMoves,
+                    date: new Date().toISOString()
+                };
+                
+                this.safeSetItem(this.getTodaysSaveKey(), JSON.stringify(data));
+            },
+            
+            // Initialize game
+            init() {
+                const { dayNumber } = this.getDateInfo();
+                this.elements.puzzleNumber.textContent = dayNumber.toString().padStart(3, '0');
+                
+                // Check if first time player
+                const hasPlayed = this.safeGetItem('flux-has-played');
+                if (!hasPlayed) {
+                    setTimeout(() => this.showTutorial(), 500);
+                }
+                
+                this.loadOrStartGame();
+                this.updateModeButtons();
+            },
+            
+            // Load saved game or start new
+            loadOrStartGame() {
+                const saved = this.safeGetItem(this.getTodaysSaveKey());
+                
                 if (saved) {
                     const data = JSON.parse(saved);
-                    // Verify this is today's puzzle and the correct grid size
-                    if (data.date && data.gridSize === gridSize) {
-                        const savedDate = new Date(data.date);
-                        const todayDate = new Date(today);
-                        // Check if it's the same day
-                        if (savedDate.toDateString() === todayDate.toDateString()) {
-                            return data;
-                        }
-                    }
-                }
-            } catch (e) {
-                console.error('Failed to load game state:', e);
-            }
-            return null;
-        }
-
-        // Tutorial and modal functions (global for onclick)
-        window.closeTutorial = function() {
-            tutorialOverlay.classList.remove('show');
-            safeSetItem('flux-has-played', 'true');
-        }
-
-        window.showTutorial = function() {
-            tutorialOverlay.classList.add('show');
-        }
-
-        // Close win overlay with X button
-        function closeWinOverlay() {
-            // If closing the game over modal without continuing, save the game as completed
-            if (gameOver && !practiceMode && move10Grid) {
-                const saveData = {
-                    playerGrid: move10Grid,
-                    moves: 10,
-                    completed: true,
-                    won: false,
-                    date: today.toISOString(),
-                    gridSize: gridSize
-                };
-                safeSetItem(getTodaysSaveKey(), JSON.stringify(saveData));
-                
-                // Disable gameplay
-                disableGameplay();
-            }
-            
-            winOverlay.classList.remove('show');
-            
-            // Reset close button text
-            const closeBtn = document.querySelector('.close-modal-btn');
-            closeBtn.textContent = 'Close';
-            closeBtn.onclick = closeWinModal;
-        }
-
-        window.closeWinOverlay = closeWinOverlay;
-        
-        window.closeWinModal = function() {
-            closeWinOverlay();
-        }
-
-        window.shareFromModal = function() {
-            shareResults();
-        }
-
-        // Check streak
-        function checkStreak() {
-            const lastPlayed = safeGetItem('flux-last-played');
-            const streak = parseInt(safeGetItem('flux-streak') || '0');
-            
-            if (lastPlayed) {
-                const lastDate = new Date(lastPlayed);
-                const daysSince = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
-                
-                if (daysSince === 1) {
-                    // Consecutive day
-                    const newStreak = streak + 1;
-                    safeSetItem('flux-streak', newStreak.toString());
                     
-                    if (newStreak >= 3) {
-                        showStreak(newStreak);
-                    }
-                } else if (daysSince > 1) {
-                    // Streak broken
-                    safeSetItem('flux-streak', '1');
-                }
-            } else {
-                safeSetItem('flux-streak', '1');
-            }
-            
-            safeSetItem('flux-last-played', today.toISOString());
-        }
-
-        // Show streak notification
-        function showStreak(days) {
-            document.getElementById('streak-count').textContent = days;
-            document.getElementById('streak-display').classList.add('show');
-            setTimeout(() => {
-                document.getElementById('streak-display').classList.remove('show');
-            }, 3000);
-        }
-
-        // Set game mode
-        function setMode(size) {
-            gridSize = size;
-            practiceMode = false;
-            move10Grid = null;
-            
-            // Remove practice indicator if present
-            const practiceIndicator = document.querySelector('.practice-indicator');
-            if (practiceIndicator) {
-                practiceIndicator.remove();
-            }
-            
-            document.querySelectorAll('.mode-btn').forEach((btn, index) => {
-                btn.classList.toggle('active', (size === 4 && index === 0) || (size === 5 && index === 1));
-            });
-            
-            // Remove all grid classes first
-            playerGridEl.className = 'grid';
-            targetGridEl.className = 'grid';
-            
-            // Force reflow
-            void playerGridEl.offsetHeight;
-            
-            // Add new grid class
-            playerGridEl.classList.add(`grid-${size}`);
-            targetGridEl.classList.add(`grid-${size}`);
-            
-            // Clear any existing completed indicator
-            const indicator = document.querySelector('.completed-indicator');
-            if (indicator) {
-                indicator.remove();
-            }
-            
-            initGame();
-            updateModeButtons();
-        }
-
-        // Generate puzzle
-        function generatePuzzle(size) {
-            const seed = (dayNumber - 1) * 100 + size; // Subtract 1 since dayNumber now starts at 1
-            let rng = seed;
-            
-            const grid = Array(size * size).fill(true);
-            
-            // Apply fewer moves for 4x4 to make it easier
-            const targetMoves = size === 4 ? 3 + (seed % 2) : 4 + (seed % 3); // 3-4 moves for 4x4, 4-6 for 5x5
-            const movesToMake = [];
-            
-            // Ensure we get exactly the target number of moves
-            while (movesToMake.length < targetMoves) {
-                rng = (rng * 1103515245 + 12345) & 0x7fffffff;
-                const pos = rng % (size * size);
-                if (!movesToMake.includes(pos)) {
-                    movesToMake.push(pos);
-                }
-            }
-            
-            movesToMake.forEach(index => {
-                toggleCellPattern(grid, index, size);
-            });
-            
-            return grid;
-        }
-
-        // Toggle cell and neighbors
-        function toggleCellPattern(grid, index, size) {
-            grid[index] = !grid[index];
-            
-            const row = Math.floor(index / size);
-            const col = index % size;
-            
-            if (row > 0) grid[index - size] = !grid[index - size];
-            if (row < size - 1) grid[index + size] = !grid[index + size];
-            if (col > 0) grid[index - 1] = !grid[index - 1];
-            if (col < size - 1) grid[index + 1] = !grid[index + 1];
-        }
-
-        // Initialize game
-        function initGame() {
-            // Check if this puzzle was already played today
-            const savedState = loadGameState();
-            
-            if (savedState) {
-                if (savedState.completed) {
-                    // Load the completed state
-                    playerGrid = [...savedState.playerGrid]; // Create a copy
-                    moves = savedState.moves;
-                    gameWon = savedState.won;
-                    gameOver = !savedState.won;
-                    movesEl.textContent = moves;
-                    shareBtn.classList.add('active');
+                    // Generate the puzzle first to get targets
+                    const puzzle = this.generatePuzzle(this.gridSize);
+                    this.targetGrid = puzzle.target;
+                    this.optimalMoves = puzzle.moves;
                     
-                    // If it was a failed attempt, set move10Grid for sharing
-                    if (!savedState.won) {
-                        move10Grid = [...savedState.playerGrid];
-                    }
-                    
-                    // Generate the same target pattern
-                    targetGrid = generatePuzzle(gridSize);
-                    
-                    updateBestDisplay();
-                    renderGrids();
-                    updateResetButton();
-                    
-                    // Disable all interactions
-                    disableGameplay();
-                    
-                    // Show completion message
-                    setTimeout(() => {
-                        if (gameWon) {
-                            showMessage('You completed today\'s puzzle in ' + moves + ' moves!');
-                        } else {
-                            showMessage('You attempted today\'s puzzle - try again tomorrow!');
-                        }
-                    }, 500);
-                    
-                    return;
-                } else {
-                    // Load in-progress game
-                    playerGrid = [...savedState.playerGrid]; // Create a copy
-                    moves = savedState.moves;
-                    gameWon = false;
-                    gameOver = false;
-                    isAnimating = false;
-                    movesEl.textContent = moves;
-                    shareBtn.classList.remove('active');
-                    
-                    // Generate the same target pattern
-                    targetGrid = generatePuzzle(gridSize);
-                    
-                    updateBestDisplay();
-                    renderGrids();
-                    updateResetButton();
-                    
-                    // Check if already won on load (in case of refresh)
-                    if (checkWin()) {
-                        handleWin();
-                    }
-                    
-                    return;
-                }
-            }
-            
-            // Normal initialization for new game
-            moves = 0;
-            gameWon = false;
-            gameOver = false;
-            isAnimating = false;
-            practiceMode = false;
-            move10Grid = null;
-            movesEl.textContent = '0';
-            shareBtn.classList.remove('active');
-            
-            playerGrid = Array(gridSize * gridSize).fill(true);
-            targetGrid = generatePuzzle(gridSize);
-            
-            updateBestDisplay();
-            renderGrids();
-            updateResetButton();
-            
-            // Check if already won on load (in case of refresh)
-            if (checkWin()) {
-                handleWin();
-            }
-            
-            // Check streak only on first load of the day
-            if (!safeGetItem(`flux-played-${dayNumber.toString().padStart(3, '0')}`)) {
-                checkStreak();
-                safeSetItem(`flux-played-${dayNumber.toString().padStart(3, '0')}`, 'true');
-            }
-        }
-
-        // Disable gameplay for completed puzzles
-        function disableGameplay() {
-            const cells = playerGridEl.querySelectorAll('.cell');
-            cells.forEach(cell => {
-                cell.style.cursor = 'default';
-                cell.onclick = null;
-                cell.onmouseenter = null;
-                cell.onmouseleave = null;
-                cell.blur(); // Remove focus on mobile
-            });
-            
-            // Disable reset button
-            const resetBtn = document.getElementById('reset-btn');
-            resetBtn.classList.add('disabled');
-            resetBtn.onclick = () => {
-                showMessage('You can only play once per day!');
-            };
-            
-            // Add completed indicator (only if not already in practice mode)
-            const statsDiv = document.getElementById('stats');
-            if (!document.querySelector('.completed-indicator') && !practiceMode) {
-                const indicator = document.createElement('span');
-                indicator.className = 'completed-indicator' + (gameWon ? '' : ' failed');
-                indicator.textContent = gameWon ? 'Completed' : 'Attempted';
-                statsDiv.appendChild(indicator);
-            }
-        }
-
-        // Render grids
-        function renderGrids() {
-            playerGridEl.innerHTML = '';
-            targetGridEl.innerHTML = '';
-            
-            for (let i = 0; i < gridSize * gridSize; i++) {
-                // Player grid
-                const playerCell = document.createElement('button');
-                playerCell.className = 'cell' + (playerGrid[i] ? '' : ' dark');
-                playerCell.onclick = () => clickCell(i);
-                
-                // Only add hover events on non-touch devices
-                if (window.matchMedia('(hover: hover)').matches) {
-                    playerCell.onmouseenter = () => showPreview(i);
-                    playerCell.onmouseleave = () => hidePreview();
-                }
-                
-                playerGridEl.appendChild(playerCell);
-                
-                // Target grid
-                const targetCell = document.createElement('div');
-                targetCell.className = 'cell' + (targetGrid[i] ? '' : ' dark');
-                targetGridEl.appendChild(targetCell);
-            }
-        }
-
-        // Show preview on hover
-        function showPreview(index) {
-            if (gameWon || gameOver || isAnimating) return;
-            
-            const cellsToFlip = [index];
-            const row = Math.floor(index / gridSize);
-            const col = index % gridSize;
-            
-            if (row > 0) cellsToFlip.push(index - gridSize);
-            if (row < gridSize - 1) cellsToFlip.push(index + gridSize);
-            if (col > 0) cellsToFlip.push(index - 1);
-            if (col < gridSize - 1) cellsToFlip.push(index + 1);
-            
-            cellsToFlip.forEach(i => {
-                const cell = playerGridEl.children[i];
-                if (playerGrid[i]) {
-                    cell.classList.add('preview-dark');
-                } else {
-                    cell.classList.add('preview-light');
-                }
-            });
-        }
-
-        // Hide preview
-        function hidePreview() {
-            const cells = playerGridEl.querySelectorAll('.cell');
-            cells.forEach(cell => {
-                cell.classList.remove('preview-dark', 'preview-light');
-            });
-        }
-
-        // Handle cell click
-        function clickCell(index) {
-            if (gameWon || (gameOver && !practiceMode) || isAnimating) return;
-            
-            // Check if game was already completed (extra safety check)
-            const savedState = loadGameState();
-            if (savedState && savedState.completed) return;
-            
-            isAnimating = true;
-            moves++;
-            movesEl.textContent = moves;
-            updateResetButton();
-            
-            // Hide preview
-            hidePreview();
-            
-            // Remove any lingering hover states on mobile
-            const allCells = playerGridEl.querySelectorAll('.cell');
-            allCells.forEach(cell => {
-                cell.blur();
-            });
-            
-            // Create ripple effect
-            const cell = playerGridEl.children[index];
-            const rect = cell.getBoundingClientRect();
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            ripple.style.width = '20px';
-            ripple.style.height = '20px';
-            ripple.style.left = rect.left + rect.width / 2 - 10 + 'px';
-            ripple.style.top = rect.top + rect.height / 2 - 10 + 'px';
-            document.body.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
-            
-            // Animate cells
-            const cellsToFlip = [index];
-            const row = Math.floor(index / gridSize);
-            const col = index % gridSize;
-            
-            if (row > 0) cellsToFlip.push(index - gridSize);
-            if (row < gridSize - 1) cellsToFlip.push(index + gridSize);
-            if (col > 0) cellsToFlip.push(index - 1);
-            if (col < gridSize - 1) cellsToFlip.push(index + 1);
-            
-            // Apply flips with animation
-            cellsToFlip.forEach((i, delay) => {
-                setTimeout(() => {
-                    const cell = playerGridEl.children[i];
-                    cell.classList.add('animating');
-                    
-                    setTimeout(() => {
-                        playerGrid[i] = !playerGrid[i];
-                        cell.classList.toggle('dark');
-                        cell.classList.remove('animating');
+                    if (data.complete) {
+                        // Show completed state
+                        this.strikes = data.strikes;
+                        this.gameComplete = true;
+                        this.movesLeft = 0;
+                        this.playerGrid = data.won ? [...this.targetGrid] : Array(this.gridSize * this.gridSize).fill(true);
                         
-                        // Check win after each cell flip completes
-                        if (delay === cellsToFlip.length - 1) {
-                            setTimeout(() => {
-                                isAnimating = false;
-                                
-                                if (checkWin()) {
-                                    handleWin();
-                                } else if (moves >= 10 && !practiceMode) {
-                                    handleGameOver();
-                                } else {
-                                    // Save game state after move completes (only if game is still in progress)
-                                    if (!practiceMode && !gameWon && !gameOver) {
-                                        saveGameState();
-                                    }
-                                }
-                            }, 100);
+                        this.renderGame();
+                        this.updateStrikesDisplay();
+                        this.disableGameplay();
+                        
+                        const statsDiv = document.getElementById('stats');
+                        const indicator = document.createElement('span');
+                        indicator.className = 'completed-indicator';
+                        if (data.won) {
+                            indicator.textContent = 'Completed';
+                        } else {
+                            indicator.textContent = 'Failed';
+                            indicator.classList.add('failed');
                         }
-                    }, 200);
-                }, delay * 50);
-            });
-        }
-
-        // Create particle effects
-        function createParticles(x, y, count) {
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = x + (Math.random() - 0.5) * 40 + 'px';
-                    particle.style.top = y + (Math.random() - 0.5) * 40 + 'px';
-                    document.getElementById('particles').appendChild(particle);
-                    setTimeout(() => particle.remove(), 1000);
-                }, i * 50);
-            }
-        }
-
-        // Check win
-        function checkWin() {
-            return playerGrid.every((cell, i) => cell === targetGrid[i]);
-        }
-
-        // Handle win
-        function handleWin() {
-            gameWon = true;
-            shareBtn.classList.add('active');
-            
-            // Save game state only if not in practice mode
-            if (!practiceMode) {
-                // Normal win within 10 moves
-                saveGameState();
-                
-                // Update best score (based on fewest moves)
-                if (!bestScores[gridSize] || moves < bestScores[gridSize]) {
-                    bestScores[gridSize] = moves;
-                    safeSetItem('flux-best-moves', JSON.stringify(bestScores));
-                    updateBestDisplay();
+                        statsDiv.appendChild(indicator);
+                    } else {
+                        // Resume in-progress game
+                        this.strikes = data.strikes;
+                        this.movesLeft = data.movesLeft;
+                        this.playerGrid = [...data.playerGrid];
+                        this.gameComplete = false;
+                        this.isAnimating = false;
+                        
+                        this.renderGame();
+                        this.updateStrikesDisplay();
+                    }
+                    
+                    return;
                 }
                 
-                // Update mode buttons to show completion
-                updateModeButtons();
-            }
-            // If in practice mode, don't save or update anything
+                // Start new game
+                this.startNewGame();
+            },
             
-            // Show win modal
-            setTimeout(() => {
-                showWinModal();
-            }, 500);
+            // Start new game
+            startNewGame() {
+                this.strikes = 0;
+                this.gameComplete = false;
+                this.isAnimating = false;
+                
+                const puzzle = this.generatePuzzle(this.gridSize);
+                this.playerGrid = puzzle.start;
+                this.targetGrid = puzzle.target;
+                this.optimalMoves = puzzle.moves;
+                this.movesLeft = puzzle.moves;
+                
+                this.renderGame();
+                this.updateStrikesDisplay();
+                
+                // Save initial state
+                this.saveCurrentState();
+            },
             
-            // Celebration particles
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const x = Math.random() * window.innerWidth;
-                    const y = window.innerHeight / 2;
-                    createParticles(x, y, 10);
-                }, i * 200);
-            }
-            
-            // Disable further gameplay
-            disableGameplay();
-        }
-
-        // Show win modal
-        function showWinModal() {
-            // Reset modal content for win
-            if (practiceMode) {
-                document.querySelector('.win-modal h2').textContent = 'Puzzle Solved!';
-                document.querySelector('.win-subtitle').textContent = `Completed in ${moves} moves (practice mode)`;
-            } else {
-                document.querySelector('.win-modal h2').textContent = 'Congratulations';
-                document.querySelector('.win-subtitle').textContent = 'You solved today\'s puzzle';
-            }
-            
-            // Update win stats
-            document.getElementById('win-moves').textContent = moves;
-            document.getElementById('win-best').textContent = bestScores[gridSize] || moves;
-            
-            // Create grid preview
-            const preview = document.getElementById('win-grid-preview');
-            preview.innerHTML = '';
-            
-            const modalGrid = document.createElement('div');
-            modalGrid.className = `modal-grid modal-grid-${gridSize}`;
-            
-            for (let i = 0; i < gridSize * gridSize; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'modal-cell' + (playerGrid[i] ? '' : ' dark');
-                modalGrid.appendChild(cell);
-            }
-            
-            preview.appendChild(modalGrid);
-            
-            // Show modal
-            winOverlay.classList.add('show');
-        }
-
-        // Close win modal
-        function closeWinModal() {
-            winOverlay.classList.remove('show');
-        }
-
-
-
-        // Handle game over (10 moves reached)
-        function handleGameOver() {
-            // Mark as game over but don't disable yet
-            gameOver = true;
-            shareBtn.classList.add('active');
-            
-            // Save the grid state at move 10 for sharing
-            move10Grid = [...playerGrid];
-            
-            // Count correct dark tiles
-            const correctTiles = playerGrid.filter((cell, i) => cell === targetGrid[i]).length;
-            
-            // Show game over modal (reuse win modal with different content)
-            document.querySelector('.win-modal h2').textContent = 'Nice Try';
-            document.querySelector('.win-subtitle').textContent = `You got ${correctTiles} of ${gridSize * gridSize} tiles correct`;
-            document.getElementById('win-moves').textContent = moves;
-            document.getElementById('win-best').textContent = bestScores[gridSize] || '-';
-            
-            // Change the close button text to "Keep Trying"
-            const closeBtn = document.querySelector('.close-modal-btn');
-            closeBtn.textContent = 'Keep Trying';
-            closeBtn.onclick = () => {
-                continueInPracticeMode();
-            };
-            
-            // Create grid preview showing move 10 state
-            const preview = document.getElementById('win-grid-preview');
-            preview.innerHTML = '';
-            
-            const modalGrid = document.createElement('div');
-            modalGrid.className = `modal-grid modal-grid-${gridSize}`;
-            
-            for (let i = 0; i < gridSize * gridSize; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'modal-cell' + (move10Grid[i] ? '' : ' dark');
-                modalGrid.appendChild(cell);
-            }
-            
-            preview.appendChild(modalGrid);
-            
-            // Show modal
-            winOverlay.classList.add('show');
-        }
-
-        // Update best score display
-        function updateBestDisplay() {
-            bestEl.textContent = bestScores[gridSize] || '-';
-        }
-
-        // Reset puzzle
-        function resetPuzzle() {
-            // Check if already completed AND not in practice mode
-            const savedState = loadGameState();
-            if (savedState && savedState.completed && !practiceMode && !gameOver) {
-                showMessage('You can only play once per day!');
-                return;
-            }
-            
-            // Don't allow reset if no moves have been made
-            if (moves === 0) {
-                return;
-            }
-            
-            // Reset grid state but keep moves counter
-            gameWon = false;
-            gameOver = false;
-            isAnimating = false;
-            
-            // If in practice mode, keep the share button active
-            if (practiceMode) {
-                shareBtn.classList.add('active');
-            } else {
-                shareBtn.classList.remove('active');
-            }
-            
-            playerGrid = Array(gridSize * gridSize).fill(true);
-            
-            renderGrids();
-            updateResetButton();
-            
-            // Save the reset state
-            if (!practiceMode) {
-                saveGameState();
-            }
-        }
-
-        // Update reset button state
-        function updateResetButton() {
-            const resetBtn = document.getElementById('reset-btn');
-            if (moves === 0) {
-                resetBtn.classList.add('inactive');
-            } else {
-                resetBtn.classList.remove('inactive');
-            }
-        }
-
-        // Continue in practice mode after failing
-        function continueInPracticeMode() {
-            practiceMode = true;
-            gameOver = false; // Allow clicking tiles again
-            
-            // Close the modal
-            winOverlay.classList.remove('show');
-            
-            // Reset close button for future use
-            const closeBtn = document.querySelector('.close-modal-btn');
-            closeBtn.textContent = 'Close';
-            closeBtn.onclick = closeWinModal;
-            
-            // Add practice indicator to UI
-            const movesDiv = document.querySelector('.stat');
-            if (!movesDiv.querySelector('.practice-indicator')) {
-                const indicator = document.createElement('span');
-                indicator.className = 'practice-indicator';
-                indicator.textContent = ' (practice)';
-                movesDiv.appendChild(indicator);
-            }
-            
-            // Re-render grids to ensure click handlers are attached
-            renderGrids();
-            
-            // Re-enable reset button for practice mode
-            const resetBtn = document.getElementById('reset-btn');
-            resetBtn.classList.remove('disabled');
-            resetBtn.onclick = resetPuzzle;
-            updateResetButton();
-            
-            // Keep share button active
-            shareBtn.classList.add('active');
-            
-            // Show message that they're in practice mode
-            showMessage('Now in practice mode - solve it for fun! 🎯');
-        }
-
-        // Show message
-        function showMessage(text) {
-            messageEl.textContent = text;
-            messageEl.classList.add('show');
-            setTimeout(() => messageEl.classList.remove('show'), 2000);
-        }
-
-        // Share results
-        function shareResults() {
-            // Allow sharing if: won, in practice mode (with move10Grid), or game over
-            if (!gameWon && !move10Grid && !gameOver) return;
-            
-            // Use move 10 grid state if available (for practice mode or game over)
-            const gridToShare = (practiceMode && move10Grid) || (gameOver && move10Grid) ? move10Grid : playerGrid;
-            
-            const emoji = gridToShare.map(lit => lit ? '🟩' : '⬛');
-            const rows = [];
-            for (let i = 0; i < gridSize; i++) {
-                rows.push(emoji.slice(i * gridSize, (i + 1) * gridSize).join(''));
-            }
-            
-            let resultText;
-            const modeText = gridSize === 5 ? ' (Hard)' : '';
-            if (gameWon && !practiceMode) {
-                resultText = `FLUX ${dayNumber.toString().padStart(3, '0')}${modeText}\n` +
-                            `${moves}/10\n\n`;
-            } else {
-                resultText = `FLUX ${dayNumber.toString().padStart(3, '0')}${modeText}\n` +
-                            `X/10\n\n`;
-            }
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showMessage('Copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy:', err);
-                showMessage('Failed to copy to clipboard');
-            });
-        }
-
-        // Force check win state (for debugging)
-        function forceCheckWin() {
-            // Don't check if already completed today
-            const savedState = loadGameState();
-            if (savedState && savedState.completed) {
-                return;
-            }
-            
-            if (checkWin() && !gameWon) {
-                handleWin();
-            }
-        }
-
-        // Expose functions for onclick handlers
-        window.setMode = setMode;
-        window.resetPuzzle = resetPuzzle;
-        window.shareResults = shareResults;
-        window.updateModeButtons = updateModeButtons;
-        window.continueInPracticeMode = continueInPracticeMode;
-        
-        // Check completion status for both modes
-        function updateModeButtons() {
-            const modeBtns = document.querySelectorAll('.mode-btn');
-            let completedCount = 0;
-            
-            // Check 4x4 completion
-            const saved4x4 = safeGetItem(`flux-puzzle-${dayNumber}-4`);
-            if (saved4x4) {
-                const data = JSON.parse(saved4x4);
-                if (data.completed) {
-                    // Show checkmark only if won within 10 moves
-                    if (data.won) {
-                        modeBtns[0].classList.add('completed');
-                        completedCount++;
+            // Generate puzzle
+            generatePuzzle(size) {
+                const { dayNumber } = this.getDateInfo();
+                const seed = (dayNumber - 1) * 100 + size;
+                let rng = seed;
+                
+                // Start with all light
+                const grid = Array(size * size).fill(true);
+                
+                // Determine moves based on size
+                const moves = size === 4 ? 3 + (seed % 2) : 4 + (seed % 3);
+                const movesToMake = [];
+                
+                // Generate unique random positions
+                while (movesToMake.length < moves) {
+                    rng = (rng * 1103515245 + 12345) & 0x7fffffff;
+                    const pos = rng % (size * size);
+                    if (!movesToMake.includes(pos)) {
+                        movesToMake.push(pos);
                     }
                 }
-            }
+                
+                // Apply moves to create target
+                movesToMake.forEach(index => {
+                    this.toggleCellPattern(grid, index, size);
+                });
+                
+                return {
+                    start: Array(size * size).fill(true),
+                    target: grid,
+                    moves: moves
+                };
+            },
             
-            // Check 5x5 completion
-            const saved5x5 = safeGetItem(`flux-puzzle-${dayNumber}-5`);
-            if (saved5x5) {
-                const data = JSON.parse(saved5x5);
-                if (data.completed) {
-                    // Show checkmark only if won within 10 moves
-                    if (data.won) {
-                        modeBtns[1].classList.add('completed');
-                        completedCount++;
+            // Toggle cell pattern
+            toggleCellPattern(grid, index, size) {
+                grid[index] = !grid[index];
+                
+                const row = Math.floor(index / size);
+                const col = index % size;
+                
+                if (row > 0) grid[index - size] = !grid[index - size];
+                if (row < size - 1) grid[index + size] = !grid[index + size];
+                if (col > 0) grid[index - 1] = !grid[index - 1];
+                if (col < size - 1) grid[index + 1] = !grid[index + 1];
+            },
+            
+            // Render game
+            renderGame() {
+                // Update moves display
+                this.elements.movesLeft.textContent = this.movesLeft;
+                
+                // Render grids
+                this.elements.playerGrid.innerHTML = '';
+                this.elements.targetGrid.innerHTML = '';
+                
+                for (let i = 0; i < this.gridSize * this.gridSize; i++) {
+                    // Player grid
+                    const playerCell = document.createElement('button');
+                    playerCell.className = 'cell' + (this.playerGrid[i] ? '' : ' dark');
+                    playerCell.setAttribute('type', 'button');
+                    playerCell.onclick = () => this.clickCell(i);
+                    
+                    if (window.matchMedia('(hover: hover)').matches) {
+                        playerCell.onmouseenter = () => this.showPreview(i);
+                        playerCell.onmouseleave = () => this.hidePreview();
+                    }
+                    
+                    this.elements.playerGrid.appendChild(playerCell);
+                    
+                    // Target grid
+                    const targetCell = document.createElement('div');
+                    targetCell.className = 'cell' + (this.targetGrid[i] ? '' : ' dark');
+                    this.elements.targetGrid.appendChild(targetCell);
+                }
+                
+                // Update button state
+                this.updateStrikeButton();
+            },
+            
+            // Click cell
+            clickCell(index) {
+                if (this.gameComplete || this.isAnimating || this.movesLeft === 0) return;
+                
+                this.isAnimating = true;
+                this.movesLeft--;
+                this.elements.movesLeft.textContent = this.movesLeft;
+                
+                // Hide preview
+                this.hidePreview();
+                
+                // Create ripple
+                const cell = this.elements.playerGrid.children[index];
+                const rect = cell.getBoundingClientRect();
+                this.createRipple(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                
+                // Get cells to flip
+                const cellsToFlip = this.getCellsToFlip(index);
+                
+                // Animate flips
+                cellsToFlip.forEach((i, delay) => {
+                    setTimeout(() => {
+                        const cell = this.elements.playerGrid.children[i];
+                        cell.classList.add('animating');
+                        
+                        setTimeout(() => {
+                            this.playerGrid[i] = !this.playerGrid[i];
+                            cell.classList.toggle('dark');
+                            cell.classList.remove('animating');
+                            
+                            // Check result after last animation
+                            if (delay === cellsToFlip.length - 1) {
+                                setTimeout(() => {
+                                    this.isAnimating = false;
+                                    // Save state after move completes
+                                    this.saveCurrentState();
+                                    this.checkGameState();
+                                }, 100);
+                            }
+                        }, 200);
+                    }, delay * 50);
+                });
+            },
+            
+            // Get cells to flip
+            getCellsToFlip(index) {
+                const cells = [index];
+                const row = Math.floor(index / this.gridSize);
+                const col = index % this.gridSize;
+                
+                if (row > 0) cells.push(index - this.gridSize);
+                if (row < this.gridSize - 1) cells.push(index + this.gridSize);
+                if (col > 0) cells.push(index - 1);
+                if (col < this.gridSize - 1) cells.push(index + 1);
+                
+                return cells;
+            },
+            
+            // Check game state
+            checkGameState() {
+                const won = this.checkWin();
+                
+                if (won) {
+                    this.handleWin();
+                } else if (this.movesLeft === 0) {
+                    // Delay slightly to let animations finish
+                    setTimeout(() => {
+                        this.handleStrike();
+                    }, 300);
+                }
+                
+                this.updateStrikeButton();
+            },
+            
+            // Check win
+            checkWin() {
+                return this.playerGrid.every((cell, i) => cell === this.targetGrid[i]);
+            },
+            
+            // Handle win
+            handleWin() {
+                this.gameComplete = true;
+                this.saveGameState(true);
+                this.showResult(true);
+                this.createCelebration();
+            },
+            
+            // Handle strike
+            handleStrike() {
+                // Prevent multiple strikes while animating
+                if (this.isAnimating) return;
+                
+                this.strikes++;
+                this.updateStrikesDisplay();
+                
+                if (this.strikes >= 3) {
+                    // Game over
+                    this.gameComplete = true;
+                    this.saveGameState(false);
+                    this.showResult(false);
+                } else {
+                    // Reset for next attempt
+                    this.showMessage(`Strike ${this.strikes}! ${3 - this.strikes} ${this.strikes === 2 ? 'chance' : 'chances'} left`);
+                    this.isAnimating = true;
+                    // Save state after strike
+                    this.saveCurrentState();
+                    setTimeout(() => {
+                        this.resetBoard();
+                    }, 1500);
+                }
+            },
+            
+            // Take strike manually
+            takeStrike() {
+                // Don't allow if game is complete or animating
+                if (this.gameComplete || this.isAnimating) return;
+                
+                // Don't allow if button is disabled
+                if (this.elements.strikeBtn.classList.contains('disabled')) return;
+                
+                // Only allow if we have moves left
+                if (this.movesLeft > 0) {
+                    this.movesLeft = 0;
+                    this.handleStrike();
+                }
+            },
+            
+            // Reset board for next attempt
+            resetBoard() {
+                this.playerGrid = Array(this.gridSize * this.gridSize).fill(true);
+                this.movesLeft = this.optimalMoves;
+                this.isAnimating = false;
+                this.renderGame();
+                // Save state after board reset
+                this.saveCurrentState();
+            },
+            
+            // Update strikes display
+            updateStrikesDisplay() {
+                this.elements.strikes.forEach((el, i) => {
+                    if (i < this.strikes) {
+                        el.classList.add('filled');
+                        el.classList.remove('success');
+                        el.textContent = '✗';
+                    } else if (i === this.strikes && this.gameComplete && this.checkWin()) {
+                        el.classList.add('success');
+                        el.classList.remove('filled');
+                        el.textContent = '✓';
+                    } else {
+                        el.classList.remove('filled', 'success');
+                        el.textContent = '✗';
+                    }
+                });
+            },
+            
+            // Update strike button
+            updateStrikeButton() {
+                if (this.movesLeft === 0 || this.gameComplete) {
+                    this.elements.strikeBtn.classList.add('disabled');
+                } else {
+                    this.elements.strikeBtn.classList.remove('disabled');
+                }
+            },
+            
+            // Save game state (for completed games)
+            saveGameState(won) {
+                const data = {
+                    complete: true,
+                    won: won,
+                    strikes: this.strikes,
+                    optimalMoves: this.optimalMoves,
+                    date: new Date().toISOString()
+                };
+                
+                this.safeSetItem(this.getTodaysSaveKey(), JSON.stringify(data));
+                this.updateModeButtons();
+            },
+            
+            // Show result modal
+            showResult(won) {
+                const modal = this.elements.resultOverlay;
+                const title = document.getElementById('result-title');
+                const subtitle = document.getElementById('result-subtitle');
+                const strikesContainer = document.getElementById('result-strikes');
+                
+                if (won) {
+                    title.textContent = 'Perfect!';
+                    subtitle.textContent = `Solved in ${3 - this.strikes} ${this.strikes === 2 ? 'attempt' : 'attempts'}`;
+                    
+                    // Show strikes
+                    strikesContainer.innerHTML = '';
+                    for (let i = 0; i < 3; i++) {
+                        const strike = document.createElement('div');
+                        strike.className = 'result-strike';
+                        
+                        if (i < this.strikes) {
+                            strike.className += ' fail';
+                            strike.textContent = '✗';
+                        } else if (i === this.strikes) {
+                            strike.className += ' success';
+                            strike.textContent = '✓';
+                        } else {
+                            strike.className += ' unused';
+                            strike.textContent = '○';
+                        }
+                        
+                        strikesContainer.appendChild(strike);
+                    }
+                } else {
+                    title.textContent = 'Nice Try!';
+                    subtitle.textContent = 'Better luck tomorrow';
+                    
+                    // All strikes failed
+                    strikesContainer.innerHTML = '';
+                    for (let i = 0; i < 3; i++) {
+                        const strike = document.createElement('div');
+                        strike.className = 'result-strike fail';
+                        strike.textContent = '✗';
+                        strikesContainer.appendChild(strike);
                     }
                 }
-            }
+                
+                modal.classList.add('show');
+            },
             
-            // Check if both modes completed
-            if (completedCount === 2 && !sessionStorage.getItem(`flux-both-completed-${dayNumber}`)) {
-                sessionStorage.setItem(`flux-both-completed-${dayNumber}`, 'true');
-                setTimeout(() => {
-                    showMessage('Perfect Day! Both puzzles completed!');
-                }, 1000);
+            // Share results
+            shareResults() {
+                const { dayNumber } = this.getDateInfo();
+                const modeText = this.gridSize === 5 ? ' (Hard)' : '';
+                
+                let strikesText = '';
+                for (let i = 0; i < 3; i++) {
+                    if (i < this.strikes) {
+                        strikesText += '❌';
+                    } else if (i === this.strikes && this.gameComplete && this.checkWin()) {
+                        strikesText += '✅';
+                    } else {
+                        strikesText += '⚪';
+                    }
+                }
+                
+                const text = `FLUX ${dayNumber.toString().padStart(3, '0')}${modeText}\n${strikesText}\n\nflux-game.com`;
+                
+                navigator.clipboard.writeText(text).then(() => {
+                    this.showMessage('Copied to clipboard!');
+                }).catch(() => {
+                    this.showMessage('Failed to copy');
+                });
+            },
+            
+            // Show solution
+            showSolution() {
+                // This would show the optimal moves
+                // For now, just show a message
+                this.showMessage('Solution feature coming soon!');
+            },
+            
+            // Preview hover
+            showPreview(index) {
+                if (this.gameComplete || this.isAnimating || this.movesLeft === 0) return;
+                
+                const cellsToFlip = this.getCellsToFlip(index);
+                cellsToFlip.forEach(i => {
+                    const cell = this.elements.playerGrid.children[i];
+                    if (this.playerGrid[i]) {
+                        cell.classList.add('preview-dark');
+                    } else {
+                        cell.classList.add('preview-light');
+                    }
+                });
+            },
+            
+            hidePreview() {
+                const cells = this.elements.playerGrid.querySelectorAll('.cell');
+                cells.forEach(cell => {
+                    cell.classList.remove('preview-dark', 'preview-light');
+                });
+            },
+            
+            // UI helpers
+            showMessage(text) {
+                this.elements.message.textContent = text;
+                this.elements.message.classList.add('show');
+                setTimeout(() => this.elements.message.classList.remove('show'), 2500);
+            },
+            
+            createRipple(x, y) {
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.left = (x - 10) + 'px';
+                ripple.style.top = (y - 10) + 'px';
+                document.body.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            },
+            
+            createCelebration() {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        const x = Math.random() * window.innerWidth;
+                        const y = window.innerHeight / 2;
+                        this.createParticles(x, y, 10);
+                    }, i * 200);
+                }
+            },
+            
+            createParticles(x, y, count) {
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        const particle = document.createElement('div');
+                        particle.className = 'particle';
+                        particle.style.left = x + (Math.random() - 0.5) * 40 + 'px';
+                        particle.style.top = y + (Math.random() - 0.5) * 40 + 'px';
+                        document.getElementById('particles').appendChild(particle);
+                        setTimeout(() => particle.remove(), 1000);
+                    }, i * 50);
+                }
+            },
+            
+            // Tutorial
+            showTutorial() {
+                this.elements.tutorialOverlay.classList.add('show');
+            },
+            
+            closeTutorial() {
+                this.elements.tutorialOverlay.classList.remove('show');
+                this.safeSetItem('flux-has-played', 'true');
+            },
+            
+            // Result modal
+            closeResult() {
+                this.elements.resultOverlay.classList.remove('show');
+            },
+            
+            // Mode switching
+            setMode(size) {
+                if (this.gridSize === size) return;
+                
+                this.gridSize = size;
+                
+                // Update UI
+                document.querySelectorAll('.mode-btn').forEach((btn, index) => {
+                    btn.classList.toggle('active', (size === 4 && index === 0) || (size === 5 && index === 1));
+                });
+                
+                // Update grid classes - remove only size-specific classes
+                this.elements.playerGrid.classList.remove('grid-4', 'grid-5');
+                this.elements.targetGrid.classList.remove('grid-4', 'grid-5');
+                
+                // Force layout recalculation
+                void this.elements.playerGrid.offsetHeight;
+                void this.elements.targetGrid.offsetHeight;
+                
+                // Add new size class
+                this.elements.playerGrid.classList.add(`grid-${size}`);
+                this.elements.targetGrid.classList.add(`grid-${size}`);
+                
+                // Clear any existing completed indicator
+                const indicator = document.querySelector('.completed-indicator');
+                if (indicator) indicator.remove();
+                
+                // Load new game
+                this.loadOrStartGame();
+            },
+            
+            // Update mode buttons
+            updateModeButtons() {
+                const { dayNumber } = this.getDateInfo();
+                const modeBtns = document.querySelectorAll('.mode-btn');
+                
+                // Check 4x4 completion
+                const saved4x4 = this.safeGetItem(`flux-puzzle-${dayNumber}-4`);
+                if (saved4x4) {
+                    const data = JSON.parse(saved4x4);
+                    if (data.complete) {
+                        if (data.won) {
+                            modeBtns[0].classList.add('completed');
+                            modeBtns[0].classList.remove('failed');
+                        } else {
+                            modeBtns[0].classList.add('failed');
+                            modeBtns[0].classList.remove('completed');
+                        }
+                    }
+                }
+                
+                // Check 5x5 completion
+                const saved5x5 = this.safeGetItem(`flux-puzzle-${dayNumber}-5`);
+                if (saved5x5) {
+                    const data = JSON.parse(saved5x5);
+                    if (data.complete) {
+                        if (data.won) {
+                            modeBtns[1].classList.add('completed');
+                            modeBtns[1].classList.remove('failed');
+                        } else {
+                            modeBtns[1].classList.add('failed');
+                            modeBtns[1].classList.remove('completed');
+                        }
+                    }
+                }
+            },
+            
+            // Disable gameplay
+            disableGameplay() {
+                const cells = this.elements.playerGrid.querySelectorAll('.cell');
+                cells.forEach(cell => {
+                    cell.style.cursor = 'default';
+                    cell.onclick = null;
+                    cell.onmouseenter = null;
+                    cell.onmouseleave = null;
+                });
+                
+                this.elements.strikeBtn.classList.add('disabled');
+                this.elements.strikeBtn.onclick = () => {
+                    this.showMessage('Come back tomorrow for a new puzzle!');
+                };
             }
-        }
-
-        // Initialize
-        initGame();
-        updateModeButtons();
+        };
         
-        // Add debug check on load
-        setTimeout(forceCheckWin, 500);
+        // Initialize game when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            Game.init();
+        });
     </script>
 </body>
 </html>
