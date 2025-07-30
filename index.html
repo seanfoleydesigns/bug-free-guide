@@ -1904,8 +1904,6 @@
                             `X/10\n\n`;
             }
             
-            const text = resultText + rows.join('\n') + '\n\nPlay FLUX at: flux.game';
-            
             navigator.clipboard.writeText(text).then(() => {
                 showMessage('Copied to clipboard!');
             }).catch(err => {
