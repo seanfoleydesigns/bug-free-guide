@@ -79,8 +79,8 @@
         }
 
         .help-btn:hover {
-            border-color: #4ade80;
-            color: #4ade80;
+            border-color: #3b82f6;
+            color: #3b82f6;
             transform: scale(1.1);
         }
 
@@ -94,22 +94,22 @@
 
         #mode-toggle {
             display: inline-flex;
-            gap: 8px;
+            gap: 4px;
             margin-bottom: 12px;
         }
 
         .mode-btn {
-            padding: 8px 16px;
+            padding: 6px 10px;
             border: none;
             background: #f0f0f0;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
             transition: all 0.2s;
             color: #666;
             position: relative;
-            width: 110px;
+            width: 60px;
             line-height: 1.4;
         }
 
@@ -152,9 +152,9 @@
         }
 
         .mode-btn.active {
-            background: #4ade80;
-            color: #000;
-            box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3);
+            background: #3b82f6;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
             font-weight: 600;
         }
 
@@ -263,8 +263,18 @@
             max-height: 239px;
         }
 
+        #player-grid.grid-6,
+        #target-grid.grid-6 {
+            grid-template-columns: repeat(6, 35px);
+            grid-template-rows: repeat(6, 35px);
+            min-width: 238px;
+            min-height: 238px;
+            max-width: 238px;
+            max-height: 238px;
+        }
+
         .cell {
-            background: #4ade80;
+            background: #3b82f6;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -299,6 +309,12 @@
             height: 43px;
         }
 
+        .grid-6 .cell {
+            border-radius: 5px;
+            width: 35px;
+            height: 35px;
+        }
+
         .cell::before {
             content: '';
             position: absolute;
@@ -322,7 +338,7 @@
 
         .cell:hover:not(.animating) {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
         }
 
         @media (hover: none) and (pointer: coarse) {
@@ -333,7 +349,7 @@
         }
 
         .cell.preview-light {
-            background: #86efac !important;
+            background: #60a5fa !important;
         }
 
         .cell.preview-dark {
@@ -353,7 +369,7 @@
         .ripple {
             position: absolute;
             border-radius: 50%;
-            background: rgba(74, 222, 128, 0.3);
+            background: rgba(59, 130, 246, 0.3);
             transform: scale(0);
             animation: ripple-effect 0.6s ease-out;
             pointer-events: none;
@@ -445,7 +461,7 @@
             color: #666;
             font-size: 15px;
             margin: 0 0 20px 0;
-            text-align: left;
+            text-align: center;
         }
 
         .tutorial-section {
@@ -501,7 +517,7 @@
         }
 
         .mini-cell.light {
-            background: #4ade80;
+            background: #3b82f6;
         }
 
         .mini-cell.dark {
@@ -571,10 +587,10 @@
         .play-btn {
             background: #4ade80;
             color: #000;
-            padding: 11px 42px;
+            padding: 10px 38px;
             border: none;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -582,8 +598,6 @@
 
         .play-btn:hover {
             background: #22c55e;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
         }
 
         /* Result Modal */
@@ -636,19 +650,24 @@
             display: flex;
             gap: 12px;
             justify-content: center;
+            align-items: center;
             margin-top: 24px;
         }
 
         .result-btn {
-            padding: 13px 32px;
+            padding: 11px 28px;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .share-btn {
@@ -658,8 +677,6 @@
 
         .share-btn:hover {
             background: #000;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .solution-btn {
@@ -701,6 +718,10 @@
             transform: scale(0.65);
         }
 
+        #target-grid.grid-6 {
+            transform: scale(0.7);
+        }
+
         #actions {
             display: flex;
             gap: 10px;
@@ -709,10 +730,10 @@
         }
 
         button {
-            padding: 12px 24px;
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -723,12 +744,11 @@
         #strike-btn {
             background: #ef4444;
             color: white;
+            width: 120px;
         }
 
         #strike-btn:hover {
             background: #dc2626;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(239, 68, 68, 0.3);
         }
 
         #strike-btn.disabled {
@@ -742,13 +762,34 @@
             box-shadow: none;
         }
 
+        #share-btn {
+            background: #1a1a1a;
+            color: white;
+            width: 120px;
+        }
+
+        #share-btn:hover:not(.disabled) {
+            background: #000;
+        }
+
+        #share-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        #share-btn.disabled:hover {
+            background: #1a1a1a;
+            transform: none;
+            box-shadow: none;
+        }
+
         #message {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
             background: #1a1a1a;
-            color: #4ade80;
+            color: #3b82f6;
             padding: 12px 24px;
             border-radius: 8px;
             font-size: 14px;
@@ -774,7 +815,7 @@
             position: absolute;
             width: 4px;
             height: 4px;
-            background: #4ade80;
+            background: #3b82f6;
             border-radius: 50%;
             animation: particle-float 1s ease-out forwards;
         }
@@ -821,6 +862,15 @@
                 min-height: 43px !important;
                 max-width: 43px !important;
                 max-height: 43px !important;
+            }
+            
+            .grid-6 .cell {
+                width: 35px !important;
+                height: 35px !important;
+                min-width: 35px !important;
+                min-height: 35px !important;
+                max-width: 35px !important;
+                max-height: 35px !important;
             }
         }
 
@@ -897,6 +947,28 @@
                 transform: none !important;
             }
 
+            #player-grid.grid-6,
+            #target-grid.grid-6 {
+                display: grid !important;
+                grid-template-columns: repeat(6, 1fr) !important;
+                grid-template-rows: repeat(6, 1fr) !important;
+                gap: 4px !important;
+                grid-gap: 4px !important;
+                width: 214px !important;
+                height: 214px !important;
+            }
+            
+            .grid-6 .cell {
+                width: 100% !important;
+                height: 100% !important;
+                border-radius: 5px !important;
+                transform: none !important;
+            }
+
+            .grid-6 .cell.dark {
+                transform: none !important;
+            }
+
             .modal {
                 padding: 20px;
                 max-width: 95%;
@@ -918,12 +990,21 @@
             }
 
             .result-btn {
-                width: 100%;
+                width: 100% !important;
             }
 
             .example-row {
                 flex-direction: column;
                 gap: 20px;
+            }
+            
+            #actions {
+                flex-direction: column;
+            }
+            
+            #strike-btn,
+            #share-btn {
+                width: 100%;
             }
         }
     </style>
@@ -935,8 +1016,9 @@
             <div id="subtitle">Daily Puzzle #<span id="puzzle-number"></span></div>
             <button class="help-btn" onclick="Game.showTutorial()" title="How to play">?</button>
             <div id="mode-toggle">
-                <button class="mode-btn active" onclick="Game.setMode(4)">4×4<br>CLASSIC</button>
-                <button class="mode-btn" onclick="Game.setMode(5)">5×5<br>HARD</button>
+                <button class="mode-btn active" onclick="Game.setMode(4)">4×4</button>
+                <button class="mode-btn" onclick="Game.setMode(5)">5×5</button>
+                <button class="mode-btn" onclick="Game.setMode(6)">6×6</button>
             </div>
         </header>
 
@@ -963,7 +1045,8 @@
         </div>
 
         <div id="actions">
-            <button id="strike-btn" onclick="Game.takeStrike()">Take Strike</button>
+            <button id="strike-btn" onclick="Game.takeStrike()">Strike</button>
+            <button id="share-btn" class="disabled" onclick="Game.shareResults()">Share</button>
         </div>
     </div>
 
@@ -1066,9 +1149,9 @@
                 <div class="result-strike fail">✗</div>
             </div>
             
-            <div class="result-actions">
+            <div class="result-actions" id="result-actions">
                 <button class="result-btn share-btn" onclick="Game.shareResults()">Share</button>
-                <button class="result-btn solution-btn" onclick="Game.showSolution()">View Solution</button>
+                <button class="result-btn solution-btn" onclick="Game.showSolution()">Solution</button>
             </div>
         </div>
     </div>
@@ -1098,6 +1181,7 @@
                 targetGrid: document.getElementById('target-grid'),
                 movesLeft: document.getElementById('moves-left'),
                 strikeBtn: document.getElementById('strike-btn'),
+                shareBtn: document.getElementById('share-btn'),
                 message: document.getElementById('message'),
                 tutorialOverlay: document.getElementById('tutorial-overlay'),
                 resultOverlay: document.getElementById('result-overlay'),
@@ -1141,7 +1225,12 @@
             getDateInfo() {
                 const today = new Date();
                 const startDate = new Date('2025-07-29');
-                const dayNumber = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                
+                // Calculate based on local dates, not UTC time
+                const todayLocal = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                const startLocal = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+                
+                const dayNumber = Math.floor((todayLocal - startLocal) / (1000 * 60 * 60 * 24)) + 1;
                 return { today, dayNumber };
             },
             
@@ -1204,6 +1293,9 @@
                         this.updateStrikesDisplay();
                         this.disableGameplay();
                         
+                        // Enable share button for completed games
+                        this.elements.shareBtn.classList.remove('disabled');
+                        
                         const statsDiv = document.getElementById('stats');
                         const indicator = document.createElement('span');
                         indicator.className = 'completed-indicator';
@@ -1239,6 +1331,9 @@
                 this.gameComplete = false;
                 this.isAnimating = false;
                 
+                // Ensure share button is disabled for new games
+                this.elements.shareBtn.classList.add('disabled');
+                
                 const puzzle = this.generatePuzzle(this.gridSize);
                 this.playerGrid = puzzle.start;
                 this.targetGrid = puzzle.target;
@@ -1261,8 +1356,12 @@
                 // Start with all light
                 const grid = Array(size * size).fill(true);
                 
-                // Determine moves based on size
-                const moves = size === 4 ? 3 + (seed % 2) : 4 + (seed % 3);
+                // Fixed moves based on size
+                let moves;
+                if (size === 4) moves = 3;
+                else if (size === 5) moves = 5;
+                else if (size === 6) moves = 7;
+                
                 const movesToMake = [];
                 
                 // Generate unique random positions
@@ -1415,6 +1514,7 @@
             handleWin() {
                 this.gameComplete = true;
                 this.saveGameState(true);
+                this.elements.shareBtn.classList.remove('disabled');
                 this.showResult(true);
                 this.createCelebration();
             },
@@ -1431,6 +1531,7 @@
                     // Game over
                     this.gameComplete = true;
                     this.saveGameState(false);
+                    this.elements.shareBtn.classList.remove('disabled');
                     this.showResult(false);
                 } else {
                     // Reset for next attempt
@@ -1516,10 +1617,19 @@
                 const title = document.getElementById('result-title');
                 const subtitle = document.getElementById('result-subtitle');
                 const strikesContainer = document.getElementById('result-strikes');
+                const resultActions = document.getElementById('result-actions');
                 
                 if (won) {
                     title.textContent = 'Perfect!';
-                    subtitle.textContent = `Solved in ${3 - this.strikes} ${this.strikes === 2 ? 'attempt' : 'attempts'}`;
+                    
+                    // Convert attempts to ordinal
+                    const attempts = this.strikes + 1;
+                    let ordinal;
+                    if (attempts === 1) ordinal = 'first';
+                    else if (attempts === 2) ordinal = 'second';
+                    else if (attempts === 3) ordinal = 'third';
+                    
+                    subtitle.textContent = `Solved in ${ordinal} attempt.`;
                     
                     // Show strikes
                     strikesContainer.innerHTML = '';
@@ -1540,9 +1650,12 @@
                         
                         strikesContainer.appendChild(strike);
                     }
+                    
+                    // For wins, only show Share button
+                    resultActions.innerHTML = '<button class="result-btn share-btn" onclick="Game.shareResults()">Share</button>';
                 } else {
                     title.textContent = 'Nice Try!';
-                    subtitle.textContent = 'Better luck tomorrow';
+                    subtitle.textContent = 'Better luck tomorrow!';
                     
                     // All strikes failed
                     strikesContainer.innerHTML = '';
@@ -1552,6 +1665,9 @@
                         strike.textContent = '✗';
                         strikesContainer.appendChild(strike);
                     }
+                    
+                    // For losses, show Solution (left) and Share (right)
+                    resultActions.innerHTML = '<button class="result-btn solution-btn" onclick="Game.showSolution()">Solution</button><button class="result-btn share-btn" onclick="Game.shareResults()">Share</button>';
                 }
                 
                 modal.classList.add('show');
@@ -1559,8 +1675,13 @@
             
             // Share results
             shareResults() {
+                // Don't allow sharing if button is disabled
+                if (this.elements.shareBtn && this.elements.shareBtn.classList.contains('disabled')) return;
+                
                 const { dayNumber } = this.getDateInfo();
-                const modeText = this.gridSize === 5 ? ' (Hard)' : '';
+                let modeText = '';
+                if (this.gridSize === 5) modeText = ' (5×5)';
+                else if (this.gridSize === 6) modeText = ' (6×6)';
                 
                 let strikesText = '';
                 for (let i = 0; i < 3; i++) {
@@ -1675,12 +1796,16 @@
                 
                 // Update UI
                 document.querySelectorAll('.mode-btn').forEach((btn, index) => {
-                    btn.classList.toggle('active', (size === 4 && index === 0) || (size === 5 && index === 1));
+                    btn.classList.toggle('active', 
+                        (size === 4 && index === 0) || 
+                        (size === 5 && index === 1) || 
+                        (size === 6 && index === 2)
+                    );
                 });
                 
                 // Update grid classes - remove only size-specific classes
-                this.elements.playerGrid.classList.remove('grid-4', 'grid-5');
-                this.elements.targetGrid.classList.remove('grid-4', 'grid-5');
+                this.elements.playerGrid.classList.remove('grid-4', 'grid-5', 'grid-6');
+                this.elements.targetGrid.classList.remove('grid-4', 'grid-5', 'grid-6');
                 
                 // Force layout recalculation
                 void this.elements.playerGrid.offsetHeight;
@@ -1693,6 +1818,9 @@
                 // Clear any existing completed indicator
                 const indicator = document.querySelector('.completed-indicator');
                 if (indicator) indicator.remove();
+                
+                // Reset share button to disabled when switching modes
+                this.elements.shareBtn.classList.add('disabled');
                 
                 // Load new game
                 this.loadOrStartGame();
@@ -1729,6 +1857,21 @@
                         } else {
                             modeBtns[1].classList.add('failed');
                             modeBtns[1].classList.remove('completed');
+                        }
+                    }
+                }
+                
+                // Check 6x6 completion
+                const saved6x6 = this.safeGetItem(`flux-puzzle-${dayNumber}-6`);
+                if (saved6x6) {
+                    const data = JSON.parse(saved6x6);
+                    if (data.complete) {
+                        if (data.won) {
+                            modeBtns[2].classList.add('completed');
+                            modeBtns[2].classList.remove('failed');
+                        } else {
+                            modeBtns[2].classList.add('failed');
+                            modeBtns[2].classList.remove('completed');
                         }
                     }
                 }
