@@ -7,6 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Analytics -->
+    <script src="https://cdn.counter.dev/script.js" data-id="edb14b17-4009-4579-b33d-6fd7ec0a330e" data-utcoffset="-4"></script>
+    
     <style>
         * {
             box-sizing: border-box;
@@ -1155,7 +1159,7 @@
                 </div>
                 
                 <p class="example-text" style="text-align: left; margin: 20px 0; background: #f0f9ff; padding: 12px; border-radius: 8px; border: 1px solid rgba(14, 165, 233, 0.3);">
-                    <strong>Tips:</strong> Each tile toggles between blue and black when flipped. Remember that clicking a tile affects multiple tiles at once! The optimal solution exists - every puzzle can be solved in the number of moves shown.
+                    <strong>Tips:</strong> Each tile toggles between blue and black when flipped. Remember that clicking a tile affects multiple tiles at once! The optimal solution exists - every puzzle can be solved in the number of moves shown. Try working backwards from the target pattern to find efficient moves.
                 </p>
                 
                 <div style="margin-top: 20px;">
@@ -1888,22 +1892,30 @@
                 const { dayNumber } = this.getDateInfo();
                 const won = this.checkWin();
                 
-                let resultText = '';
+                // Generate grid visualization of target pattern
+                let gridVisual = '';
+                for (let i = 0; i < 16; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        gridVisual += '\n';
+                    }
+                    gridVisual += this.targetGrid[i] ? '🟦' : '⬛';
+                }
+                
+                let resultText = `SQUIP #${dayNumber.toString().padStart(3, '0')}\n`;
+                resultText += `${gridVisual}\n\n`;
+                
                 if (!this.isComplete) {
                     // This shouldn't happen since button is disabled, but just in case
                     return;
                 } else if (!won) {
-                    resultText = `SQUIP #${dayNumber.toString().padStart(3, '0')}\n`;
                     resultText += `❌ Couldn't solve today's puzzle.\n`;
-                    resultText += `Try it yourself at squip.io`;
+                    resultText += `Try it yourself at https://squip.io`;
                 } else if (this.moves === this.optimalMoves) {
-                    resultText = `SQUIP #${dayNumber.toString().padStart(3, '0')}\n`;
                     resultText += `⭐ PERFECT! Solved in ${this.moves} moves!\n`;
-                    resultText += `Try and match my score at squip.io`;
+                    resultText += `Try and match my score at https://squip.io`;
                 } else {
-                    resultText = `SQUIP #${dayNumber.toString().padStart(3, '0')}\n`;
                     resultText += `✅ Solved in ${this.moves} moves!\n`;
-                    resultText += `Try and beat my score at squip.io`;
+                    resultText += `Try and beat my score at https://squip.io`;
                 }
                 
                 navigator.clipboard.writeText(resultText).then(() => {
