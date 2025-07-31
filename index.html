@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flux</title>
+    <title>Squip</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -627,6 +627,16 @@
         .play-btn:hover {
             background: #0284c7;
         }
+        
+        .play-btn.disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .play-btn.disabled:hover {
+            background: #d1d5db;
+        }
 
         /* Result Modal */
         .result-modal {
@@ -918,12 +928,15 @@
         }
 
         #share-btn.disabled {
-            opacity: 0.5;
+            background: #d1d5db;
+            color: #9ca3af;
             cursor: not-allowed;
+            opacity: 1;
         }
         
         #share-btn.disabled:hover {
-            background: #0ea5e9;
+            background: #d1d5db;
+            color: #9ca3af;
             transform: none;
             box-shadow: none;
         }
@@ -950,14 +963,19 @@
         }
         
         #solution-btn.disabled {
-            opacity: 0.5;
+            background: #d1d5db;
+            color: #9ca3af;
+            border: 2px solid #d1d5db;
             cursor: not-allowed;
+            opacity: 1;
         }
         
         #solution-btn.disabled:hover {
-            background: transparent;
-            color: #0ea5e9;
-            border-color: #0ea5e9;
+            background: #d1d5db;
+            color: #9ca3af;
+            border-color: #d1d5db;
+            transform: none;
+            box-shadow: none;
         }
 
         #message {
@@ -1022,6 +1040,13 @@
             color: white;
         }
         
+        .contact-footer {
+            margin-top: 20px;
+            font-size: 11px;
+            color: #999;
+            text-align: center;
+        }
+        
         /* Interactive Tutorial Styles */
         .tutorial-interactive-modal {
             text-align: center;
@@ -1032,7 +1057,7 @@
         .tutorial-instruction {
             font-size: 16px;
             color: #333;
-            margin: 0 0 24px 0;
+            margin: 0 0 32px 0;
             line-height: 1.5;
         }
         
@@ -1052,7 +1077,7 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: #666;
-            margin-bottom: 8px;
+            margin-bottom: 2px;
         }
         
         .tutorial-grid {
@@ -1192,6 +1217,19 @@
             
             h1 {
                 font-size: 32px;
+            }
+            
+            .tutorial-interactive-modal {
+                padding: 20px 15px;
+            }
+            
+            .tutorial-interactive-modal h2 {
+                font-size: 20px;
+            }
+            
+            .tutorial-instruction {
+                font-size: 14px;
+                margin: 0 0 24px 0;
             }
 
             .grid {
@@ -1381,21 +1419,30 @@
             }
             
             .tutorial-grids {
-                gap: 20px;
+                gap: 15px;
             }
             
             .tutorial-grid {
-                transform: scale(0.8);
-                grid-template-columns: repeat(3, 56px) !important;
-                grid-template-rows: repeat(3, 56px) !important;
-                width: 182px !important;
-                height: 182px !important;
+                transform: scale(0.6);
+                grid-template-columns: repeat(3, 48px) !important;
+                grid-template-rows: repeat(3, 48px) !important;
+                width: 156px !important;
+                height: 156px !important;
             }
             
             .tutorial-grid .cell {
-                width: 56px !important;
-                height: 56px !important;
+                width: 48px !important;
+                height: 48px !important;
                 box-sizing: border-box;
+            }
+            
+            .tutorial-game-area {
+                margin: 16px 0;
+            }
+            
+            .tutorial-moves {
+                font-size: 14px;
+                margin: 16px 0;
             }
         }
     </style>
@@ -1403,7 +1450,7 @@
 <body>
     <div id="game-container">
         <header>
-            <h1>FLUX</h1>
+            <h1>SQUIP</h1>
             <div id="subtitle">Daily Puzzle #<span id="puzzle-number"></span></div>
             <button class="help-btn" onclick="Game.showTutorial()" title="How to play">?</button>
             <div id="mode-toggle">
@@ -1440,6 +1487,10 @@
             <button id="strike-btn" onclick="Game.takeStrike()">Strike</button>
             <button id="solution-btn" class="disabled" onclick="Game.showSolution()">Solution</button>
             <button id="share-btn" class="disabled" onclick="Game.shareResults()">Share</button>
+        </div>
+        
+        <div class="contact-footer">
+            Questions/Comments? Reach out at contact@squip.io
         </div>
     </div>
 
@@ -1609,6 +1660,7 @@
     <!-- Interactive Tutorial Overlay -->
     <div id="interactive-tutorial-overlay" class="overlay">
         <div class="modal tutorial-interactive-modal">
+            <button class="close-btn" onclick="Game.skipTutorial()">&times;</button>
             <h2 id="tutorial-title">Welcome! Let's Learn</h2>
             <p id="tutorial-instruction" class="tutorial-instruction">Your goal: transform the left grid to match the target pattern on the right using exactly 3 moves.</p>
             
@@ -1630,8 +1682,7 @@
             </div>
             
             <div class="tutorial-footer">
-                <button id="tutorial-next-btn" class="play-btn" onclick="Game.nextTutorialStep()" style="display: none;">Next</button>
-                <button id="tutorial-skip-btn" class="tutorial-skip" onclick="Game.skipTutorial()">Skip Tutorial</button>
+                <button id="tutorial-next-btn" class="play-btn disabled" onclick="Game.nextTutorialStep()">Next</button>
             </div>
         </div>
     </div>
@@ -1657,7 +1708,7 @@
             tutorialStep: 0,
             tutorialGrid: [],
             tutorialTarget: [],
-            tutorialMoves: 2,
+            tutorialMoves: 3,
             tutorialActive: false,
             
             // Memory storage fallback
@@ -1694,7 +1745,7 @@
             // Storage helpers
             isLocalStorageAvailable() {
                 try {
-                    const test = '__flux_test__';
+                    const test = '__squip_test__';
                     localStorage.setItem(test, test);
                     localStorage.removeItem(test);
                     return true;
@@ -1735,17 +1786,17 @@
             // Get save key for today's puzzle
             getTodaysSaveKey() {
                 const { dayNumber } = this.getDateInfo();
-                return `flux-puzzle-${dayNumber}-${this.gridSize}`;
+                return `squip-puzzle-${dayNumber}-${this.gridSize}`;
             },
             
             // Streak management
             getCurrentStreak(size) {
-                const streakValue = this.safeGetItem(`flux-streak-${size}`);
+                const streakValue = this.safeGetItem(`squip-streak-${size}`);
                 return streakValue ? parseInt(streakValue) : 0;
             },
             
             getMaxStreak(size) {
-                const maxValue = this.safeGetItem(`flux-max-streak-${size}`);
+                const maxValue = this.safeGetItem(`squip-max-streak-${size}`);
                 return maxValue ? parseInt(maxValue) : 0;
             },
             
@@ -1753,15 +1804,15 @@
                 const currentStreak = this.getCurrentStreak(size) + 1;
                 const maxStreak = this.getMaxStreak(size);
                 
-                this.safeSetItem(`flux-streak-${size}`, currentStreak.toString());
+                this.safeSetItem(`squip-streak-${size}`, currentStreak.toString());
                 
                 if (currentStreak > maxStreak) {
-                    this.safeSetItem(`flux-max-streak-${size}`, currentStreak.toString());
+                    this.safeSetItem(`squip-max-streak-${size}`, currentStreak.toString());
                 }
             },
             
             resetStreak(size) {
-                this.safeSetItem(`flux-streak-${size}`, '0');
+                this.safeSetItem(`squip-streak-${size}`, '0');
             },
             
             // Save current game state
@@ -1785,7 +1836,7 @@
                 this.elements.puzzleNumber.textContent = dayNumber.toString().padStart(3, '0');
                 
                 // Check if first time player
-                const hasPlayed = this.safeGetItem('flux-has-played');
+                const hasPlayed = this.safeGetItem('squip-has-played');
                 if (!hasPlayed) {
                     setTimeout(() => this.showTutorial(), 500);
                 }
@@ -2007,15 +2058,15 @@
             },
             
             // Get cells to flip
-            getCellsToFlip(index) {
+            getCellsToFlip(index, size = this.gridSize) {
                 const cells = [index];
-                const row = Math.floor(index / this.gridSize);
-                const col = index % this.gridSize;
+                const row = Math.floor(index / size);
+                const col = index % size;
                 
-                if (row > 0) cells.push(index - this.gridSize);
-                if (row < this.gridSize - 1) cells.push(index + this.gridSize);
+                if (row > 0) cells.push(index - size);
+                if (row < size - 1) cells.push(index + size);
                 if (col > 0) cells.push(index - 1);
-                if (col < this.gridSize - 1) cells.push(index + 1);
+                if (col < size - 1) cells.push(index + 1);
                 
                 return cells;
             },
@@ -2239,7 +2290,11 @@
                     }
                 }
                 
-                const text = `FLUX ${dayNumber.toString().padStart(3, '0')}${modeText}\n${strikesText}\n\nflux-game.com`;
+                // Conditional message based on win/loss
+                const won = this.gameComplete && this.checkWin();
+                const message = won ? 'Solved it! Can you?' : 'Got me today! Your turn';
+                
+                const text = `SQUIP #${dayNumber.toString().padStart(3, '0')}${modeText}\n${strikesText}\n\n${message} → squip.io`;
                 
                 navigator.clipboard.writeText(text).then(() => {
                     this.showMessage('Copied to clipboard!');
@@ -2388,7 +2443,7 @@
             
             closeTutorial() {
                 this.elements.tutorialOverlay.classList.remove('show');
-                this.safeSetItem('flux-has-played', 'true');
+                this.safeSetItem('squip-has-played', 'true');
             },
             
             // Result modal
@@ -2443,7 +2498,7 @@
                 const modeBtns = document.querySelectorAll('.mode-btn');
                 
                 // Check 3x3 completion
-                const saved3x3 = this.safeGetItem(`flux-puzzle-${dayNumber}-3`);
+                const saved3x3 = this.safeGetItem(`squip-puzzle-${dayNumber}-3`);
                 if (saved3x3) {
                     const data = JSON.parse(saved3x3);
                     if (data.complete) {
@@ -2458,7 +2513,7 @@
                 }
                 
                 // Check 4x4 completion
-                const saved4x4 = this.safeGetItem(`flux-puzzle-${dayNumber}-4`);
+                const saved4x4 = this.safeGetItem(`squip-puzzle-${dayNumber}-4`);
                 if (saved4x4) {
                     const data = JSON.parse(saved4x4);
                     if (data.complete) {
@@ -2473,7 +2528,7 @@
                 }
                 
                 // Check 5x5 completion
-                const saved5x5 = this.safeGetItem(`flux-puzzle-${dayNumber}-5`);
+                const saved5x5 = this.safeGetItem(`squip-puzzle-${dayNumber}-5`);
                 if (saved5x5) {
                     const data = JSON.parse(saved5x5);
                     if (data.complete) {
@@ -2488,7 +2543,7 @@
                 }
                 
                 // Check 6x6 completion
-                const saved6x6 = this.safeGetItem(`flux-puzzle-${dayNumber}-6`);
+                const saved6x6 = this.safeGetItem(`squip-puzzle-${dayNumber}-6`);
                 if (saved6x6) {
                     const data = JSON.parse(saved6x6);
                     if (data.complete) {
@@ -2528,9 +2583,14 @@
                 this.tutorialTarget = [false, true, false, false, true, true, true, true, false];
                 this.tutorialMoves = 3;
                 
+                // Reset Next button
+                this.elements.tutorialNextBtn.textContent = "Next";
+                this.elements.tutorialNextBtn.classList.add('disabled');
+                
                 this.renderTutorialGrids();
                 this.elements.interactiveTutorialOverlay.classList.add('show');
                 
+                // Start with step 1
                 this.nextTutorialStep();
             },
             
@@ -2558,7 +2618,10 @@
             },
             
             tutorialCellClick(index) {
-                // Only respond to clicks during appropriate steps
+                // Prevent clicks during animation
+                if (this.isAnimating) return;
+                
+                // Only respond to clicks during action steps (1, 3, 5)
                 if (this.tutorialStep === 1 && index === 4) {
                     // First click - center tile (plus pattern)
                     this.animateTutorialFlip(index);
@@ -2568,16 +2631,17 @@
                 } else if (this.tutorialStep === 5 && index === 8) {
                     // Third click - bottom right tile (L pattern)
                     this.animateTutorialFlip(index);
-                } else if (this.tutorialStep === 5 && index !== 8) {
-                    // Wrong tile clicked during step 5
-                    this.showTutorialMessage("Not quite! Click the pulsing corner tile.");
-                } else if (this.tutorialStep === 3 && index !== 1) {
-                    // Wrong tile clicked during step 3
-                    this.showTutorialMessage("Not quite! Click the pulsing edge tile.");
-                } else if (this.tutorialStep === 1 && index !== 4) {
-                    // Wrong tile clicked during step 1
-                    this.showTutorialMessage("Click the pulsing center tile first!");
+                } else if (this.tutorialStep === 1 || this.tutorialStep === 3 || this.tutorialStep === 5) {
+                    // Wrong tile clicked during an action step
+                    if (this.tutorialStep === 5) {
+                        this.showTutorialMessage("Not quite! Click the pulsing corner tile.");
+                    } else if (this.tutorialStep === 3) {
+                        this.showTutorialMessage("Not quite! Click the pulsing edge tile.");
+                    } else if (this.tutorialStep === 1) {
+                        this.showTutorialMessage("Click the pulsing center tile first!");
+                    }
                 }
+                // For explanation steps (2, 4, 6), clicks do nothing - user must click Next button
             },
             
             animateTutorialFlip(index) {
@@ -2587,8 +2651,8 @@
                 this.tutorialMoves--;
                 this.elements.tutorialMovesLeft.textContent = this.tutorialMoves;
                 
-                // Get cells to flip (same logic as main game)
-                const cellsToFlip = this.getCellsToFlip(index);
+                // Get cells to flip (pass 3 for tutorial grid size)
+                const cellsToFlip = this.getCellsToFlip(index, 3);
                 
                 // Animate the flips
                 cellsToFlip.forEach((i, delay) => {
@@ -2604,6 +2668,8 @@
                             if (delay === cellsToFlip.length - 1) {
                                 setTimeout(() => {
                                     this.isAnimating = false;
+                                    
+                                    // Auto-advance to the explanation step
                                     this.nextTutorialStep();
                                 }, 100);
                             }
@@ -2613,6 +2679,14 @@
             },
             
             nextTutorialStep() {
+                // Don't proceed if button is disabled (except when auto-advancing from animation)
+                const nextBtn = this.elements.tutorialNextBtn;
+                const isAutoAdvance = this.tutorialStep === 1 || this.tutorialStep === 3 || this.tutorialStep === 5;
+                
+                if (this.tutorialStep > 0 && nextBtn.classList.contains('disabled') && !isAutoAdvance) {
+                    return;
+                }
+                
                 this.tutorialStep++;
                 
                 // Clear all highlights
@@ -2625,13 +2699,14 @@
                         this.elements.tutorialTitle.textContent = "Your First Move";
                         this.elements.tutorialInstruction.textContent = "Let's begin! Click the pulsing center tile to see how tiles flip in a plus pattern.";
                         this.elements.tutorialPlayerGrid.children[4].classList.add('tutorial-highlight');
+                        nextBtn.classList.add('disabled');
                         break;
                         
                     case 2:
                         // Step 2: After first click, explain what happened
                         this.elements.tutorialTitle.textContent = "See What Happened?";
                         this.elements.tutorialInstruction.textContent = "Five tiles flipped from blue to black in a plus shape! Compare your grid to the target - you're making progress.";
-                        this.elements.tutorialNextBtn.style.display = 'inline-block';
+                        nextBtn.classList.remove('disabled');
                         break;
                         
                     case 3:
@@ -2639,14 +2714,14 @@
                         this.elements.tutorialTitle.textContent = "Think Strategically";
                         this.elements.tutorialInstruction.textContent = "Study the target pattern. We need to flip some tiles at the top. Click the pulsing edge tile.";
                         this.elements.tutorialPlayerGrid.children[1].classList.add('tutorial-highlight');
-                        this.elements.tutorialNextBtn.style.display = 'none';
+                        nextBtn.classList.add('disabled');
                         break;
                         
                     case 4:
                         // Step 4: After second click, explain T pattern
                         this.elements.tutorialTitle.textContent = "Notice the Toggle?";
                         this.elements.tutorialInstruction.textContent = "Some tiles flipped back to blue! Remember: tiles toggle between colors with each flip. One move left!";
-                        this.elements.tutorialNextBtn.style.display = 'inline-block';
+                        nextBtn.classList.remove('disabled');
                         break;
                         
                     case 5:
@@ -2654,7 +2729,7 @@
                         this.elements.tutorialTitle.textContent = "One Last Move";
                         this.elements.tutorialInstruction.textContent = "Compare to the target - that bottom right corner needs to be black. Click it to flip it and its two neighbors.";
                         this.elements.tutorialPlayerGrid.children[8].classList.add('tutorial-highlight');
-                        this.elements.tutorialNextBtn.style.display = 'none';
+                        nextBtn.classList.add('disabled');
                         break;
                         
                     case 6:
@@ -2662,8 +2737,8 @@
                         if (this.checkTutorialWin()) {
                             this.elements.tutorialTitle.textContent = "Excellent Work!";
                             this.elements.tutorialInstruction.textContent = "You matched the target perfectly! Every puzzle gives you the exact moves needed - you just have to find which tiles to click!";
-                            this.elements.tutorialNextBtn.textContent = "Start Playing";
-                            this.elements.tutorialNextBtn.style.display = 'inline-block';
+                            nextBtn.textContent = "Start Playing";
+                            nextBtn.classList.remove('disabled');
                         }
                         break;
                         
@@ -2697,7 +2772,7 @@
             completeTutorial() {
                 this.tutorialActive = false;
                 this.elements.interactiveTutorialOverlay.classList.remove('show');
-                this.safeSetItem('flux-has-played', 'true');
+                this.safeSetItem('squip-has-played', 'true');
                 
                 // Make sure we're on easy mode (3x3) for beginners
                 if (this.gridSize !== 3) {
