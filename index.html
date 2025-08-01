@@ -18,6 +18,15 @@
             padding: 0;
         }
 
+        :root {
+            --primary-color: #0ea5e9;
+            --primary-hover: #0284c7;
+            --primary-light: #38bdf8;
+            --primary-dark: #525252;
+            --primary-bg: #e0f2fe;
+            --primary-rgb: 14, 165, 233;
+        }
+
         body {
             display: flex;
             justify-content: center;
@@ -62,7 +71,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .help-btn {
+        .settings-btn {
             position: absolute;
             top: 0;
             right: 0;
@@ -80,18 +89,18 @@
             padding: 0;
         }
 
-        .help-btn:hover {
-            border-color: #0ea5e9;
-            color: #0ea5e9;
+        .settings-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
             transform: scale(1.1);
         }
 
-        .help-btn svg {
+        .settings-btn svg {
             width: 20px;
             height: 20px;
         }
 
-        .stats-btn {
+        .help-btn {
             position: absolute;
             top: 45px;
             right: 0;
@@ -109,9 +118,38 @@
             padding: 0;
         }
 
+        .help-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .help-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .stats-btn {
+            position: absolute;
+            top: 90px;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
         .stats-btn:hover {
-            border-color: #0ea5e9;
-            color: #0ea5e9;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
             transform: scale(1.1);
         }
 
@@ -153,7 +191,7 @@
 
         .optimal-hint {
             font-size: 12px;
-            color: #0ea5e9;
+            color: var(--primary-color);
             margin-left: 4px;
         }
 
@@ -185,6 +223,7 @@
             height: fit-content;
             overflow: visible;
             box-sizing: border-box;
+            touch-action: manipulation;
         }
 
         #player-grid,
@@ -198,7 +237,7 @@
         }
 
         .cell {
-            background: #0ea5e9;
+            background: var(--primary-color);
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -209,6 +248,7 @@
             box-sizing: border-box;
             width: 54px;
             height: 54px;
+            touch-action: manipulation;
         }
 
         button.cell {
@@ -247,7 +287,7 @@
 
         .cell:hover:not(.animating) {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
+            box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.5);
         }
 
         @media (hover: none) and (pointer: coarse) {
@@ -258,11 +298,66 @@
         }
 
         .cell.preview-light {
-            background: #38bdf8 !important;
+            background: var(--primary-light) !important;
         }
 
         .cell.preview-dark {
-            background: #525252 !important;
+            background: var(--primary-dark) !important;
+        }
+
+        .cell.preview-selected {
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .cell.preview-selected::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border: 3.5px dashed currentColor;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .cell.preview-light.preview-selected::after {
+            color: #1a1a1a;
+        }
+
+        .cell.preview-dark.preview-selected::after {
+            color: #ffffff;
+        }
+
+        .cell.preview-selected:not(.preview-light):not(.preview-dark)::after {
+            color: #666;
+        }
+
+        .cell.preview-affected {
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .cell.preview-affected::after {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            right: 1px;
+            bottom: 1px;
+            border: 2px dashed currentColor;
+            border-radius: 7px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .cell.preview-light.preview-affected::after {
+            color: #1a1a1a;
+        }
+
+        .cell.preview-dark.preview-affected::after {
+            color: #ffffff;
         }
 
         .cell.animating {
@@ -278,7 +373,7 @@
         .ripple {
             position: absolute;
             border-radius: 50%;
-            background: rgba(14, 165, 233, 0.3);
+            background: rgba(var(--primary-rgb), 0.3);
             transform: scale(0);
             animation: ripple-effect 0.6s ease-out;
             pointer-events: none;
@@ -426,7 +521,7 @@
         }
 
         .mini-cell.light {
-            background: #0ea5e9;
+            background: var(--primary-color);
         }
 
         .mini-cell.dark {
@@ -494,7 +589,7 @@
         }
 
         .play-btn {
-            background: #0ea5e9;
+            background: var(--primary-color);
             color: white;
             padding: 10px 38px;
             border: none;
@@ -506,7 +601,7 @@
         }
 
         .play-btn:hover {
-            background: #0284c7;
+            background: var(--primary-hover);
         }
 
         /* Result Modal */
@@ -544,7 +639,7 @@
         }
 
         .solution-cell {
-            background: #0ea5e9;
+            background: var(--primary-color);
             border-radius: 6px;
             position: relative;
             transition: all 0.2s;
@@ -599,25 +694,25 @@
         }
 
         .share-btn {
-            background: #0ea5e9;
+            background: var(--primary-color);
             color: white;
         }
 
         .share-btn:hover {
-            background: #0284c7;
+            background: var(--primary-hover);
         }
 
         .solution-btn {
             background: transparent;
-            color: #0ea5e9;
-            border: 2px solid #0ea5e9;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
             padding: 9px 26px;
         }
 
         .solution-btn:hover {
-            background: rgba(14, 165, 233, 0.1);
-            border-color: #0284c7;
-            color: #0284c7;
+            background: rgba(var(--primary-rgb), 0.1);
+            border-color: var(--primary-hover);
+            color: var(--primary-hover);
         }
 
         #target-display {
@@ -687,8 +782,8 @@
         }
 
         #undo-btn:hover:not(.disabled) {
-            border-color: #0ea5e9;
-            color: #0ea5e9;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
 
         #undo-btn.disabled {
@@ -697,13 +792,13 @@
         }
 
         #share-btn {
-            background: #0ea5e9;
+            background: var(--primary-color);
             color: white;
             width: 120px;
         }
 
         #share-btn:hover:not(.disabled) {
-            background: #0284c7;
+            background: var(--primary-hover);
         }
 
         #share-btn.disabled {
@@ -715,8 +810,8 @@
 
         #solution-btn {
             background: transparent;
-            color: #0ea5e9;
-            border: 2px solid #0ea5e9;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
             width: 120px;
             padding: 8px 18px;
             border-radius: 8px;
@@ -729,9 +824,9 @@
         }
 
         #solution-btn:hover:not(.disabled) {
-            background: rgba(14, 165, 233, 0.1);
-            border-color: #0284c7;
-            color: #0284c7;
+            background: rgba(var(--primary-rgb), 0.1);
+            border-color: var(--primary-hover);
+            color: var(--primary-hover);
         }
 
         #message {
@@ -740,7 +835,7 @@
             left: 50%;
             transform: translateX(-50%);
             background: #1a1a1a;
-            color: #0ea5e9;
+            color: var(--primary-color);
             padding: 12px 24px;
             border-radius: 8px;
             font-size: 14px;
@@ -766,7 +861,7 @@
             position: absolute;
             width: 4px;
             height: 4px;
-            background: #0ea5e9;
+            background: var(--primary-color);
             border-radius: 50%;
             animation: particle-float 1s ease-out forwards;
         }
@@ -857,8 +952,135 @@
         }
 
         .cancel-btn:hover {
-            border-color: #0ea5e9;
-            color: #0ea5e9;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Settings Modal Styles */
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .setting-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 6px 0;
+            color: #1a1a1a;
+        }
+
+        .setting-info p {
+            font-size: 13px;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e0e0e0;
+            transition: .3s;
+            border-radius: 28px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: var(--primary-color);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .toggle-switch.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .toggle-switch.disabled .toggle-slider {
+            cursor: not-allowed;
+        }
+
+        /* Color Picker Styles */
+        .color-picker {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .color-option {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.selected {
+            border-color: #1a1a1a;
+            transform: scale(1.1);
+        }
+
+        .color-option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 0 0 3px rgba(0,0,0,0.5);
         }
 
         @media (min-width: 501px) {
@@ -894,9 +1116,21 @@
                 max-height: 85vh;
             }
 
+            .settings-btn {
+                width: 32px;
+                height: 32px;
+                top: 0;
+            }
+
+            .settings-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+
             .help-btn {
                 width: 32px;
                 height: 32px;
+                top: 40px;
             }
 
             .help-btn svg {
@@ -907,7 +1141,7 @@
             .stats-btn {
                 width: 32px;
                 height: 32px;
-                top: 40px;
+                top: 80px;
             }
 
             .stats-btn svg {
@@ -1039,6 +1273,11 @@
             .cancel-btn {
                 width: 100%;
             }
+
+            .color-picker {
+                justify-content: center;
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
@@ -1047,12 +1286,22 @@
         <header>
             <h1>SQUIP</h1>
             <div id="subtitle">Daily Puzzle #<span id="puzzle-number"></span></div>
+            
+            <!-- Settings button -->
+            <button class="settings-btn" onclick="Game.showSettings()" title="Settings">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+            
             <button class="help-btn" onclick="Game.showTutorial()" title="How to play">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M7 7a3 3 0 0 1 6 0c0 1.5-1.5 2-3 2.5v1.5"></path>
                     <circle cx="10" cy="15" r="0.5" fill="currentColor"></circle>
                 </svg>
             </button>
+            
             <button class="stats-btn" onclick="Game.showStats()" title="View stats">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
@@ -1158,8 +1407,8 @@
                     </div>
                 </div>
                 
-                <p class="example-text" style="text-align: left; margin: 20px 0; background: #f0f9ff; padding: 12px; border-radius: 8px; border: 1px solid rgba(14, 165, 233, 0.3);">
-                    <strong>Tips:</strong> Each tile toggles between blue and black when flipped. Remember that clicking a tile affects multiple tiles at once! The optimal solution exists - every puzzle can be solved in the number of moves shown. Try working backwards from the target pattern to find efficient moves.
+                <p class="example-text" style="text-align: left; margin: 20px 0; background: rgba(var(--primary-rgb), 0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(var(--primary-rgb), 0.3);">
+                    <strong>Tips:</strong> Each tile toggles between blue and black when flipped. Remember that clicking a tile affects multiple tiles at once! The optimal solution exists - every puzzle can be solved in the number of moves shown.
                 </p>
                 
                 <div style="margin-top: 20px;">
@@ -1236,6 +1485,40 @@
         </div>
     </div>
 
+    <!-- Settings Overlay -->
+    <div id="settings-overlay" class="overlay">
+        <div class="modal">
+            <button class="close-btn" onclick="Game.closeSettings()">&times;</button>
+            <h2>Settings</h2>
+            <div id="settings-content">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Tap to Preview</h3>
+                        <p>When enabled, tap once to preview a move, then tap again to confirm. Mobile and tablet only.</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="mobile-preview-toggle" onchange="Game.toggleMobilePreview()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Color Theme</h3>
+                        <p>Choose your preferred color for tiles and UI elements.</p>
+                    </div>
+                    <div class="color-picker">
+                        <div class="color-option" style="background: #0ea5e9" data-color="blue" onclick="Game.changeColor('blue')"></div>
+                        <div class="color-option" style="background: #10b981" data-color="green" onclick="Game.changeColor('green')"></div>
+                        <div class="color-option" style="background: #8b5cf6" data-color="purple" onclick="Game.changeColor('purple')"></div>
+                        <div class="color-option" style="background: #f97316" data-color="orange" onclick="Game.changeColor('orange')"></div>
+                        <div class="color-option" style="background: #ec4899" data-color="pink" onclick="Game.changeColor('pink')"></div>
+                        <div class="color-option" style="background: #06b6d4" data-color="cyan" onclick="Game.changeColor('cyan')"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="message"></div>
     <div class="particles" id="particles"></div>
 
@@ -1250,11 +1533,67 @@
             isComplete: false,
             isAnimating: false,
             moveHistory: [],
+            previewIndex: -1,
+            mobilePreviewEnabled: false,
+            isTouchDevice: false,
+            currentColor: 'blue',
             
             // Constants
             GRID_SIZE: 4,
             MIN_MOVES: 5,
             MAX_MOVES: 7,
+            
+            // Color themes
+            colorThemes: {
+                blue: {
+                    primary: '#0ea5e9',
+                    hover: '#0284c7',
+                    light: '#38bdf8',
+                    dark: '#525252',
+                    bg: '#e0f2fe',
+                    rgb: '14, 165, 233'
+                },
+                green: {
+                    primary: '#10b981',
+                    hover: '#059669',
+                    light: '#34d399',
+                    dark: '#525252',
+                    bg: '#d1fae5',
+                    rgb: '16, 185, 129'
+                },
+                purple: {
+                    primary: '#8b5cf6',
+                    hover: '#7c3aed',
+                    light: '#a78bfa',
+                    dark: '#525252',
+                    bg: '#ede9fe',
+                    rgb: '139, 92, 246'
+                },
+                orange: {
+                    primary: '#f97316',
+                    hover: '#ea580c',
+                    light: '#fb923c',
+                    dark: '#525252',
+                    bg: '#fed7aa',
+                    rgb: '249, 115, 22'
+                },
+                pink: {
+                    primary: '#ec4899',
+                    hover: '#db2777',
+                    light: '#f472b6',
+                    dark: '#525252',
+                    bg: '#fce7f3',
+                    rgb: '236, 72, 153'
+                },
+                cyan: {
+                    primary: '#06b6d4',
+                    hover: '#0891b2',
+                    light: '#22d3ee',
+                    dark: '#525252',
+                    bg: '#cffafe',
+                    rgb: '6, 182, 212'
+                }
+            },
             
             // Storage
             memoryStorage: {},
@@ -1275,12 +1614,40 @@
                 solutionOverlay: document.getElementById('solution-overlay'),
                 solutionConfirmOverlay: document.getElementById('solution-confirm-overlay'),
                 statsOverlay: document.getElementById('stats-overlay'),
+                settingsOverlay: document.getElementById('settings-overlay'),
                 puzzleNumber: document.getElementById('puzzle-number'),
                 subtitle: document.getElementById('subtitle')
             },
             
             // Initialize
             init() {
+                // Detect touch device
+                this.isTouchDevice = ('ontouchstart' in window) || 
+                                   (navigator.maxTouchPoints > 0) || 
+                                   (navigator.msMaxTouchPoints > 0);
+                
+                // Load mobile preview preference
+                const savedPreference = this.load('squip-mobile-preview');
+                if (this.isTouchDevice) {
+                    // For touch devices: default to true if no saved preference exists
+                    if (savedPreference === null) {
+                        this.mobilePreviewEnabled = true;
+                        this.save('squip-mobile-preview', true);
+                    } else {
+                        this.mobilePreviewEnabled = savedPreference;
+                    }
+                } else {
+                    // For non-touch devices: always disabled
+                    this.mobilePreviewEnabled = false;
+                }
+                
+                // Load color preference
+                const savedColor = this.load('squip-color-theme');
+                if (savedColor && this.colorThemes[savedColor]) {
+                    this.currentColor = savedColor;
+                    this.applyColorTheme(savedColor);
+                }
+                
                 this.updatePuzzleNumber();
                 this.loadOrCreatePuzzle();
                 this.checkFirstTime();
@@ -1369,6 +1736,7 @@
                     this.save('squip-stats', stats);
                 }
             },
+            
             getDateInfo() {
                 const today = new Date();
                 const startDate = new Date('2025-07-29');
@@ -1581,6 +1949,27 @@
             handleCellClick(index) {
                 if (this.isAnimating || this.isComplete) return;
                 
+                // Mobile preview mode handling
+                if (this.isTouchDevice && this.mobilePreviewEnabled && !this.isComplete) {
+                    if (this.previewIndex === index) {
+                        // Second tap on same cell - confirm move
+                        this.hidePreview();
+                        this.previewIndex = -1;
+                        this.executeMove(index);
+                    } else {
+                        // First tap or tap on different cell - show preview
+                        this.hidePreview();
+                        this.previewIndex = index;
+                        this.showPreview(index);
+                    }
+                } else {
+                    // Direct move (desktop or preview disabled)
+                    this.executeMove(index);
+                }
+            },
+            
+            // Execute the actual move
+            executeMove(index) {
                 this.isAnimating = true;
                 this.moves++;
                 
@@ -1642,6 +2031,9 @@
             undo() {
                 if (this.isAnimating || this.isComplete || this.moveHistory.length === 0) return;
                 
+                // Clear any active preview
+                this.hidePreview();
+                
                 // Get the last move
                 const lastMove = this.moveHistory.pop();
                 
@@ -1696,17 +2088,17 @@
                     }
                     
                     // Add stats in horizontal layout
-                    let statsHTML = `<div style="display: flex; justify-content: space-around; align-items: center; background: #e0f2fe; padding: 20px; border-radius: 12px; margin-top: 20px; margin-bottom: 10px;">`;
+                    let statsHTML = `<div style="display: flex; justify-content: space-around; align-items: center; background: var(--primary-bg); padding: 20px; border-radius: 12px; margin-top: 20px; margin-bottom: 10px;">`;
                     statsHTML += `<div style="text-align: center;">
-                        <div style="font-size: 28px; font-weight: 700; color: #0ea5e9; line-height: 1;">${stats.currentStreak}</div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.currentStreak}</div>
                         <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px; line-height: 1.2;">Current<br>Streak</div>
                     </div>`;
                     statsHTML += `<div style="text-align: center;">
-                        <div style="font-size: 28px; font-weight: 700; color: #0ea5e9; line-height: 1;">${stats.longestStreak}</div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.longestStreak}</div>
                         <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px; line-height: 1.2;">Longest<br>Streak</div>
                     </div>`;
                     statsHTML += `<div style="text-align: center;">
-                        <div style="font-size: 28px; font-weight: 700; color: #0ea5e9; line-height: 1;">${stats.perfectScores}</div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.perfectScores}</div>
                         <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px; line-height: 1.2;">Perfect<br>Scores</div>
                     </div>`;
                     statsHTML += `</div>`;
@@ -1763,6 +2155,7 @@
                 
                 this.grid = Array(16).fill(true);
                 this.moveHistory = []; // Clear move history on reset
+                this.previewIndex = -1; // Clear preview
                 this.render();
                 this.saveState();
                 this.updateUndoButton();
@@ -1781,14 +2174,24 @@
                     } else {
                         cell.classList.add('preview-light');
                     }
+                    
+                    // Add preview-affected to adjacent tiles (not the clicked one)
+                    if (pos !== index) {
+                        cell.classList.add('preview-affected');
+                    }
                 });
+                
+                // Add selected indicator to the clicked tile
+                const clickedCell = this.elements.playerGrid.children[index];
+                clickedCell.classList.add('preview-selected');
             },
             
             hidePreview() {
                 const cells = document.querySelectorAll('.cell');
                 cells.forEach(cell => {
-                    cell.classList.remove('preview-dark', 'preview-light');
+                    cell.classList.remove('preview-dark', 'preview-light', 'preview-selected', 'preview-affected');
                 });
+                this.previewIndex = -1;
             },
             
             // Solution handling
@@ -1960,17 +2363,17 @@
                 }
                 
                 // Add stats in horizontal layout
-                let statsHTML = `<div style="display: flex; justify-content: space-around; align-items: center; background: #e0f2fe; padding: 20px; border-radius: 12px; margin-top: 20px; margin-bottom: 10px;">`;
+                let statsHTML = `<div style="display: flex; justify-content: space-around; align-items: center; background: var(--primary-bg); padding: 20px; border-radius: 12px; margin-top: 20px; margin-bottom: 10px;">`;
                 statsHTML += `<div style="text-align: center;">
-                    <div style="font-size: 28px; font-weight: 700; color: #0ea5e9; line-height: 1;">${stats.currentStreak}</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.currentStreak}</div>
                     <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px; line-height: 1.2;">Current<br>Streak</div>
                 </div>`;
                 statsHTML += `<div style="text-align: center;">
-                    <div style="font-size: 28px; font-weight: 700; color: #0ea5e9; line-height: 1;">${stats.longestStreak}</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.longestStreak}</div>
                     <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px; line-height: 1.2;">Longest<br>Streak</div>
                 </div>`;
                 statsHTML += `<div style="text-align: center;">
-                    <div style="font-size: 28px; font-weight: 700; color: #0ea5e9; line-height: 1;">${stats.perfectScores}</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.perfectScores}</div>
                     <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px; line-height: 1.2;">Perfect<br>Scores</div>
                 </div>`;
                 statsHTML += `</div>`;
@@ -1989,17 +2392,17 @@
                 const stats = this.load('squip-stats') || { currentStreak: 0, longestStreak: 0, perfectScores: 0 };
                 const content = document.getElementById('stats-content');
                 
-                let statsHTML = `<div style="display: flex; justify-content: space-around; align-items: center; background: #e0f2fe; padding: 25px; border-radius: 12px; margin-top: 10px;">`;
+                let statsHTML = `<div style="display: flex; justify-content: space-around; align-items: center; background: var(--primary-bg); padding: 25px; border-radius: 12px; margin-top: 10px;">`;
                 statsHTML += `<div style="text-align: center;">
-                    <div style="font-size: 32px; font-weight: 700; color: #0ea5e9; line-height: 1;">${stats.currentStreak}</div>
+                    <div style="font-size: 32px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.currentStreak}</div>
                     <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; line-height: 1.3;">Current<br>Streak</div>
                 </div>`;
                 statsHTML += `<div style="text-align: center;">
-                    <div style="font-size: 32px; font-weight: 700; color: #0ea5e9; line-height: 1;">${stats.longestStreak}</div>
+                    <div style="font-size: 32px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.longestStreak}</div>
                     <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; line-height: 1.3;">Longest<br>Streak</div>
                 </div>`;
                 statsHTML += `<div style="text-align: center;">
-                    <div style="font-size: 32px; font-weight: 700; color: #0ea5e9; line-height: 1;">${stats.perfectScores}</div>
+                    <div style="font-size: 32px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.perfectScores}</div>
                     <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; line-height: 1.3;">Perfect<br>Scores</div>
                 </div>`;
                 statsHTML += `</div>`;
@@ -2010,6 +2413,79 @@
             
             closeStats() {
                 this.elements.statsOverlay.classList.remove('show');
+            },
+            
+            showSettings() {
+                // Set toggle state
+                const toggle = document.getElementById('mobile-preview-toggle');
+                toggle.checked = this.mobilePreviewEnabled;
+                
+                // Disable toggle if not on touch device
+                const toggleSwitch = toggle.closest('.toggle-switch');
+                if (!this.isTouchDevice) {
+                    toggleSwitch.classList.add('disabled');
+                    toggle.disabled = true;
+                } else {
+                    toggleSwitch.classList.remove('disabled');
+                    toggle.disabled = false;
+                }
+                
+                // Update color picker selection
+                document.querySelectorAll('.color-option').forEach(option => {
+                    if (option.dataset.color === this.currentColor) {
+                        option.classList.add('selected');
+                    } else {
+                        option.classList.remove('selected');
+                    }
+                });
+                
+                this.elements.settingsOverlay.classList.add('show');
+            },
+            
+            closeSettings() {
+                this.elements.settingsOverlay.classList.remove('show');
+            },
+            
+            toggleMobilePreview() {
+                if (!this.isTouchDevice) return;
+                
+                const toggle = document.getElementById('mobile-preview-toggle');
+                this.mobilePreviewEnabled = toggle.checked;
+                this.save('squip-mobile-preview', this.mobilePreviewEnabled);
+                
+                // Clear any active preview
+                if (!this.mobilePreviewEnabled) {
+                    this.hidePreview();
+                }
+            },
+            
+            changeColor(colorName) {
+                if (!this.colorThemes[colorName]) return;
+                
+                this.currentColor = colorName;
+                this.save('squip-color-theme', colorName);
+                this.applyColorTheme(colorName);
+                
+                // Update color picker selection
+                document.querySelectorAll('.color-option').forEach(option => {
+                    if (option.dataset.color === colorName) {
+                        option.classList.add('selected');
+                    } else {
+                        option.classList.remove('selected');
+                    }
+                });
+            },
+            
+            applyColorTheme(colorName) {
+                const theme = this.colorThemes[colorName];
+                const root = document.documentElement;
+                
+                root.style.setProperty('--primary-color', theme.primary);
+                root.style.setProperty('--primary-hover', theme.hover);
+                root.style.setProperty('--primary-light', theme.light);
+                root.style.setProperty('--primary-dark', theme.dark);
+                root.style.setProperty('--primary-bg', theme.bg);
+                root.style.setProperty('--primary-rgb', theme.rgb);
             },
             
             createRipple(x, y) {
@@ -2050,6 +2526,15 @@
         // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {
             Game.init();
+            
+            // Add click handler to clear preview when clicking outside grid
+            document.addEventListener('click', (e) => {
+                if (Game.previewIndex !== -1 && 
+                    !e.target.closest('#player-grid') && 
+                    !e.target.closest('.cell')) {
+                    Game.hidePreview();
+                }
+            });
         });
     </script>
 </body>
