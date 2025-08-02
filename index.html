@@ -1602,7 +1602,6 @@
             mobilePreviewEnabled: false,
             isTouchDevice: false,
             currentColor: 'blue',
-            currentDayNumber: null,
             
             // Constants
             GRID_SIZE: 4,
@@ -1619,25 +1618,6 @@
                     bg: '#e0f2fe',
                     rgb: '14, 165, 233'
                 },
-            
-            // Check if date has changed and refresh if needed
-            checkDateChange() {
-                const { dayNumber } = this.getDateInfo();
-                if (dayNumber !== this.currentDayNumber) {
-                    // Save any current progress before refreshing
-                    if (!this.isComplete) {
-                        this.saveState();
-                    }
-                    
-                    // Show a message before refresh
-                    this.showMessage('New puzzle available! Refreshing...');
-                    
-                    // Refresh the page after a short delay
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                }
-            },
                 green: {
                     primary: '#10b981',
                     hover: '#059669',
@@ -1738,22 +1718,6 @@
                 this.checkFirstTime();
                 this.updateUndoButton();
                 this.initializeStats();
-                
-                // Store current day number
-                const { dayNumber } = this.getDateInfo();
-                this.currentDayNumber = dayNumber;
-                
-                // Check for date changes when tab becomes visible
-                document.addEventListener('visibilitychange', () => {
-                    if (!document.hidden) {
-                        Game.checkDateChange();
-                    }
-                });
-                
-                // Also check periodically every minute
-                setInterval(() => {
-                    Game.checkDateChange();
-                }, 60000); // Check every minute
             },
             
             // Initialize stats
@@ -1766,25 +1730,6 @@
                         perfectScores: 0,
                         lastCompletedDate: null
                     });
-                }
-            },
-            
-            // Check if date has changed and refresh if needed
-            checkDateChange() {
-                const { dayNumber } = this.getDateInfo();
-                if (dayNumber !== this.currentDayNumber) {
-                    // Save any current progress before refreshing
-                    if (!this.isComplete) {
-                        this.saveState();
-                    }
-                    
-                    // Show a message before refresh
-                    this.showMessage('New puzzle available! Refreshing...');
-                    
-                    // Refresh the page after a short delay
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
                 }
             },
             
