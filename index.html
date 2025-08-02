@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <title>Squip - Daily Grid Puzzle</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few moves as possible with a new puzzle every day.">
+    <meta name="description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 5 moves with a new puzzle every day.">
     <meta name="keywords" content="puzzle game, daily puzzle, grid game, logic puzzle, brain teaser, squip, tile flipping game">
     <meta name="author" content="Squip">
     <meta name="robots" content="index, follow">
@@ -18,20 +23,20 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://squip.io">
     <meta property="og:title" content="Squip - Daily Grid Puzzle">
-    <meta property="og:description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few moves as possible with a new puzzle every day.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/seanfoleydesigns/bug-free-guide/main/squip-logo.svg">
+    <meta property="og:description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 5 moves with a new puzzle every day.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/[username]/[repo]/main/squip-logo.svg">
     <meta property="og:site_name" content="Squip">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:url" content="https://squip.io">
     <meta name="twitter:title" content="Squip - Daily Grid Puzzle">
-    <meta name="twitter:description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few moves as possible with a new puzzle every day.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/seanfoleydesigns/bug-free-guide/main/squip-logo.svg">
+    <meta name="twitter:description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 5 moves with a new puzzle every day.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/[username]/[repo]/main/squip-logo.svg">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/seanfoleydesigns/bug-free-guide/main/squip-logo.svg">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/seanfoleydesigns/bug-free-guide/main/squip-logo.svg">
+    <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/[username]/[repo]/main/squip-logo.svg">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/[username]/[repo]/main/squip-logo.svg">
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#fefefe">
@@ -50,12 +55,12 @@
       "@context": "https://schema.org",
       "@type": "VideoGame",
       "name": "Squip",
-      "description": "Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few moves as possible with a new puzzle every day.",
+      "description": "Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 5 moves with a new puzzle every day.",
       "url": "https://squip.io",
       "genre": "Puzzle",
       "gamePlatform": "Web Browser",
       "operatingSystem": "Any",
-      "image": "https://raw.githubusercontent.com/seanfoleydesigns/bug-free-guide/main/squip-logo.svg",
+      "image": "https://raw.githubusercontent.com/[username]/[repo]/main/squip-logo.svg",
       "publisher": {
         "@type": "Organization",
         "@id": "Squip",
@@ -275,10 +280,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
+            gap: 15px;
             margin-bottom: 30px;
             font-size: 15px;
-            flex-wrap: wrap;
         }
 
         .stat {
@@ -288,16 +292,15 @@
             gap: 8px;
         }
 
+        .stat-separator {
+            color: #999;
+            font-size: 18px;
+        }
+
         .stat-value {
             font-weight: 700;
             color: #1a1a1a;
             font-size: 18px;
-        }
-
-        .optimal-hint {
-            font-size: 13px;
-            color: var(--primary-color);
-            margin-left: 4px;
         }
 
         #game-area {
@@ -336,12 +339,12 @@
         }
 
         #player-grid {
-            grid-template-columns: repeat(3, 72px);
-            grid-template-rows: repeat(3, 72px);
-            min-width: 232px;
-            min-height: 232px;
-            max-width: 232px;
-            max-height: 232px;
+            grid-template-columns: repeat(4, 60px);
+            grid-template-rows: repeat(4, 60px);
+            min-width: 260px;
+            min-height: 260px;
+            max-width: 260px;
+            max-height: 260px;
         }
 
         .cell {
@@ -354,8 +357,8 @@
             overflow: hidden;
             display: block;
             box-sizing: border-box;
-            width: 72px;
-            height: 72px;
+            width: 60px;
+            height: 60px;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
@@ -786,8 +789,8 @@
             border-radius: 12px;
             margin: 0 auto;
             width: fit-content;
-            grid-template-columns: repeat(3, 40px);
-            grid-template-rows: repeat(3, 40px);
+            grid-template-columns: repeat(4, 35px);
+            grid-template-rows: repeat(4, 35px);
         }
 
         .solution-cell {
@@ -1212,12 +1215,12 @@
 
         @media (min-width: 501px) {
             .cell {
-                width: 72px !important;
-                height: 72px !important;
-                min-width: 72px !important;
-                min-height: 72px !important;
-                max-width: 72px !important;
-                max-height: 72px !important;
+                width: 60px !important;
+                height: 60px !important;
+                min-width: 60px !important;
+                min-height: 60px !important;
+                max-width: 60px !important;
+                max-height: 60px !important;
             }
         }
 
@@ -1288,7 +1291,7 @@
             }
 
             #stats {
-                gap: 20px;
+                gap: 10px;
                 margin-bottom: 25px;
                 font-size: 14px;
             }
@@ -1297,8 +1300,8 @@
                 font-size: 16px;
             }
             
-            .optimal-hint {
-                font-size: 12px;
+            .stat-separator {
+                font-size: 16px;
             }
 
             #goal-text {
@@ -1377,12 +1380,12 @@
 
             #player-grid {
                 display: grid !important;
-                grid-template-columns: repeat(3, 1fr) !important;
-                grid-template-rows: repeat(3, 1fr) !important;
+                grid-template-columns: repeat(4, 1fr) !important;
+                grid-template-rows: repeat(4, 1fr) !important;
                 gap: 4px !important;
                 grid-gap: 4px !important;
-                width: 232px !important;
-                height: 232px !important;
+                width: 260px !important;
+                height: 260px !important;
             }
 
             .cell {
@@ -1467,8 +1470,11 @@
 
         <div id="stats">
             <div class="stat">
-                Moves: <span class="stat-value" id="moves-count">0</span>
-                <span class="optimal-hint">(Optimal: <span id="optimal-moves">?</span>)</span>
+                Current: <span class="stat-value" id="current-moves-count">0</span>
+            </div>
+            <div class="stat-separator">•</div>
+            <div class="stat">
+                Total: <span class="stat-value" id="total-moves-count">0</span>
             </div>
         </div>
 
@@ -1493,12 +1499,12 @@
         <div class="modal">
             <button class="close-btn" onclick="Game.closeTutorial()">&times;</button>
             <h2>How To Play</h2>
-            <p class="subtitle">Turn all tiles to one color in as few moves as possible!</p>
+            <p class="subtitle">Turn all tiles to one color in as few as 5 moves!</p>
             
             <div class="tutorial-section">
                 <h3>The Rules</h3>
                 
-                <p class="example-text" style="text-align: left; margin: 0 0 20px 0;">Click any tile to flip it and its adjacent neighbors. Each position has a different pattern - tiles in the center flip in a plus (+) shape, edge tiles flip in a T shape, and corner tiles flip in an L shape. Your goal is to make all tiles the same color!</p>
+                <p class="example-text" style="text-align: left; margin: 0 0 20px 0;">Click any tile to flip it and its adjacent neighbors. Each position has a different pattern - tiles in the center flip in a plus (+) shape, edge tiles flip in a T shape, and corner tiles flip in an L shape. Your goal is to make all tiles the same color - <strong>can you find the 5-move solution?</strong></p>
                 
                 <div class="example-row">
                     <div class="example-item">
@@ -1551,21 +1557,29 @@
                 </div>
                 
                 <p class="example-text" style="text-align: left; margin: 20px 0; background: rgba(var(--primary-rgb), 0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(var(--primary-rgb), 0.3);">
-                    <strong>Tips:</strong> Each tile toggles between the current color and black when flipped. Remember that clicking a tile affects multiple tiles at once! Every daily puzzle starts with a unique pattern - your challenge is to turn all tiles to the selected color.
+                    <strong>Tips:</strong> Each tile toggles between the current color and black when flipped. Remember that clicking a tile affects multiple tiles at once! Every daily puzzle can be solved in exactly 5 moves - finding that perfect solution is the ultimate challenge!
                 </p>
                 
                 <div style="margin-top: 20px;">
+                    <div class="rule-item">
+                        <div class="rule-icon">•</div>
+                        <div class="rule-text">Every puzzle can be solved in exactly <strong>5 moves</strong> - that's the goal!</div>
+                    </div>
                     <div class="rule-item">
                         <div class="rule-icon">•</div>
                         <div class="rule-text">You have <strong>unlimited moves</strong> to find the solution</div>
                     </div>
                     <div class="rule-item">
                         <div class="rule-icon">•</div>
-                        <div class="rule-text"><strong>Undo</strong> reverts your last move</div>
+                        <div class="rule-text"><strong>Current</strong> shows moves in this attempt, <strong>Total</strong> shows all moves today</div>
                     </div>
                     <div class="rule-item">
                         <div class="rule-icon">•</div>
-                        <div class="rule-text"><strong>Reset</strong> returns to the starting pattern</div>
+                        <div class="rule-text"><strong>Undo</strong> reverts your last move (reduces Current by 1)</div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-icon">•</div>
+                        <div class="rule-text"><strong>Reset</strong> returns to the starting pattern (resets Current to 0)</div>
                     </div>
                     <div class="rule-item">
                         <div class="rule-icon">•</div>
@@ -1601,7 +1615,7 @@
         <div class="modal solution-modal">
             <button class="close-btn" onclick="Game.closeSolution()">&times;</button>
             <h2>Solution</h2>
-            <p class="subtitle">Here's the optimal solution:</p>
+            <p class="subtitle">Here's the 5-move solution:</p>
             <div id="solution-steps"></div>
         </div>
     </div>
@@ -1671,6 +1685,7 @@
             grid: [],
             startingPattern: [],
             moves: 0,
+            currentMoves: 0,
             optimalMoves: 0,
             solutionMoves: [],
             isComplete: false,
@@ -1682,14 +1697,13 @@
             currentColor: 'blue',
             
             // Constants
-            GRID_SIZE: 3,
-            MIN_MOVES: 3,
-            MAX_MOVES: 7,
+            GRID_SIZE: 4,
+            OPTIMAL_MOVES: 5,
             
             // BFS Solver to find minimum moves to all-light state
             findMinimumMoves(startState) {
                 // Target is all tiles light (true)
-                const targetStr = 'true'.repeat(9);
+                const targetStr = 'true'.repeat(16);
                 const startStr = startState.join('');
                 
                 if (startStr === targetStr) return 0;
@@ -1702,7 +1716,7 @@
                     const [currentState, moves, path] = queue.shift();
                     
                     // Try clicking each position
-                    for (let i = 0; i < 9; i++) {
+                    for (let i = 0; i < 16; i++) {
                         // Create a copy and apply the move
                         const newState = [...currentState];
                         this.applyMove(newState, i);
@@ -1726,7 +1740,7 @@
             
             // Find the actual optimal solution path to all-light state
             findOptimalSolution(startState) {
-                const targetStr = 'true'.repeat(9);
+                const targetStr = 'true'.repeat(16);
                 const startStr = startState.join('');
                 
                 if (startStr === targetStr) return [];
@@ -1737,7 +1751,7 @@
                 while (queue.length > 0) {
                     const [currentState, path] = queue.shift();
                     
-                    for (let i = 0; i < 9; i++) {
+                    for (let i = 0; i < 16; i++) {
                         const newState = [...currentState];
                         this.applyMove(newState, i);
                         const newStateStr = newState.join('');
@@ -1821,8 +1835,8 @@
             // Elements
             elements: {
                 playerGrid: document.getElementById('player-grid'),
-                movesCount: document.getElementById('moves-count'),
-                optimalMoves: document.getElementById('optimal-moves'),
+                currentMovesCount: document.getElementById('current-moves-count'),
+                totalMovesCount: document.getElementById('total-moves-count'),
                 resetBtn: document.getElementById('reset-btn'),
                 undoBtn: document.getElementById('undo-btn'),
                 shareBtn: document.getElementById('share-icon-btn'),
@@ -2020,18 +2034,18 @@
                 
                 // Keep trying until we get a puzzle with desired difficulty
                 let attempts = 0;
-                while (attempts < 100) {
+                while (attempts < 500) {
                     attempts++;
                     
                     // Start with all light
-                    const targetGrid = Array(9).fill(true);
+                    const targetGrid = Array(16).fill(true);
                     
                     // Apply random moves to create a starting pattern
-                    const numMoves = 5 + Math.floor(random() * 10); // Try 5-14 moves
+                    const numMoves = 4 + Math.floor(random() * 8); // Try 4-11 moves
                     const appliedMoves = [];
                     
                     for (let i = 0; i < numMoves; i++) {
-                        const pos = Math.floor(random() * 9);
+                        const pos = Math.floor(random() * 16);
                         appliedMoves.push(pos);
                         this.applyMove(targetGrid, pos);
                     }
@@ -2039,38 +2053,40 @@
                     // Verify the minimum moves required to get back to all-light
                     const minMoves = this.findMinimumMoves(targetGrid);
                     
-                    // Accept if it requires 3-7+ moves
-                    if (minMoves >= 3 && minMoves <= 12) {
+                    // Accept only if it requires exactly 5 moves
+                    if (minMoves === 5) {
                         // Find the actual optimal solution
                         const solution = this.findOptimalSolution(targetGrid);
                         
                         return {
                             starting: targetGrid, // This becomes our starting pattern
-                            optimal: minMoves <= 7 ? minMoves : 7, // Cap display at 7
+                            optimal: 5,
                             solution: solution
                         };
                     }
                 }
                 
                 // Fallback (shouldn't happen)
-                console.warn('Could not generate puzzle with desired difficulty');
+                console.warn('Could not generate 5-move puzzle, using fallback');
                 return this.generateFallbackPuzzle(random);
             },
             
             // Fallback puzzle generation
             generateFallbackPuzzle(random) {
-                // Simple fallback that generates a known 3-move puzzle
-                const startGrid = Array(9).fill(true);
+                // Fallback that generates a known 5-move puzzle
+                const startGrid = Array(16).fill(true);
                 
-                // Apply 3 corner moves (guaranteed to need 3 moves to solve)
+                // Apply 5 specific moves that we know will require 5 moves to solve
                 this.applyMove(startGrid, 0);
-                this.applyMove(startGrid, 2);
+                this.applyMove(startGrid, 3);
                 this.applyMove(startGrid, 6);
+                this.applyMove(startGrid, 9);
+                this.applyMove(startGrid, 15);
                 
                 return {
                     starting: startGrid,
-                    optimal: 3,
-                    solution: [0, 2, 6]
+                    optimal: 5,
+                    solution: [0, 3, 6, 9, 15]
                 };
             },
             
@@ -2084,13 +2100,13 @@
             
             getAffectedPositions(index) {
                 const positions = [index];
-                const row = Math.floor(index / 3);
-                const col = index % 3;
+                const row = Math.floor(index / 4);
+                const col = index % 4;
                 
-                if (row > 0) positions.push(index - 3);
-                if (row < 2) positions.push(index + 3);
+                if (row > 0) positions.push(index - 4);
+                if (row < 3) positions.push(index + 4);
                 if (col > 0) positions.push(index - 1);
-                if (col < 2) positions.push(index + 1);
+                if (col < 3) positions.push(index + 1);
                 
                 return positions;
             },
@@ -2102,11 +2118,12 @@
                 const saved = this.load(saveKey);
                 
                 // Validate saved data has correct grid size
-                if (saved && saved.grid && saved.grid.length === 9 && saved.starting && saved.starting.length === 9) {
+                if (saved && saved.grid && saved.grid.length === 16 && saved.starting && saved.starting.length === 16) {
                     // Load saved state
                     this.grid = saved.grid;
                     this.startingPattern = saved.starting;
                     this.moves = saved.moves;
+                    this.currentMoves = saved.currentMoves !== undefined ? saved.currentMoves : saved.moveHistory ? saved.moveHistory.length : 0;
                     this.optimalMoves = saved.optimal;
                     this.solutionMoves = saved.solution;
                     this.isComplete = saved.complete || false;
@@ -2121,7 +2138,7 @@
                         // If already completed and won, ensure stats are loaded
                         if (this.checkWin() && !saved.statsUpdated) {
                             // This handles edge case where someone completed before stats feature
-                            this.updateStats(this.moves === this.optimalMoves);
+                            this.updateStats(this.currentMoves === 5);
                         }
                     } else {
                         // Make sure share button is disabled initially
@@ -2137,6 +2154,7 @@
                     this.optimalMoves = puzzle.optimal;
                     this.solutionMoves = puzzle.solution;
                     this.moves = 0;
+                    this.currentMoves = 0;
                     this.isComplete = false;
                     this.moveHistory = [];
                     
@@ -2163,6 +2181,7 @@
                     grid: this.grid,
                     starting: this.startingPattern,
                     moves: this.moves,
+                    currentMoves: this.currentMoves,
                     optimal: this.optimalMoves,
                     solution: this.solutionMoves,
                     complete: this.isComplete,
@@ -2175,8 +2194,8 @@
             // Render game
             render() {
                 // Update stats
-                this.elements.movesCount.textContent = this.moves;
-                this.elements.optimalMoves.textContent = this.optimalMoves >= 7 ? '7+' : this.optimalMoves;
+                this.elements.currentMovesCount.textContent = this.currentMoves;
+                this.elements.totalMovesCount.textContent = this.moves;
                 
                 // Render player grid
                 this.elements.playerGrid.innerHTML = '';
@@ -2226,6 +2245,7 @@
             executeMove(index) {
                 this.isAnimating = true;
                 this.moves++;
+                this.currentMoves++;
                 
                 // Save state for undo (include the clicked index)
                 this.moveHistory.push({
@@ -2233,8 +2253,9 @@
                     clickedIndex: index
                 });
                 
-                // Update move counter - this counts ALL moves including those that get undone
-                this.elements.movesCount.textContent = this.moves;
+                // Update move counters
+                this.elements.currentMovesCount.textContent = this.currentMoves;
+                this.elements.totalMovesCount.textContent = this.moves;
                 
                 // Hide preview
                 this.hidePreview();
@@ -2311,7 +2332,13 @@
                 
                 // Restore the grid state from before the move
                 this.grid = [...lastMove.grid];
-                // Don't decrement moves - keep the true count
+                // Decrement ONLY current moves counter (total stays the same)
+                this.currentMoves--;
+                
+                // Update the display immediately
+                this.elements.currentMovesCount.textContent = this.currentMoves;
+                // Total moves stays the same
+                this.elements.totalMovesCount.textContent = this.moves;
                 
                 // Re-render the grid
                 this.render();
@@ -2340,7 +2367,7 @@
             // Handle win
             handleWin() {
                 this.isComplete = true;
-                const isPerfect = this.moves === this.optimalMoves;
+                const isPerfect = this.currentMoves === 5;
                 const stats = this.updateStats(isPerfect);
                 this.saveState();
                 this.showCompletionBadge();
@@ -2358,11 +2385,10 @@
                     
                     if (isPerfect) {
                         title.textContent = 'Perfect!';
-                        subtitle.innerHTML = `You found the optimal solution in ${this.moves} moves!<br><br>`;
+                        subtitle.innerHTML = `You found the optimal solution!<br><br>`;
                     } else {
                         title.textContent = 'Solved!';
-                        const optimalText = this.optimalMoves >= 7 ? '7+' : this.optimalMoves;
-                        subtitle.innerHTML = `You solved it in ${this.moves} moves (optimal: ${optimalText})<br><br>`;
+                        subtitle.innerHTML = `You solved it in ${this.currentMoves} moves<br><br>`;
                     }
                     
                     // Add stats in horizontal layout
@@ -2397,7 +2423,7 @@
                 if (!this.checkWin()) {
                     badge.textContent = 'Incomplete';
                     badge.classList.add('failed');
-                } else if (this.moves === this.optimalMoves) {
+                } else if (this.currentMoves === 5) {
                     badge.textContent = 'Perfect';
                     badge.classList.add('perfect');
                 } else {
@@ -2437,7 +2463,7 @@
                 if (isAtStart) return;
                 
                 this.grid = [...this.startingPattern];
-                // Don't reset moves - keep counting the full journey
+                this.currentMoves = 0; // Reset current moves counter
                 this.moveHistory = []; // Clear move history on reset
                 this.previewIndex = -1; // Clear preview
                 this.render();
@@ -2586,8 +2612,8 @@
                 
                 // Generate grid visualization of starting pattern
                 let gridVisual = '';
-                for (let i = 0; i < 9; i++) {
-                    if (i > 0 && i % 3 === 0) {
+                for (let i = 0; i < 16; i++) {
+                    if (i > 0 && i % 4 === 0) {
                         gridVisual += '\n';
                     }
                     gridVisual += this.startingPattern[i] ? '🟦' : '⬛';
@@ -2601,12 +2627,15 @@
                     return;
                 } else if (!won) {
                     resultText += `❌ Couldn't solve today's puzzle.\n`;
+                    resultText += `(Gave it my best with ${this.moves} moves)\n\n`;
                     resultText += `Try it yourself at https://squip.io`;
-                } else if (this.moves === this.optimalMoves) {
-                    resultText += `⭐ PERFECT! Solved in ${this.moves} moves!\n`;
+                } else if (this.currentMoves === 5) {
+                    resultText += `⭐ PERFECT! Solved in 5 moves!\n`;
+                    resultText += `(Took me ${this.moves} total moves to find it)\n\n`;
                     resultText += `Try and match my score at https://squip.io`;
                 } else {
-                    resultText += `✅ Solved in ${this.moves} moves!\n`;
+                    resultText += `✅ Solved in ${this.currentMoves} moves!\n`;
+                    resultText += `(${this.moves} moves total across all attempts)\n\n`;
                     resultText += `Try and beat my score at https://squip.io`;
                 }
                 
@@ -2649,13 +2678,12 @@
                 const title = document.getElementById('result-title');
                 const subtitle = document.getElementById('result-subtitle');
                 
-                if (this.moves === this.optimalMoves) {
+                if (this.currentMoves === 5) {
                     title.textContent = 'Perfect!';
-                    subtitle.innerHTML = `You found the optimal solution in ${this.moves} moves!<br><br>`;
+                    subtitle.innerHTML = `You found the optimal solution!<br><br>`;
                 } else {
                     title.textContent = 'Solved!';
-                    const optimalText = this.optimalMoves >= 7 ? '7+' : this.optimalMoves;
-                    subtitle.innerHTML = `You solved it in ${this.moves} moves (optimal: ${optimalText})<br><br>`;
+                    subtitle.innerHTML = `You solved it in ${this.currentMoves} moves<br><br>`;
                 }
                 
                 // Add stats in horizontal layout
