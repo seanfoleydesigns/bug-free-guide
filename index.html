@@ -2161,8 +2161,10 @@
                     this.saveState();
                 }
                 
-                // Make sure share button starts disabled
-                this.elements.shareBtn.classList.add('disabled');
+                // Only disable share button if puzzle is not complete
+                if (!this.isComplete) {
+                    this.elements.shareBtn.classList.add('disabled');
+                }
                 
                 // Update button states
                 this.updateResetButton();
