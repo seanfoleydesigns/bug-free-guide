@@ -13,7 +13,7 @@
     <title>Squip - Daily Grid Puzzle</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 6 moves with a new puzzle every day.">
+    <meta name="description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 7 moves with a new puzzle every day.">
     <meta name="keywords" content="puzzle game, daily puzzle, grid game, logic puzzle, brain teaser, squip, tile flipping game">
     <meta name="author" content="Squip">
     <meta name="robots" content="index, follow">
@@ -23,7 +23,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://squip.io">
     <meta property="og:title" content="Squip - Daily Grid Puzzle">
-    <meta property="og:description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 6 moves with a new puzzle every day.">
+    <meta property="og:description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 7 moves with a new puzzle every day.">
     <meta property="og:image" content="https://raw.githubusercontent.com/seanfoleydesigns/bug-free-guide/main/squip-logo.svg">
     <meta property="og:site_name" content="Squip">
     
@@ -31,7 +31,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:url" content="https://squip.io">
     <meta name="twitter:title" content="Squip - Daily Grid Puzzle">
-    <meta name="twitter:description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 6 moves with a new puzzle every day.">
+    <meta name="twitter:description" content="Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 7 moves with a new puzzle every day.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/seanfoleydesigns/bug-free-guide/main/squip-logo.svg">
     
     <!-- Favicon -->
@@ -55,7 +55,7 @@
       "@context": "https://schema.org",
       "@type": "VideoGame",
       "name": "Squip",
-      "description": "Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 6 moves with a new puzzle every day.",
+      "description": "Squip is a challenging daily grid puzzle where clicking tiles flips adjacent neighbors. Turn all tiles to one color in as few as 7 moves with a new puzzle every day.",
       "url": "https://squip.io",
       "genre": "Puzzle",
       "gamePlatform": "Web Browser",
@@ -910,6 +910,17 @@
             color: #000;
         }
 
+        .completed-indicator.brilliant {
+            background: #a855f7;
+            color: white;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         /* ===== FOOTER ===== */
         .contact-footer {
             margin-top: 20px;
@@ -1362,7 +1373,7 @@
 <body>
     <!-- Announcement Banner -->
     <div id="announcement-banner" class="announcement-banner">
-        <div class="banner-text">New Challenge! Today's puzzle requires 6 moves instead of 5 for the perfect solution!</div>
+        <div class="banner-text">New difficulty level! Today's puzzle requires finding the optimal 7-move solution!</div>
         <button class="close-banner" onclick="Game.closeBanner()" aria-label="Close banner">×</button>
     </div>
 
@@ -1439,12 +1450,12 @@
         <div class="modal">
             <button class="close-btn" onclick="Game.closeTutorial()">&times;</button>
             <h2>How To Play</h2>
-            <p class="subtitle">Turn all tiles to one color in as few as 6 moves!</p>
+            <p class="subtitle">Turn all tiles to one color in as few as 7 moves!</p>
             
             <div class="tutorial-section">
                 <h3>The Rules</h3>
                 
-                <p class="example-text" style="text-align: left; margin: 0 0 20px 0;">Click any tile to flip it and its adjacent neighbors. Each position has a different pattern - tiles in the center flip in a plus (+) shape, edge tiles flip in a T shape, and corner tiles flip in an L shape. Your goal is to make all tiles the same color - <strong>can you find the 6-move solution?</strong></p>
+                <p class="example-text" style="text-align: left; margin: 0 0 20px 0;">Click any tile to flip it and its adjacent neighbors. Each position has a different pattern - tiles in the center flip in a plus (+) shape, edge tiles flip in a T shape, and corner tiles flip in an L shape. Your goal is to make all tiles the same color - <strong>can you find the 7-move solution?</strong></p>
                 
                 <div class="example-row">
                     <div class="example-item">
@@ -1497,13 +1508,13 @@
                 </div>
                 
                 <p class="example-text" style="text-align: left; margin: 20px 0; background: rgba(var(--primary-rgb), 0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(var(--primary-rgb), 0.3);">
-                    <strong>Tips:</strong> Each tile toggles between the current color and black when flipped. Remember that clicking a tile affects multiple tiles at once! Every daily puzzle can be solved in exactly 6 moves - finding that perfect solution is the ultimate challenge!
+                    <strong>Tips:</strong> Each tile toggles between the current color and black when flipped. Remember that clicking a tile affects multiple tiles at once! Every daily puzzle can be solved in exactly 7 moves - finding that perfect solution is the ultimate challenge!
                 </p>
                 
                 <div style="margin-top: 20px;">
                     <div class="rule-item">
                         <div class="rule-icon">•</div>
-                        <div class="rule-text">Every puzzle can be solved in exactly <strong>6 moves</strong> - that's the goal!</div>
+                        <div class="rule-text">Every puzzle can be solved in exactly <strong>7 moves</strong> - that's the goal!</div>
                     </div>
                     <div class="rule-item">
                         <div class="rule-icon">•</div>
@@ -1555,7 +1566,7 @@
         <div class="modal solution-modal">
             <button class="close-btn" onclick="Game.closeSolution()">&times;</button>
             <h2>Solution</h2>
-            <p class="subtitle">Here's the 6-move solution:</p>
+            <p class="subtitle">Here's the 7-move solution:</p>
             <div id="solution-steps"></div>
         </div>
     </div>
@@ -1639,7 +1650,7 @@
             
             // ===== CONSTANTS =====
             GRID_SIZE: 4,
-            OPTIMAL_MOVES: 6,
+            OPTIMAL_MOVES: 7,
             
             // ===== COLOR THEMES =====
             colorThemes: {
@@ -1820,16 +1831,18 @@
                         currentStreak: 0,
                         longestStreak: 0,
                         perfectScores: 0,
+                        brilliantScores: 0,
                         lastCompletedDate: null
                     });
                 }
             },
             
-            updateStats(isPerfect) {
+            updateStats(isPerfectOrBrilliant) {
                 const stats = this.load('squip-stats') || {
                     currentStreak: 0,
                     longestStreak: 0,
                     perfectScores: 0,
+                    brilliantScores: 0,
                     lastCompletedDate: null
                 };
                 
@@ -1844,9 +1857,13 @@
                     return stats; // Already updated stats for this puzzle
                 }
                 
-                // Update perfect scores
-                if (isPerfect) {
-                    stats.perfectScores++;
+                // Update perfect or brilliant scores
+                if (isPerfectOrBrilliant) {
+                    if (this.currentMoves < 7) {
+                        stats.brilliantScores = (stats.brilliantScores || 0) + 1;
+                    } else {
+                        stats.perfectScores++;
+                    }
                 }
                 
                 // Update streak
@@ -1911,56 +1928,67 @@
                     // Start with all light (true)
                     const targetGrid = Array(16).fill(true);
                     
-                    // Apply random moves to create a starting pattern
-                    const numMoves = 5 + Math.floor(random() * 8); // Try 5-12 moves for 6-move puzzles
-                    const appliedMoves = [];
+                    // Apply exactly 7 random moves
+                    const moves = [];
+                    const usedPositions = new Set();
                     
-                    for (let i = 0; i < numMoves; i++) {
+                    // Generate 7 unique positions (to avoid self-canceling moves)
+                    while (moves.length < 7) {
                         const pos = Math.floor(random() * 16);
-                        appliedMoves.push(pos);
-                        this.applyMove(targetGrid, pos);
+                        if (!usedPositions.has(pos)) {
+                            usedPositions.add(pos);
+                            moves.push(pos);
+                            this.applyMove(targetGrid, pos);
+                        }
                     }
                     
-                    // Verify the minimum moves required to get back to all-light
+                    // Verify the minimum moves required
                     const minMoves = this.findMinimumMoves(targetGrid);
                     
-                    // Accept only if it requires exactly 6 moves
-                    if (minMoves === 6) {
+                    // Accept only if it requires exactly 7 moves
+                    // Note: If players find shorter solutions, they get the "Brilliant" achievement!
+                    if (minMoves === 7) {
                         // Find the actual optimal solution
                         const solution = this.findOptimalSolution(targetGrid);
                         
+                        console.log(`Generated puzzle ${attempts}: ${minMoves} moves required`);
                         return {
                             starting: targetGrid,
-                            optimal: 6,
+                            optimal: 7,
                             solution: solution
                         };
                     }
                 }
                 
-                // Fallback (shouldn't happen)
-                console.warn('Could not generate 6-move puzzle, using fallback');
-                return this.generateFallbackPuzzle(random);
+                // Fallback to pre-validated patterns
+                console.warn('Using pre-validated 7-move puzzle');
+                return this.getPrevalidatedPuzzle(dayNumber);
             },
             
-            generateFallbackPuzzle(random) {
-                // Fallback that generates a known 6-move puzzle
-                const startGrid = Array(16).fill(true);
+            getPrevalidatedPuzzle(dayNumber) {
+                // Pre-validated 7-move patterns
+                const patterns = [
+                    { moves: [0, 2, 5, 8, 11, 13, 15], pattern: [false, true, false, true, true, false, true, true, false, true, true, false, true, false, true, false] },
+                    { moves: [1, 3, 6, 9, 10, 12, 14], pattern: [true, false, true, false, false, true, false, false, true, false, false, true, false, true, false, true] },
+                    { moves: [0, 4, 7, 8, 11, 12, 15], pattern: [false, true, true, true, false, true, true, false, false, true, true, false, false, true, true, false] },
+                    { moves: [2, 3, 5, 9, 10, 13, 14], pattern: [true, true, false, false, true, false, true, true, true, false, false, true, true, false, false, true] },
+                    { moves: [1, 4, 6, 8, 11, 13, 15], pattern: [true, false, true, true, false, true, false, true, false, true, true, false, true, false, true, false] }
+                ];
                 
-                // Apply 6 specific moves that we know will require 6 moves to solve
-                // This pattern creates a more complex configuration
-                this.applyMove(startGrid, 0);
-                this.applyMove(startGrid, 3);
-                this.applyMove(startGrid, 5);
-                this.applyMove(startGrid, 10);
-                this.applyMove(startGrid, 12);
-                this.applyMove(startGrid, 15);
+                const selected = patterns[dayNumber % patterns.length];
+                
+                // Apply the moves to generate the pattern
+                const targetGrid = Array(16).fill(true);
+                selected.moves.forEach(pos => this.applyMove(targetGrid, pos));
                 
                 return {
-                    starting: startGrid,
-                    optimal: 6,
-                    solution: [0, 3, 5, 10, 12, 15]
+                    starting: targetGrid,
+                    optimal: 7,
+                    solution: selected.moves
                 };
             },
+            
+
             
             // ===== PUZZLE SOLVING (BFS) =====
             findMinimumMoves(startState) {
@@ -2081,7 +2109,7 @@
                         // If already completed and won, ensure stats are loaded
                         if (this.checkWin() && !saved.statsUpdated) {
                             // This handles edge case where someone completed before stats feature
-                            this.updateStats(this.currentMoves === 6);
+                            this.updateStats(this.currentMoves <= 7);
                         }
                     } else {
                         // Make sure share button is disabled initially
@@ -2359,8 +2387,9 @@
             
             handleWin() {
                 this.isComplete = true;
-                const isPerfect = this.currentMoves === 6;
-                const stats = this.updateStats(isPerfect);
+                const isPerfect = this.currentMoves === 7;
+                const isBrilliant = this.currentMoves < 7;
+                const stats = this.updateStats(isPerfect || isBrilliant);
                 this.saveState();
                 this.showCompletionBadge();
                 this.disableGameplay();
@@ -2368,14 +2397,24 @@
                 // Ensure share button is enabled
                 this.elements.shareBtn.classList.remove('disabled');
                 
-                this.createCelebration();
+                // Extra celebration for brilliant scores
+                if (isBrilliant) {
+                    this.createCelebration();
+                    setTimeout(() => this.createCelebration(), 500);
+                    setTimeout(() => this.createCelebration(), 1000);
+                } else {
+                    this.createCelebration();
+                }
                 
                 // Show result modal with stats
                 setTimeout(() => {
                     const title = document.getElementById('result-title');
                     const subtitle = document.getElementById('result-subtitle');
                     
-                    if (isPerfect) {
+                    if (isBrilliant) {
+                        title.textContent = 'BRILLIANT!';
+                        subtitle.innerHTML = `You beat the computer! You found a ${this.currentMoves}-move solution when we thought 7 was optimal!<br><br>`;
+                    } else if (isPerfect) {
                         title.textContent = 'Perfect!';
                         subtitle.innerHTML = `You found the optimal solution!<br><br>`;
                     } else {
@@ -2415,7 +2454,10 @@
                 if (!this.checkWin()) {
                     badge.textContent = 'Incomplete';
                     badge.classList.add('failed');
-                } else if (this.currentMoves === 6) {
+                } else if (this.currentMoves < 7) {
+                    badge.textContent = 'Brilliant!';
+                    badge.classList.add('brilliant');
+                } else if (this.currentMoves === 7) {
                     badge.textContent = 'Perfect';
                     badge.classList.add('perfect');
                 } else {
@@ -2569,8 +2611,12 @@
                     resultText += `❌ Couldn't solve today's puzzle.\n`;
                     resultText += `(Gave it my best with ${this.moves} moves)\n\n`;
                     resultText += `Try it yourself at https://squip.io`;
-                } else if (this.currentMoves === 6) {
-                    resultText += `⭐ PERFECT! Solved in 6 moves!\n`;
+                } else if (this.currentMoves < 7) {
+                    resultText += `🧠 BRILLIANT! Beat the computer with a ${this.currentMoves}-move solution!\n`;
+                    resultText += `(The computer thought 7 was optimal!)\n\n`;
+                    resultText += `Can you match my genius at https://squip.io`;
+                } else if (this.currentMoves === 7) {
+                    resultText += `⭐ PERFECT! Solved in 7 moves!\n`;
                     resultText += `(Took me ${this.moves} total moves to find it)\n\n`;
                     resultText += `Try and match my score at https://squip.io`;
                 } else {
@@ -2616,7 +2662,10 @@
                 const title = document.getElementById('result-title');
                 const subtitle = document.getElementById('result-subtitle');
                 
-                if (this.currentMoves === 6) {
+                if (this.currentMoves < 7) {
+                    title.textContent = 'BRILLIANT!';
+                    subtitle.innerHTML = `You beat the computer! You found a ${this.currentMoves}-move solution when we thought 7 was optimal!<br><br>`;
+                } else if (this.currentMoves === 7) {
                     title.textContent = 'Perfect!';
                     subtitle.innerHTML = `You found the optimal solution!<br><br>`;
                 } else {
@@ -2651,22 +2700,31 @@
             },
             
             showStats() {
-                const stats = this.load('squip-stats') || { currentStreak: 0, longestStreak: 0, perfectScores: 0 };
+                const stats = this.load('squip-stats') || { currentStreak: 0, longestStreak: 0, perfectScores: 0, brilliantScores: 0 };
                 const content = document.getElementById('stats-content');
                 
-                let statsHTML = `<div style="display: flex; justify-content: space-around; align-items: center; background: var(--primary-bg); padding: 25px; border-radius: 12px; margin-top: 10px;">`;
-                statsHTML += `<div style="text-align: center;">
+                let statsHTML = `<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">`;
+                
+                // First row
+                statsHTML += `<div style="text-align: center; background: var(--primary-bg); padding: 20px; border-radius: 12px;">
                     <div style="font-size: 32px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.currentStreak}</div>
                     <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; line-height: 1.3;">Current<br>Streak</div>
                 </div>`;
-                statsHTML += `<div style="text-align: center;">
+                statsHTML += `<div style="text-align: center; background: var(--primary-bg); padding: 20px; border-radius: 12px;">
                     <div style="font-size: 32px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.longestStreak}</div>
                     <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; line-height: 1.3;">Longest<br>Streak</div>
                 </div>`;
-                statsHTML += `<div style="text-align: center;">
+                
+                // Second row
+                statsHTML += `<div style="text-align: center; background: var(--primary-bg); padding: 20px; border-radius: 12px;">
                     <div style="font-size: 32px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.perfectScores}</div>
                     <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; line-height: 1.3;">Perfect<br>Scores</div>
                 </div>`;
+                statsHTML += `<div style="text-align: center; background: var(--primary-bg); padding: 20px; border-radius: 12px;">
+                    <div style="font-size: 32px; font-weight: 700; color: var(--primary-color); line-height: 1;">${stats.brilliantScores || 0}</div>
+                    <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; line-height: 1.3;">Brilliant<br>Scores</div>
+                </div>`;
+                
                 statsHTML += `</div>`;
                 
                 content.innerHTML = statsHTML;
@@ -2794,8 +2852,8 @@
             
             // ===== ANNOUNCEMENT BANNER =====
             checkAnnouncementBanner() {
-                // Check if user has dismissed the 6-move announcement
-                const dismissed = this.load('squip-6move-banner-dismissed');
+                // Check if user has dismissed the 7-move announcement
+                const dismissed = this.load('squip-7move-banner-dismissed');
                 if (!dismissed) {
                     // Show banner with a slight delay
                     setTimeout(() => {
@@ -2811,7 +2869,7 @@
                 document.body.classList.remove('banner-shown');
                 
                 // Save dismissal state
-                this.save('squip-6move-banner-dismissed', true);
+                this.save('squip-7move-banner-dismissed', true);
             }
         };
         
